@@ -1,0 +1,14 @@
+{
+  "state": {
+    "window": {
+      "inner": null,
+      "outer": null
+    }
+  },
+  "router": {
+    "pathname": "/",
+    "search": "",
+    "queries": {},
+    "hash": ""
+  }
+}
