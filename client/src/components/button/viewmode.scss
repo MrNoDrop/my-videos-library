@@ -1,0 +1,14 @@
+.view-modes {
+  font-size: 3vmin;
+  display: flex;
+  box-sizing: content-box;
+  margin-top: -0.55vmin;
+  .viewmode {
+    margin: 0.3vmin;
+  }
+  .viewmode-list-svg,
+  .viewmode-horizontal-svg,
+  .viewmode-vertical-svg {
+    width: 1.8vmin;
+  }
+}

@@ -1,0 +1,28 @@
+@import "../../styles.shared/colors";
+
+.toggle-button {
+  position: relative;
+  overflow: hidden;
+  width: 14vmin;
+  height: 16vmin;
+  border: 0.35vmin solid $toggleButtonBorderColor;
+  cursor: pointer;
+}
+.toggle-button::before {
+  position: absolute;
+  content: "";
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: $toggleButtonBackgroundColor;
+  background-image: url(../../resources/images/button/toggle-pointer.png);
+  background-repeat: no-repeat;
+  background-size: 3vmin 2vmin;
+  background-position: 50% 50%;
+  transition: transform 0.3s;
+  transform: rotate(180deg);
+}
+.toggle-button.toggled::before {
+  transform: rotate(0deg);
+}

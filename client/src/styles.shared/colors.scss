@@ -1,0 +1,40 @@
+//Menu components colors:
+$menuColor: white;
+$menuBackgroundColor: #d8d8d8;
+$menuFooterEntryColor: #9b9b9b;
+$menuFooterEntryEnabledColor: black;
+
+// splash component colors:
+$splashGreetingColor: #f4f2ea;
+$splashGreetingBackgroundColor: #d3d3d3;
+$splashGreetingBorderColor: #d3d3d3;
+
+// language button colors:
+$languageButtonColor: #f4f2ea;
+$languageButtonHoverColor: #d3d3d3;
+$languageButtonBackgroundColor: #c9c9c9;
+$languageButtonHoverBackgroundColor: #f4f2ea;
+$languageButtonBorderColor: #d3d3d3;
+$languageButtonSelectedColor: $languageButtonColor;
+$languageButtonSelectedBackgroundColor: black;
+$languageButtonSelectedHoverColor: transparentize($languageButtonColor, 0.153);
+$languageButtonSelectedHoverBackgroundColor: $languageButtonBackgroundColor;
+$languageButtonSectionColor: $languageButtonSelectedHoverColor;
+$languageButtonSectionBackgroundColor: $languageButtonSelectedHoverBackgroundColor;
+$languageButtonSectionBorderColor: white;
+$languageButtonSectionHoverColor: $languageButtonSelectedColor;
+$languageButtonSectionHoverBackgroundColor: $languageButtonSelectedBackgroundColor;
+
+//toggle button colors:
+$toggleButtonBorderColor: gray;
+$toggleButtonBackgroundColor: #f2f2f2;
+
+//add button colors:
+$addButtonColor: white;
+$addButtonBackgroundColor: #cecece;
+$addButtonHoverColor: white;
+$addButtonHoverBackgroundColor: black;
+
+// list colors:
+$listCategoryColor: #cecece;
+$listCategoryBorderColor: $toggleButtonBorderColor;

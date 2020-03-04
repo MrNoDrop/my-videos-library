@@ -1,0 +1,34 @@
+@import "../../styles.shared/colors";
+
+.packman {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  width: 15vmin;
+  height: 15vmin;
+}
+
+#splash-screen {
+  top: calc(50% - 35vmin);
+  left: calc(50% - 35vmin);
+  width: 70vmin;
+  position: fixed;
+  .loading {
+    width: 45vmin;
+    margin-left: calc(50% - 22.5vmin);
+  }
+  .greeting {
+    padding: 0 1.5vmin;
+    font-size: 8vmin;
+    font-weight: bold;
+    min-width: max-content;
+    text-align: center;
+    color: $splashGreetingColor;
+    background-color: $splashGreetingBackgroundColor;
+    border: 0.1vmin solid $splashGreetingBorderColor;
+    border-radius: 3vmin;
+  }
+}

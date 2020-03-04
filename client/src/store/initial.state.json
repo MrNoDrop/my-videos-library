@@ -1,14 +1,51 @@
 {
   "state": {
+    "currenttime": {},
+    "viewmode": "list",
+    "user": { "language": "en", "name": "user" },
     "window": {
       "inner": null,
       "outer": null
-    }
+    },
+    "video": {
+      "currenttime": 0
+    },
+    "navigator": { "online": true }
   },
   "router": {
     "pathname": "/",
     "search": "",
     "queries": {},
-    "hash": ""
+    "hash": "",
+    "routes": {
+      "keys": ["series", "movies", "home"],
+      "supported-languages": ["pl", "en", "fr", "nl"],
+      "language-descriptors": {
+        "pl": "polski polish pools polonais",
+        "en": "english angielski anglais engels",
+        "fr": "francais francuski french frans",
+        "nl": "nederlands dutch niderlandski néerlandais"
+      },
+      "en": {
+        "series": "series",
+        "movies": "movies",
+        "home": "home"
+      },
+      "pl": {
+        "series": "seriale",
+        "movies": "filmy",
+        "home": "home"
+      },
+      "fr": {
+        "series": "series",
+        "movies": "movies",
+        "home": "home"
+      },
+      "nl": {
+        "series": "series",
+        "movies": "movies",
+        "home": "home"
+      }
+    }
   }
 }

@@ -1,0 +1,30 @@
+@import '../../styles.shared/colors';
+
+#menu-footer {
+  display: flex;
+  user-select: none;
+  padding: 3vmin 8vmin;
+  background-color: $menuBackgroundColor;
+  .entry {
+    cursor: pointer;
+    display: flexbox;
+    color: $menuFooterEntryColor;
+    .enabled {
+      color: $menuFooterEntryEnabledColor;
+    }
+    .image-container {
+      padding-left: calc((100% - 15vmin) / 2);
+      padding-bottom: 1vmin;
+      .image {
+        width: 5vmin;
+        height: 5vmin;
+        margin: auto;
+      }
+    }
+    .title {
+      font-size: 3vmin;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}

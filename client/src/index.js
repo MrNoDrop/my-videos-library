@@ -8,8 +8,11 @@ import { Provider } from 'react-redux';
 import Routes from './routes';
 import store from './store';
 
+import Menu from './components/menu';
+
 ReactDOM.render(
   <Provider store={store}>
+    <Menu />
     <Router history={browserHistory}>
       <Routes />
     </Router>

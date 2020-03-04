@@ -1,0 +1,8 @@
+@import "./checkbox";
+
+.delete {
+  @extend .checkbox;
+  background-image: url(../../resources/images/button/delete.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}

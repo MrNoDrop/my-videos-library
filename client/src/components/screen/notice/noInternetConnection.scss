@@ -1,0 +1,21 @@
+@import "../../../styles.shared/expandShrink.effect";
+
+.no-internet-connection-notice {
+  position: fixed;
+  z-index: 3;
+  font-size: 5vmin;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5vmin 0;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  background-color: #d8d8d8;
+  border-bottom: 0.3vmin solid black;
+  @extend .expandShrink-effect-add-to-default-class;
+}
+
+.no-internet-connection-notice.hidden {
+  @extend .expandShrink-effect-add-to-hidden-class;
+}

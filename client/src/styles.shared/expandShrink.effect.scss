@@ -1,0 +1,9 @@
+.expandShrink-effect-add-to-default-class {
+  transform: scaleY(height);
+  transform-origin: top;
+  transition: height 0.3s, transform 0.3s ease-in-out;
+}
+.expandShrink-effect-add-to-hidden-class {
+  height: 0;
+  transform: scaleY(0);
+}

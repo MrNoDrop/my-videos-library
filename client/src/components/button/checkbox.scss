@@ -1,0 +1,13 @@
+.checkbox {
+  width: 6vmin;
+  min-width: 6vmin;
+  min-height: 6vmin;
+  background-color: whitesmoke;
+  border: 0.03vmin solid gray;
+  cursor: pointer;
+}
+.checkbox.checked {
+  background-image: url(../../resources/images/button/check.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}

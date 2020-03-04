@@ -1,0 +1,10 @@
+.confirm-button {
+  width: 8vmin;
+  height: 8vmin;
+  border: 0.3vmin solid gray;
+  border-radius: 50%;
+  background-image: url(../../resources/images/button/check.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

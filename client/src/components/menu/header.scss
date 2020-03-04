@@ -1,0 +1,35 @@
+@import '../../styles.shared/colors';
+
+#menu-header,
+.menu-header-background {
+  z-index: 2;
+  user-select: none;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: flex;
+  padding: 5vmin;
+  padding-bottom: 2vmin;
+  width: 100%;
+  color: $menuColor;
+  background-color: $menuBackgroundColor;
+  font-size: 4vmin;
+  .title {
+    min-width: max-content;
+    font-weight: bold;
+  }
+  img {
+    margin-left: 1vmin;
+    height: 4vmin;
+  }
+  .separator {
+    width: 100%;
+  }
+  .login-button {
+    min-width: max-content;
+  }
+}
+.menu-header-background {
+  position: relative;
+}

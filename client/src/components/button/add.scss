@@ -1,0 +1,21 @@
+@import "../../styles.shared/colors";
+
+.add-button {
+  width: 5vmin;
+  height: 5vmin;
+  cursor: pointer;
+  padding: 0.5vmin;
+  font-size: 7vmin;
+  line-height: 4vmin;
+  border-radius: 50%;
+  text-align: center;
+  color: $addButtonColor;
+  background-color: $addButtonBackgroundColor;
+  transition-property: color, background-color;
+  transition-duration: 0.3s;
+}
+
+.add-button:hover {
+  color: $addButtonHoverColor;
+  background-color: $addButtonHoverBackgroundColor;
+}

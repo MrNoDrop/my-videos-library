@@ -1,0 +1,71 @@
+@import '../../styles.shared/colors';
+@import '../../styles.shared/expandShrink.effect';
+
+#language-button {
+  z-index: 1;
+  top: 0;
+  right: 0.5vmin;
+  position: fixed;
+  cursor: pointer;
+  padding: 1vmin 0.5vmin;
+  font-size: 3vmin;
+  user-select: none;
+  width: max-content;
+  border-radius: 3vmin;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  color: $languageButtonColor;
+  background-color: $languageButtonBackgroundColor;
+  border: 0.1vmin solid $languageButtonBorderColor;
+  transition-property: color background-color border-radius;
+  transition-duration: 0.3s;
+}
+
+#language-button:hover {
+  color: $languageButtonHoverColor;
+  background-color: $languageButtonHoverBackgroundColor;
+}
+
+#language-button.selected {
+  color: $languageButtonSelectedColor;
+  background-color: $languageButtonSelectedBackgroundColor;
+  border-radius: 0;
+  border: 0.1vmin solid $languageButtonSectionBorderColor;
+}
+
+#language-button.selected:hover {
+  color: $languageButtonSelectedHoverColor;
+  background-color: $languageButtonSelectedHoverBackgroundColor;
+}
+
+#language-selection,
+#language-selection.hidden {
+  position: fixed;
+  top: 0.5vmin;
+  right: 0.5vmin;
+  padding-top: 5vmin;
+  border-radius: 3vmin;
+  height: max-content;
+  overflow: hidden;
+  .entry {
+    cursor: pointer;
+    text-align: center;
+    padding-bottom: 0.5vmin;
+    color: $languageButtonSectionColor;
+    background-color: $languageButtonSectionBackgroundColor;
+    border-top: 0.1vmin solid $languageButtonSectionBorderColor;
+    border-bottom: 0.1vmin solid $languageButtonSectionBorderColor;
+    transition-property: color background-color;
+    transition-duration: 0.3s;
+  }
+  .entry:hover {
+    color: $languageButtonSectionHoverColor;
+    border: 0.1vmin solid $languageButtonSectionBorderColor;
+    background-color: $languageButtonSectionHoverBackgroundColor;
+  }
+  @extend .expandShrink-effect-add-to-default-class;
+}
+
+#language-selection.hidden {
+  @extend .expandShrink-effect-add-to-hidden-class;
+}

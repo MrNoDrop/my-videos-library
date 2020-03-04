@@ -1,0 +1,29 @@
+.path-history {
+  font-size: 2.5vmin;
+  // position: fixed;
+  display: flex;
+  // top: 11.5vmin;
+  // left: 0;
+  font-weight: bolder;
+  color: white;
+  box-sizing: content-box;
+}
+.path-history-button {
+  margin-left: 0.8vmin;
+  cursor: pointer;
+  min-width: max-content;
+}
+.path-history-button-text:hover {
+  color: black;
+}
+.path-history-button.current {
+  text-decoration: underline;
+  cursor: default;
+}
+.path-history-button-text.current:hover {
+  color: white;
+}
+.path-history-button-separator {
+  color: white;
+  cursor: default;
+}
