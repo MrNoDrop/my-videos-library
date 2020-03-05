@@ -7,19 +7,28 @@ const mapStateToProps = ({ state: { window: inner } }) => ({
   windowInnerDimensions: inner
 });
 function Filter({
-  marginLeftPercentage = 43.5,
-  marginRightPercentage = 56.5,
+  marginLeftPercentage = 23.5,
+  widthPercentage = 40,
+  marginRightPercentage = 36.5,
   style,
   filter,
   setFilter,
   windowInnerDimensions,
   ...other
 }) {
-  const { ref, availableSpace } = useGetAvailableSpace(windowInnerDimensions);
+  const { ref, availableSpace } = useGetAvailableSpace(
+    false,
+    windowInnerDimensions
+  );
   return (
     <input
       style={{
-        ...space(availableSpace, marginLeftPercentage, marginRightPercentage),
+        ...space(
+          availableSpace,
+          marginLeftPercentage,
+          widthPercentage,
+          marginRightPercentage
+        ),
         style
       }}
       className="filter"
@@ -29,9 +38,10 @@ function Filter({
     />
   );
 }
-function space(availableSpace, marginLeft, marginRight) {
-  const style = { marginLeft: 0, marginRight: 0 };
+function space(availableSpace, marginLeft, width, marginRight) {
+  const style = { marginLeft: 0, marginRight: 0, width: 0 };
   style.marginLeft = (marginLeft / 100) * availableSpace;
+  style.width = (width / 100) * availableSpace;
   style.marginRight = (marginRight / 100) * availableSpace;
   // console.log(
   //   (marginLeft / 100) * availableSpace,
@@ -40,7 +50,7 @@ function space(availableSpace, marginLeft, marginRight) {
   return style;
 }
 
-function useGetAvailableSpace(...triggers) {
+function useGetAvailableSpace(includeSelf = true, ...triggers) {
   const ref = useRef();
   const [availableSpace, setAvailableSpace] = useState({});
   useEffect(() => {
@@ -51,7 +61,15 @@ function useGetAvailableSpace(...triggers) {
       const childrenRects = [];
 
       for (let child of children) {
-        childrenRects.push(getElementRect(getElementRef(child)));
+        if (
+          !includeSelf &&
+          child.className === ref.current.className &&
+          child.localName === ref.current.localName
+        ) {
+          continue;
+        } else {
+          childrenRects.push(getElementRect(getElementRef(child)));
+        }
       }
       let newAvailableSpace = parentRect.width;
       let index = 0;

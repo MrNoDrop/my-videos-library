@@ -23,6 +23,18 @@ router.get('/:language/:category', (req, res) => {
     });
   }
 });
+router.get('/shared/:category/:serie/cover/:orientation', async (req, res) => {
+  const { category, serie, orientation } = req.params;
+  try {
+    res.sendFile(
+      seriesDB.structure.shared[category][serie].cover[
+        orientation
+      ].getRandomPath()
+    );
+  } catch (err) {
+    console.error(err);
+  }
+});
 router.get('/:language/:category/:serie', (req, res) => {
   const { language, category, serie } = req.params;
   if (!seriesDB.structure[language][category]) {
@@ -47,20 +59,29 @@ router.get('/:language/:category/:serie', (req, res) => {
     console.error(err);
   }
 });
-router.get('/shared/:category/:serie/cover/:orientation', async (req, res) => {
-  const { category, serie, orientation } = req.params;
-  try {
-    res.sendFile(
-      seriesDB.structure.shared[category][serie].cover[
+router.get(
+  '/shared/:category/:serie/:season/cover/:orientation',
+  async (req, res) => {
+    const { category, serie, season, orientation } = req.params;
+    console.log(
+      seriesDB.structure.shared[category][serie].season[season].cover[
         orientation
-      ].getAbsolutePath()
+      ]
     );
-  } catch (err) {
-    console.error(err);
+    try {
+      res.sendFile(
+        seriesDB.structure.shared[category][serie].season[season].cover[
+          orientation
+        ].getRandomPath()
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
-});
+);
 router.get('/:language/:category/:serie/:season', (req, res) => {
   const { language, category, serie, season } = req.params;
+  console.log(language, category, serie, season);
   try {
     res.json(
       seriesDB.structure[language][category][serie].season[

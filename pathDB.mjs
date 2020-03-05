@@ -257,16 +257,16 @@ export default class PathDB {
   addDirFunction(funcName, func, target = '*') {
     if (!this.functionNames.dir.includes(funcName)) {
       this.functionNames.dir.push(funcName);
-      this.functions.dir.push({ target, funcName, func });
-      this.update();
     }
+    this.functions.dir.push({ target, funcName, func });
+    this.update();
   }
   addFileFunction(funcName, func, target = '*.*') {
     if (!this.functionNames.file.includes(funcName)) {
       this.functionNames.file.push(funcName);
-      this.functions.file.push({ target, funcName, func });
-      this.update();
     }
+    this.functions.file.push({ target, funcName, func });
+    this.update();
   }
 }
 function map(source, initialSource = null) {

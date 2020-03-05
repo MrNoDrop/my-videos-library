@@ -1,9 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-routing';
 import './location.scss';
+import { getElementRect } from '../../../tools/element';
 
-const mapStateToProps = ({ router: { pathname } }) => ({ pathname });
+const mapStateToProps = ({
+  state: {
+    viewmode,
+    window: { inner }
+  },
+  router: { pathname }
+}) => ({ pathname, windowInnderDimensions: inner });
 
 const mapDispatchToProps = dispatch => ({
   setLocation: (pathname, location) => {
@@ -19,13 +26,56 @@ const mapDispatchToProps = dispatch => ({
 });
 
 function ButtonAppendLocation(
-  { setLocation, pathname, location, image, onLoad, className, ...other },
+  {
+    setLocation,
+    pathname,
+    location,
+    image,
+    onLoad,
+    orientation,
+    className,
+    prefix,
+    named = false,
+    windowInnderDimensions,
+    ...other
+  },
   ref
 ) {
   const defaultRef = useRef();
   const [hidden, setHidden] = useState(true);
-  return (
+  const [descriptorStyle, setDescriptorStyle] = useState({});
+  const [watchedTimeout, setWatchedTimeout] = useState(undefined);
+  useEffect(() => {
+    if (!watchedTimeout)
+      setWatchedTimeout(
+        setTimeout(() => {
+          const imageRef = ref || defaultRef;
+          if (imageRef.current && named) {
+            const { x, y, width, height } = getElementRect(imageRef);
+            const newDescriptorStyle = { left: x, top: y, width, height };
+            if (
+              JSON.stringify(descriptorStyle) !==
+              JSON.stringify(newDescriptorStyle)
+            ) {
+              setDescriptorStyle(newDescriptorStyle);
+            }
+          }
+          setWatchedTimeout(clearTimeout(watchedTimeout));
+        }, 25)
+      );
+  }, [
+    named,
+    ref,
+    defaultRef,
+    descriptorStyle,
+    setDescriptorStyle,
+    windowInnderDimensions,
+    watchedTimeout,
+    setWatchedTimeout
+  ]);
+  const components = [
     <img
+      key="image"
       ref={ref || defaultRef}
       {...{ hidden, ...other }}
       onLoad={e => {
@@ -35,14 +85,37 @@ function ButtonAppendLocation(
         }
       }}
       className={`append-location-image-button${
-        className ? ` ${className}` : ''
-      }`}
+        orientation ? ` ${orientation}` : ''
+      }${className ? ` ${className}` : ''}`}
       src={image}
       alt={location}
       onClick={() => setLocation(pathname, location)}
     />
-  );
+  ];
+  if (named) {
+    components.push(
+      <div
+        {...{ hidden }}
+        style={descriptorStyle}
+        key="image-descriptor"
+        className={`append-location-image-button-descriptor${
+          orientation ? ` ${orientation}` : ''
+        }${className ? ` ${className}` : ''}`}
+        onClick={() => setLocation(pathname, location)}
+      >
+        <div
+          className="description"
+          onClick={() => setLocation(pathname, location)}
+        >{`${prefix ? `${prefix} ` : ''}${location}`}</div>
+      </div>
+    );
+  }
+  return <span ref={useRef()}>{components}</span>;
 }
+export const orientations = {
+  horizontal: 'horizontal',
+  vertical: 'vertical'
+};
 
 export default connect(
   mapStateToProps,

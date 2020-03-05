@@ -20,10 +20,19 @@ function ButtonViewmode({
   currentViewmode,
   setViewmode,
   viewmodes = allViewmodes,
+  alterSelected = {},
   ...other
 }) {
+  const ref = useRef();
+  for (let key in alterSelected) {
+    if (typeof alterSelected[key] !== 'object') {
+      alterSelected[key] = [alterSelected[key]];
+    } else if (alterSelected[key].constructor.name !== 'Array') {
+      alterSelected[key] = Object.values(alterSelected[key]);
+    }
+  }
   return (
-    <div className="view-modes" {...{ ref: useRef(), ...other }}>
+    <div className="view-modes" {...{ ref, ...other }}>
       {viewmodes.map(viewmode => {
         switch (viewmode) {
           default:
@@ -32,7 +41,11 @@ function ButtonViewmode({
             return (
               <images.interactive.viewmode.List
                 className="viewmode"
-                enabled={currentViewmode === 'list'}
+                enabled={
+                  alterSelected.list
+                    ? alterSelected.list.includes(currentViewmode)
+                    : currentViewmode === 'list'
+                }
                 onClick={() => setViewmode(viewmode)}
               />
             );
@@ -40,7 +53,11 @@ function ButtonViewmode({
             return (
               <images.interactive.viewmode.Horizontal
                 className="viewmode"
-                enabled={currentViewmode === 'horizontal'}
+                enabled={
+                  alterSelected.horizontal
+                    ? alterSelected.horizontal.includes(currentViewmode)
+                    : currentViewmode === 'horizontal'
+                }
                 onClick={() => setViewmode(viewmode)}
               />
             );
@@ -48,7 +65,11 @@ function ButtonViewmode({
             return (
               <images.interactive.viewmode.Vertical
                 className="viewmode"
-                enabled={currentViewmode === 'vertical'}
+                enabled={
+                  alterSelected.vertical
+                    ? alterSelected.vertical.includes(currentViewmode)
+                    : currentViewmode === 'vertical'
+                }
                 onClick={() => setViewmode(viewmode)}
               />
             );

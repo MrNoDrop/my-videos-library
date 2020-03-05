@@ -3,10 +3,38 @@
   box-shadow: 0 0 0.5vmin 0.15vmin black;
   border: 0.1vmin solid black;
   border-radius: 0.5vmin;
+  cursor: pointer;
 }
 .append-location-image-button.horizontal {
   height: 24.8vmin;
 }
 .append-location-image-button.vertical {
   height: 40vmin;
+}
+.append-location-image-button-descriptor.horizontal,
+.append-location-image-button-descriptor.vertical {
+  position: fixed;
+  z-index: 2;
+  text-align: center;
+  background-color: rgba(70, 70, 70, 0.408);
+  cursor: pointer;
+  .description {
+    color: white;
+    padding: 0;
+    font-size: 5vmin;
+    position: absolute;
+    width: 100%;
+    top: 15%;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.408);
+    transition: background-color 0.3s;
+  }
+  transition: background-color 0.3s;
+}
+.append-location-image-button-descriptor.horizontal:hover,
+.append-location-image-button-descriptor.vertical:hover {
+  background-color: rgba(70, 70, 70, 0.681);
+  .description {
+    background-color: rgba(0, 0, 0, 0.681);
+  }
 }

@@ -3,7 +3,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SeriesRoute from './series';
-import SeriesCategoryRoute from './series/category';
 import SeriesViewRoute from './series/view';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
@@ -15,12 +14,26 @@ const mapStateToProps = ({
   },
   router: { pathname, routes }
 }) => ({ pathname, routes, language });
+const imagepath = {
+  horizontal: (pathname, item) => {
+    const [language, fixedpath, ...requestedPath] = pathname
+      .substring(1, pathname.length)
+      .split('/');
+    return `/series/shared/${requestedPath.join('/')}/${item}/cover/horizontal`;
+  },
+  vertical: (pathname, item) => {
+    const [language, fixedpath, ...requestedPath] = pathname
+      .substring(1, pathname.length)
+      .split('/');
+    return `/series/shared/${requestedPath.join('/')}/${item}/cover/vertical`;
+  }
+};
 const routesComponents = {
   series: {
     route: SeriesRoute,
     category: {
       route: () => (
-        <SeriesCategoryRoute
+        <SeriesViewRoute
           fetchpath={pathname => {
             // eslint-disable-next-line
             const [language, fixedpath, category] = pathname
@@ -28,12 +41,14 @@ const routesComponents = {
               .split('/');
             return `/series/${language}/${category}`;
           }}
+          {...{ imagepath }}
         />
       ),
       serie: {
         route: () => (
           <SeriesViewRoute
             prefix="Season"
+            named={true}
             fetchpath={pathname => {
               // eslint-disable-next-line
               const [language, fixedpath, category, serie] = pathname
@@ -41,11 +56,20 @@ const routesComponents = {
                 .split('/');
               return `/series/${language}/${category}/${serie}`;
             }}
+            {...{ imagepath }}
           />
         ),
         seasons: {
           route: () => (
             <SeriesViewRoute
+              viewmodes={['list', 'horizontal']}
+              alterSelectedViewmodes={{
+                list: 'list',
+                horizontal: ['horizontal', 'vertical'],
+                vertical: 'horizontal'
+              }}
+              named={true}
+              prefix="Episode"
               fetchpath={pathname => {
                 const [
                   language,
@@ -56,6 +80,16 @@ const routesComponents = {
                   seasons
                 ] = pathname.substring(1, pathname.length).split('/');
                 return `/series/${language}/${category}/${serie}/${seasons}`;
+              }}
+              imagepath={(pathname, item) => {
+                const [
+                  language,
+                  fixedpath,
+                  ...requestedPath
+                ] = pathname.substring(1, pathname.length).split('/');
+                return `/series/shared/${requestedPath.join(
+                  '/'
+                )}/${item}/thumbnail`;
               }}
             />
           ),
