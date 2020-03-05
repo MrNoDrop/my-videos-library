@@ -97,7 +97,11 @@ function ButtonAppendLocation(
     setWatchedTimeout
   ]);
   return (
-    <span ref={useRef()} {...{ onMouseEnter, onMouseMove, onMouseLeave }}>
+    <span
+      ref={useRef()}
+      {...{ onMouseEnter, onMouseMove, onMouseLeave }}
+      onClick={() => setLocation(pathname, location)}
+    >
       {info && (
         <Hovertext
           hidden={!infoVisible}

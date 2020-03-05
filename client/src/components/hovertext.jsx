@@ -24,10 +24,10 @@ function Hovertext({
     if (ref.current && !hidden) {
       const { width, height } = getElementRect(ref);
       const newStyle = { ...style };
-      newStyle.top = mousePostion.y;
-      newStyle.left = mousePostion.x;
-      const Horizontal = mousePostion.x + width;
-      const vertical = mousePostion.y + height;
+      newStyle.top = mousePostion.y + 5;
+      newStyle.left = mousePostion.x + 5;
+      const Horizontal = mousePostion.x + width + 5;
+      const vertical = mousePostion.y + height + 5;
       if (Horizontal > windowInnerDimensions.width) {
         newStyle.left =
           mousePostion.x - (Horizontal - windowInnerDimensions.width);
@@ -44,7 +44,12 @@ function Hovertext({
   return (
     <div
       className={`hovertext${hidden ? ' hidden' : ''}`}
-      {...{ ref, style, hidden }}
+      {...{ ref, style }}
+      onClick={e =>
+        e.target.parentNode &&
+        e.target.parentNode.onClick &&
+        e.target.parentNode.click(e)
+      }
     >
       <div className="hovertext-header" />
       <div className="hovertext-header-filler" />
