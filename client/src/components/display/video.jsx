@@ -49,11 +49,10 @@ function DisplayVideo({ currenttime, setCurrentTime }) {
         setTimeout(() => {
           if (ended) {
             setEnded(false);
-            setCurrentTime({
-              [videoPath.join('/')]: 0
-            });
+            setCurrentTime({ ...currenttime, [videoPath.join('/')]: 0 });
           } else if (videoRef.current) {
             setCurrentTime({
+              ...currenttime,
               [videoPath.join('/')]: videoRef.current.currentTime
             });
             setTimeouttime(clearTimeout(timeouttime));
