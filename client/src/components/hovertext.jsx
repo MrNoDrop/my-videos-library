@@ -42,7 +42,10 @@ function Hovertext({
     }
   }, [ref, hidden, mousePostion, windowInnerDimensions]);
   return (
-    <div className={`hovertext${hidden ? ' hidden' : ''}`} {...{ ref, style }}>
+    <div
+      className={`hovertext${hidden ? ' hidden' : ''}`}
+      {...{ ref, style, hidden }}
+    >
       <div className="hovertext-header" />
       <div className="hovertext-header-filler" />
       {children}
