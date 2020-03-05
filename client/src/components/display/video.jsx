@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { useFitAvailableSpace } from '../effects/fitAvailableSpace';
 import shaka from 'shaka-player';
 import setCurrentTime from '../../store/actions/set/current/time';
+import './video.scss';
 
 shaka.polyfill.installAll();
 
@@ -20,9 +20,11 @@ function onError(error) {
   // Log the error.
   console.error('Error code', error.code, 'object', error);
 }
-function DisplayVideo({ currenttime, setCurrentTime }) {
+function DisplayVideo({ currenttime, setCurrentTime, className, ...other }) {
   const videoRef = useRef();
+  const [player, setPlayer] = useState(undefined);
   const [ended, setEnded] = useState(false);
+  const [blurred, setBlurred] = useState(true);
   const [timeouttime, setTimeouttime] = useState(undefined);
   const [currentTimeSet, setCurrentTimeSet] = useState(false);
   const { pathname } = document.location;
@@ -32,6 +34,12 @@ function DisplayVideo({ currenttime, setCurrentTime }) {
     .split('/');
   // eslint-disable-next-line
   const [category, ...videoPath] = playbackroute;
+  useEffect(() => {
+    if (videoRef.current && blurred) {
+      videoRef.current.focus();
+      setBlurred(false);
+    }
+  }, [videoRef, blurred, setBlurred]);
   useEffect(() => {
     if (videoRef && videoRef.current && !currentTimeSet) {
       for (let key of Object.keys(currenttime)) {
@@ -90,16 +98,17 @@ function DisplayVideo({ currenttime, setCurrentTime }) {
       })
       .catch(onError); // onError is executed if the asynchronous load fails.
     // eslint-disable-next-line
+    setPlayer(player);
   }, [videoRef, language]);
+  useEffect(() => {}, [pathname, player]);
   return (
     <video
       {...{
         ref: videoRef,
-        style: useFitAvailableSpace({
-          width: window.innerWidth,
-          height: window.innerHeight
-        })
+        ...other
       }}
+      onBlur={e => setBlurred(true)}
+      className={`display-video${className ? ` ${className}` : ''}`}
       onEnded={() => setEnded(true)}
       autoPlay
       preload="metadata"

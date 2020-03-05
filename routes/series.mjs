@@ -102,6 +102,13 @@ router.get('/:language/:category/:serie/:season/:episode', (req, res) => {
     );
   } catch (err) {
     console.error(err);
+    res.json({
+      error: `episode missing`,
+      episode,
+      episodes: seriesDB.structure[language][category][serie].season[
+        season
+      ].episode.list()
+    });
   }
 });
 router.get(

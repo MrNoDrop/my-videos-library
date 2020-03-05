@@ -96,7 +96,7 @@ function ListViewRoute({
               infoFormatter={info =>
                 Object.entries(info).map(([title, description]) => (
                   <Fragment>
-                    {title} {description}
+                    {title}: {description}
                     <br />
                   </Fragment>
                 ))

@@ -13,17 +13,19 @@ function Hovertext({
   windowInnerDimensions,
   hidden,
   mousePostion = { x: 0, y: 0 },
-  children
+  children,
+  style
 }) {
   const ref = useRef();
-  const [style, setStyle] = useState({
+  const [componentStyle, setStyle] = useState({
+    ...style,
     left: mousePostion.x,
     top: mousePostion.y
   });
   useEffect(() => {
     if (ref.current && !hidden) {
       const { width, height } = getElementRect(ref);
-      const newStyle = { ...style };
+      const newStyle = { ...style, ...componentStyle };
       newStyle.top = mousePostion.y + 5;
       newStyle.left = mousePostion.x + 5;
       const Horizontal = mousePostion.x + width + 5;
@@ -36,7 +38,7 @@ function Hovertext({
         newStyle.top =
           mousePostion.y - (vertical - windowInnerDimensions.height);
       }
-      if (JSON.stringify(newStyle) !== JSON.stringify(style)) {
+      if (JSON.stringify(newStyle) !== JSON.stringify(componentStyle)) {
         setStyle(newStyle);
       }
     }
@@ -44,7 +46,7 @@ function Hovertext({
   return (
     <div
       className={`hovertext${hidden ? ' hidden' : ''}`}
-      {...{ ref, style }}
+      {...{ ref, style: componentStyle }}
       onClick={e =>
         e.target.parentNode &&
         e.target.parentNode.onClick &&
