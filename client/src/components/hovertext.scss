@@ -24,4 +24,9 @@
     width: 99%;
     margin-bottom: 1vmin;
   }
+  transition: opacity 0.3s;
+}
+
+.hovertext.hidden {
+  opacity: 0;
 }
