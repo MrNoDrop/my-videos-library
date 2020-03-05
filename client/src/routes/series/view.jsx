@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { useFitAvailableSpace } from '../../components/effects';
@@ -33,6 +33,7 @@ function ListViewRoute({
   viewmode,
   goBack,
   prefix,
+  infopath = (pathname, subject) => pathname + '' + subject,
   fetchpath = pathname => pathname,
   imagepath = {
     horizontal: (pathname, subject) => pathname + '' + subject,
@@ -70,6 +71,15 @@ function ListViewRoute({
               className={AppendImageLocationButton.orientations.horizontal}
               key={item}
               location={item}
+              infoFormatter={info =>
+                Object.entries(info).map(([title, description]) => (
+                  <Fragment>
+                    {title}: {description}
+                    <br />
+                  </Fragment>
+                ))
+              }
+              infopath={infopath ? infopath(pathname, item) : null}
               image={
                 typeof imagepath === 'function'
                   ? imagepath(pathname, item)
@@ -83,6 +93,15 @@ function ListViewRoute({
               orientation={AppendImageLocationButton.orientations.vertical}
               key={item}
               location={item}
+              infoFormatter={info =>
+                Object.entries(info).map(([title, description]) => (
+                  <Fragment>
+                    {title} {description}
+                    <br />
+                  </Fragment>
+                ))
+              }
+              infopath={infopath ? infopath(pathname, item) : null}
               image={
                 typeof imagepath === 'function'
                   ? imagepath(pathname, item)

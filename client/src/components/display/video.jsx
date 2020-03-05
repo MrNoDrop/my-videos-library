@@ -32,7 +32,6 @@ function DisplayVideo({ currenttime, setCurrentTime }) {
     .split('/');
   // eslint-disable-next-line
   const [category, ...videoPath] = playbackroute;
-  console.log('playbackroute', playbackroute);
   useEffect(() => {
     if (videoRef && videoRef.current && !currentTimeSet) {
       for (let key of Object.keys(currenttime)) {

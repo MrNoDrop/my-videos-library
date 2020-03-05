@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
-import { connect } from "react-redux";
-import ReactDOM from "react-dom";
-import "./footer.scss";
+import React, { useRef, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import ReactDOM from 'react-dom';
+import './footer.scss';
 
-import generateKeyFromComponent from "../tools/keyGenerator";
+import generateKeyFromComponent from '../tools/keyGenerator';
 
-export { default as Entry } from "./footer.entry";
+export { default as Entry } from './footer.entry';
 const mapStateToProps = ({
   state: {
     window: { inner }
@@ -29,11 +29,19 @@ function MenuFooter({
     setSeparatorStyle
   );
   return (
-    <div style={{ width: "100%", position: "fixed", bottom: 0, left: 0 }}>
-      <footer {...{ ref: useRef(), id: "menu-footer", ...other }}>
+    <div
+      style={{
+        zIndex: 10,
+        width: '100%',
+        position: 'fixed',
+        bottom: 0,
+        left: 0
+      }}
+    >
+      <footer {...{ ref: useRef(), id: 'menu-footer', ...other }}>
         {[entries].flat(Infinity).map((entry, index, entries) =>
           index !== entries.length - 1
-            ? typeof entry === "object"
+            ? typeof entry === 'object'
               ? [
                   React.cloneElement(entry, {
                     key: generateKeyFromComponent(entry)
@@ -63,15 +71,15 @@ function boundingClientRect(ref) {
 function useEntriesRectSetter(entriesRects, setEntriesRects) {
   useEffect(() => {
     const entrieElements = document
-      .getElementById("menu-footer")
-      .getElementsByClassName("entry");
+      .getElementById('menu-footer')
+      .getElementsByClassName('entry');
     const entriesRefs = Object.values(entrieElements).map(refs);
     const currentEntriesRects = entriesRefs
       .map(boundingClientRect)
       .filter(rect => rect !== undefined);
     if (
-      [entriesRects].flat(Infinity).join("") !==
-      [currentEntriesRects].flat(Infinity).join("")
+      [entriesRects].flat(Infinity).join('') !==
+      [currentEntriesRects].flat(Infinity).join('')
     ) {
       setEntriesRects(currentEntriesRects);
     }

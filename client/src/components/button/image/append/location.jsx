@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { push } from 'redux-first-routing';
 import './location.scss';
 import { getElementRect } from '../../../tools/element';
+import Hovertext, { useShowHovertext } from '../../../hovertext';
 
 const mapStateToProps = ({
   state: {
-    viewmode,
     window: { inner }
   },
   router: { pathname }
@@ -27,6 +27,8 @@ const mapDispatchToProps = dispatch => ({
 
 function ButtonAppendLocation(
   {
+    infopath,
+    infoFormatter,
     setLocation,
     pathname,
     location,
@@ -45,6 +47,27 @@ function ButtonAppendLocation(
   const [hidden, setHidden] = useState(true);
   const [descriptorStyle, setDescriptorStyle] = useState({});
   const [watchedTimeout, setWatchedTimeout] = useState(undefined);
+  const [info, setInfo] = useState(undefined);
+  const {
+    mousePostion,
+    isVisible: infoVisible,
+    onMouseEnter,
+    onMouseMove,
+    onMouseLeave,
+    infoVisibleTimeout,
+    setInfoVisibleTimeout,
+    setInfoVisible
+  } = useShowHovertext();
+  useEffect(() => {
+    if (!info && typeof infopath === 'string') {
+      fetch(infopath)
+        .then(res => res.json())
+        .then(info =>
+          setInfo(infoFormatter ? infoFormatter(info) : JSON.stringify(info))
+        )
+        .catch(err => console.error(err));
+    }
+  }, [pathname, infopath]);
   useEffect(() => {
     if (!watchedTimeout)
       setWatchedTimeout(
@@ -73,44 +96,57 @@ function ButtonAppendLocation(
     watchedTimeout,
     setWatchedTimeout
   ]);
-  const components = [
-    <img
-      key="image"
-      ref={ref || defaultRef}
-      {...{ hidden, ...other }}
-      onLoad={e => {
-        setHidden(false);
-        if (typeof onLoad === 'function') {
-          onLoad(e);
-        }
-      }}
-      className={`append-location-image-button${
-        orientation ? ` ${orientation}` : ''
-      }${className ? ` ${className}` : ''}`}
-      src={image}
-      alt={location}
-      onClick={() => setLocation(pathname, location)}
-    />
-  ];
-  if (named) {
-    components.push(
-      <div
-        {...{ hidden }}
-        style={descriptorStyle}
-        key="image-descriptor"
-        className={`append-location-image-button-descriptor${
+  return (
+    <span ref={useRef()} {...{ onMouseEnter, onMouseMove, onMouseLeave }}>
+      {info && (
+        <Hovertext
+          hidden={!infoVisible}
+          {...{
+            infoVisible,
+            infoVisibleTimeout,
+            setInfoVisibleTimeout,
+            setInfoVisible,
+            mousePostion
+          }}
+        >
+          {info}
+        </Hovertext>
+      )}
+      <img
+        ref={ref || defaultRef}
+        {...{ hidden, ...other }}
+        onLoad={e => {
+          setHidden(false);
+          if (typeof onLoad === 'function') {
+            onLoad(e);
+          }
+        }}
+        className={`append-location-image-button${
           orientation ? ` ${orientation}` : ''
         }${className ? ` ${className}` : ''}`}
+        src={image}
+        alt={location}
         onClick={() => setLocation(pathname, location)}
-      >
+      />
+      {named ? (
         <div
-          className="description"
+          {...{ hidden }}
+          style={descriptorStyle}
+          className={`append-location-image-button-descriptor${
+            orientation ? ` ${orientation}` : ''
+          }${className ? ` ${className}` : ''}`}
           onClick={() => setLocation(pathname, location)}
-        >{`${prefix ? `${prefix} ` : ''}${location}`}</div>
-      </div>
-    );
-  }
-  return <span ref={useRef()}>{components}</span>;
+        >
+          <div
+            className="description"
+            onClick={() => setLocation(pathname, location)}
+          >{`${prefix ? `${prefix} ` : ''}${location}`}</div>
+        </div>
+      ) : (
+        ''
+      )}
+    </span>
+  );
 }
 export const orientations = {
   horizontal: 'horizontal',

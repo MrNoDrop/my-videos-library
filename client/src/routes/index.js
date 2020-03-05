@@ -6,7 +6,7 @@ import SeriesRoute from './series';
 import SeriesViewRoute from './series/view';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
-import DisplayVideo from '../components/display/video';
+import VideoRoute from './video';
 
 const mapStateToProps = ({
   state: {
@@ -91,10 +91,20 @@ const routesComponents = {
                   '/'
                 )}/${item}/thumbnail`;
               }}
+              infopath={(pathname, item) => {
+                const [
+                  language,
+                  fixedpath,
+                  ...requestedPath
+                ] = pathname.substring(1, pathname.length).split('/');
+                return `/series/${language}/${requestedPath.join(
+                  '/'
+                )}/${item}/info`;
+              }}
             />
           ),
           episodes: {
-            route: DisplayVideo
+            route: VideoRoute
           }
         }
       }
