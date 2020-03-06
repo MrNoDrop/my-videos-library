@@ -5,18 +5,6 @@ const supportedLanguages = JSON.parse(
 );
 const seriesDB = (() => new PathDB(`${fs.__projectPath}/media/series`))();
 seriesDB.monitor();
-const getRandomPath = ({ getObject }) => {
-  const files = getObject().list();
-  let choosen = files[0];
-  if (files.length > 1) {
-    let index = Math.floor(Math.random() * files.length - 1);
-    index = index < 0 ? 0 : index;
-    choosen = files[index];
-  } else if (files.length < 1) {
-    return undefined;
-  }
-  return `${seriesDB.folderLocation}/${getObject()[choosen].path}`;
-};
 seriesDB.isSupportedLanguage = language => {
   return supportedLanguages.includes(language);
 };
@@ -30,6 +18,33 @@ seriesDB.addStructureFunction('languages', ({ getObject }) => {
     .list()
     .filter(entry => !['shared', 'languages'].includes(entry));
 });
+const toUrl = ({ path, extention }) => {
+  let copy = `${path}`;
+  if (path.includes('/season/')) {
+    copy = copy.replace('/season/', '/');
+  }
+  if (path.includes('/episode/')) {
+    copy = copy.replace('/episode/', '/');
+  }
+  if (extention && path.endsWith(`.${extention}`)) {
+    copy = copy.substring(0, copy.lastIndexOf(`.${extention}`));
+  }
+  return `/series/${copy}`;
+};
+seriesDB.addFileFunction('toUrl', toUrl);
+seriesDB.addDirFunction('toUrl', toUrl);
+const getRandomPath = ({ getObject }) => {
+  const files = getObject().list();
+  let choosen = files[0];
+  if (files.length > 1) {
+    let index = Math.floor(Math.random() * files.length - 1);
+    index = index < 0 ? 0 : index;
+    choosen = files[index];
+  } else if (files.length < 1) {
+    return undefined;
+  }
+  return `${seriesDB.folderLocation}/${getObject()[choosen].path}`;
+};
 seriesDB.addDirFunction('getRandomPath', getRandomPath, 'thumbnails');
 seriesDB.addDirFunction('getRandomPath', getRandomPath, 'horizontal');
 seriesDB.addDirFunction('getRandomPath', getRandomPath, 'vertical');
