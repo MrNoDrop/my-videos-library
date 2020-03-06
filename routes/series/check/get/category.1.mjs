@@ -8,7 +8,7 @@ export default function checkLanguageCategory(db, req, res, next) {
     res.json(
       response.error.unknownField(
         { index: 2, value: category },
-        ['series', ...req.params],
+        ['series', ...Object.values(req.params)],
         { existing: { categories: db.structure[language].list() } },
         'Category does not exist.'
       )

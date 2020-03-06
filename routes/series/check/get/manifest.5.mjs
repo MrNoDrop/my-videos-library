@@ -16,9 +16,9 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
     res.json(
       response.error.missing.file(
         { index: 6, value: 'manifest' },
-        ['series', ...req, params, 'manifest'],
+        ['series', ...Object.values(req.params), 'manifest'],
         {
-          path: ['series', ...req.params],
+          path: ['series', ...Object.values(req.params)],
           manifest: null,
           info: db.structure[language][category][serie].season[season].episode[
             episode

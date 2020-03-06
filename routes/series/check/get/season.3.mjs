@@ -8,7 +8,7 @@ export default function checkLanguageCategorySerieSeason(db, req, res, next) {
     res.json(
       response.error.unknownField(
         { index: 4, value: season },
-        ['series', ...req.params],
+        ['series', ...Object.values(req.params)],
         {
           existing: {
             seasons: db.structure[language][category][serie].season.list()

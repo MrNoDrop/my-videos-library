@@ -1,6 +1,6 @@
 import response from '../../../predefined/responses.mjs';
 
-export default function checkGetCategories(db, req, res, next) {
+export default function checkLanguage(db, req, res, next) {
   const { language } = req.params;
   if (db.isSupportedLanguage(language)) {
     next();
@@ -8,7 +8,7 @@ export default function checkGetCategories(db, req, res, next) {
     res.json(
       response.error.unknownField(
         { index: 1, value: language },
-        ['series', ...req.params],
+        ['series', ...Object.values(req.params)],
         { existing: { languages: db.structure.languages() } },
         'Language does not exist.'
       )
