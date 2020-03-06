@@ -1,3 +1,4 @@
+import { default as languages } from './get/languages.mjs';
 import { default as categories } from './get/categories.mjs';
 import { default as series } from './get/series.mjs';
 import { default as serieCover } from './get/serie/cover.mjs';
@@ -13,6 +14,7 @@ import { default as episodeSubtitles } from './get/episode/subtitles.mjs';
 import { default as episodeSubtitle } from './get/episode/subtitle.mjs';
 
 export default {
+  languages,
   categories,
   series,
   serieCover,

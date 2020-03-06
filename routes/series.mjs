@@ -3,6 +3,7 @@ import seriesDB from '../db/series.mjs';
 import get from './series/get.mjs';
 
 const router = express.Router();
+get.languages(router, seriesDB);
 get.categories(router, seriesDB);
 get.series(router, seriesDB);
 get.serieCover(router, seriesDB);
