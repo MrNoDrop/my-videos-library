@@ -1,7 +1,7 @@
 import response from '../../predefined/responses.mjs';
 import check from '../check/get.mjs';
 
-export default function getCategory(router, db) {
+export default function getSeries(router, db) {
   router.get(
     '/:language/:category',
     check.language.bind(this, db),
