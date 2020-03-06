@@ -13,6 +13,7 @@ export default function getEpisodes(router, db) {
           ) {
             res.json(
               response.ok({
+                path: ['series', language, category, serie, season],
                 episodes: db.structure[language][category][serie].season[
                   season
                 ].episode.list()
@@ -68,12 +69,5 @@ export default function getEpisodes(router, db) {
         )
       );
     }
-    // try {
-    //   res.json(
-    //     db.structure[language][category][serie].season[season].episode.list()
-    //   );
-    // } catch (err) {
-    //   console.error(err);
-    // }
   });
 }

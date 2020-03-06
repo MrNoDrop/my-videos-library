@@ -8,6 +8,7 @@ export default function getSeasons(router, db) {
         if (db.structure[language][category].list().includes(serie)) {
           res.json(
             response.ok({
+              path: ['series', language, category, serie],
               seasons: db.structure[language][category][serie].season.list()
             })
           );

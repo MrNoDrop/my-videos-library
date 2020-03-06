@@ -6,7 +6,10 @@ export default function getCategory(router, db) {
     if (db.isSupportedLanguage(language)) {
       if (db.structure[language].list().includes(category)) {
         res.json(
-          response.ok({ series: db.structure[language][category].list() })
+          response.ok({
+            path: ['series', language, category],
+            series: db.structure[language][category].list()
+          })
         );
       } else {
         res.json(
