@@ -4,6 +4,29 @@ function noError(payload = {}) {
 
 const emptyRoute = field => field !== '\\//\\//\\//';
 
+function missingFileError(
+  routeFieldInfo = { index: -1, value: null },
+  routeFields = ['\\//\\//\\//'],
+  payload = null,
+  message = 'Missing file'
+) {
+  try {
+    throw new Error(
+      `${message.replace('.', '')} at location: /${routeFields.join('/')}`
+    );
+  } catch (err) {
+    console.error(err);
+  }
+  return {
+    error: {
+      type: 'Missing file',
+      message: message,
+      field: routeFieldInfo,
+      fields: routeFields.filter(emptyRoute)
+    },
+    payload: (payload && { ...payload }) || payload
+  };
+}
 function unknownError(
   routeFieldInfo = { index: -1, value: null },
   routeFields = ['\\//\\//\\//'],
@@ -38,5 +61,9 @@ function unknownFieldError(
 }
 export default {
   ok: noError,
-  error: { unknown: unknownError, unknownField: unknownFieldError }
+  error: {
+    unknown: unknownError,
+    unknownField: unknownFieldError,
+    missing: { file: missingFileError }
+  }
 };
