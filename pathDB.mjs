@@ -2,11 +2,15 @@ import fs from 'fs';
 
 function addPredefinedFunctions() {
   this.skipUpdate = true;
-  this.addStructureFunction('list', structure => {
-    const copy = { ...structure };
+  this.addStructureFunction('list', ({ getObject }) => {
+    const copy = { ...getObject() };
+    delete copy.extention;
+    delete copy.path;
     delete copy.list;
+    delete copy.getAbsolutePath;
     return Object.keys(copy);
   });
+  this.addStructureFunction('getAbsolutePath', () => this.folderLocation);
   this.addDirFunction(
     'getAbsolutePath',
     ({ path }) => `${this.folderLocation}/${path}`
@@ -141,10 +145,11 @@ export default class PathDB {
   }
   get structure() {
     for (let { funcName, func } of this.functions.structure) {
-      this.database.structure[funcName] = func.bind(
-        this,
-        this.database.structure
-      );
+      this.database.structure[funcName] = func.bind(this, {
+        getObject: () => this.database.structure,
+        path: '',
+        extention: null
+      });
     }
     return this.database.structure;
   }
@@ -248,11 +253,16 @@ export default class PathDB {
     return false;
   }
   addStructureFunction(funcName, func) {
-    if (!this.functionNames.structure.includes(funcName)) {
-      this.functionNames.structure.push(funcName);
-      this.functions.structure.push({ funcName, func });
-      this.update();
+    if (this.functionNames.structure.includes(funcName)) {
+      const functionIndex = this.functionNames.indexOf(funcName);
+      if (functionIndex >= 0) {
+        this.functionNames.structure.splice(functionIndex, 1);
+        this.functions.structure.splice(functionIndex, 1);
+      }
     }
+    this.functionNames.structure.push(funcName);
+    this.functions.structure.push({ funcName, func });
+    this.update();
   }
   addDirFunction(funcName, func, target = '*') {
     if (!this.functionNames.dir.includes(funcName)) {
