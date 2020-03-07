@@ -13,7 +13,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   ) {
     next();
   } else {
-    res.json(
+    res.status(404).json(
       response.error.missing.file(
         { index: 6, value: 'manifest' },
         ['series', ...Object.values(req.params), 'manifest'],
@@ -39,9 +39,22 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
                     season
                   ].episode[episode].subtitles[key].toUrl();
                 }
-                return subtitles;
+                return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
-            : null
+            : null,
+          thumbnail:
+            db.structure.shared[category][serie].season[season].episode[episode]
+              .thumbnails &&
+            db.structure.shared[category][serie].season[season].episode[
+              episode
+            ].thumbnails.getRandomPath()
+              ? db.structure.shared[category][serie].season[season].episode[
+                  episode
+                ].thumbnails &&
+                db.structure.shared[category][serie].season[season].episode[
+                  episode
+                ].toUrl() + '/thumbnail'
+              : null
         },
         'Missing manifest file.'
       )

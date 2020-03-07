@@ -5,13 +5,15 @@ export default function checkLanguage(db, req, res, next) {
   if (db.isSupportedLanguage(language)) {
     next();
   } else {
-    res.json(
-      response.error.unknownField(
-        { index: 1, value: language },
-        ['series', ...Object.values(req.params)],
-        { existing: { languages: db.structure.languages() } },
-        'Language does not exist.'
-      )
-    );
+    res
+      .status(400)
+      .json(
+        response.error.unknownField(
+          { index: 1, value: language },
+          ['series', ...Object.values(req.params)],
+          { existing: { languages: db.structure.languages() } },
+          'Language does not exist.'
+        )
+      );
   }
 }

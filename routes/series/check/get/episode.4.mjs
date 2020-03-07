@@ -8,21 +8,25 @@ export default function checkLanguageCategorySerieSeasonEpisode(
 ) {
   const { language, category, serie, season, episode } = req.params;
   if (
-    db.structure[language][category][serie].season[season].episode
-      .list()
-      .includes(episode)
+    db.structure[language || 'shared'][category][serie].season[
+      season
+    ].episode.includes(episode)
   ) {
     next();
   } else {
-    res.json(
+    res.status(400).json(
       response.error.unknownField(
         { index: 5, value: episode },
-        ['series', ...Object.values(req.params)],
+        [
+          'series',
+          ...(language ? [] : ['shared']),
+          ...Object.values(req.params)
+        ],
         {
           existing: {
-            episodes: db.structure[language][category][serie].season[
-              season
-            ].episode.list()
+            episodes: db.structure[language || 'shared'][category][
+              serie
+            ].season[season].episode.list()
           }
         },
         'Episode does not exist.'
