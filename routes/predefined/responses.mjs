@@ -10,13 +10,10 @@ function missingFileError(
   payload = null,
   message = 'Missing file'
 ) {
-  try {
-    throw new Error(
-      `${message.replace('.', '')} at location: /${routeFields.join('/')}`
-    );
-  } catch (err) {
-    console.error(err);
-  }
+  console.warn(
+    '\x1b[31m',
+    `${message.replace('.', '')} at location: /${routeFields.join('/')}`
+  );
   return {
     error: {
       type: 'MISSING_FILE',
