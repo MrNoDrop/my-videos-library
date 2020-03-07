@@ -19,7 +19,27 @@ function missingFileError(
   }
   return {
     error: {
-      type: 'Missing file',
+      type: 'MISSING_FILE',
+      message: message,
+      field: routeFieldInfo,
+      fields: routeFields.filter(emptyRoute)
+    },
+    payload: (payload && { ...payload }) || payload
+  };
+}
+function sendFileError(
+  routeFieldInfo = { index: -1, value: null },
+  routeFields = ['\\//\\//\\//'],
+  payload = null,
+  message = 'Could not send file.',
+  error = null
+) {
+  if (error) {
+    console.error(error);
+  }
+  return {
+    error: {
+      type: 'SEND_FILE',
       message: message,
       field: routeFieldInfo,
       fields: routeFields.filter(emptyRoute)
@@ -31,11 +51,15 @@ function unknownError(
   routeFieldInfo = { index: -1, value: null },
   routeFields = ['\\//\\//\\//'],
   payload = null,
-  message = null
+  message = null,
+  error = null
 ) {
+  if (error) {
+    console.error(error);
+  }
   return {
     error: {
-      type: 'Unknown',
+      type: 'UNKNOWN',
       message: message || 'Unknown error.',
       field: routeFieldInfo,
       fields: routeFields.filter(emptyRoute)
@@ -51,7 +75,7 @@ function unknownFieldError(
 ) {
   return {
     error: {
-      type: 'Unknown field',
+      type: 'UNKNOWN_FIELD',
       message: message || 'Field does not exists.',
       field: routeFieldInfo,
       fields: routeFields.filter(emptyRoute)
@@ -64,6 +88,7 @@ export default {
   error: {
     unknown: unknownError,
     unknownField: unknownFieldError,
-    missing: { file: missingFileError }
+    missing: { file: missingFileError },
+    send: { file: sendFileError }
   }
 };
