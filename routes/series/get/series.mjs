@@ -11,6 +11,15 @@ export default function getSeries(router, db) {
       res.json(
         response.ok({
           path: ['series', language, category],
+          cover: [
+            'series',
+            'shared',
+            category,
+            '[serie]',
+            'cover',
+            '[orientation]'
+          ],
+          orientation: { horizontal: 'horizontal', vertical: 'vertical' },
           series: db.structure[language][category].list()
         })
       );

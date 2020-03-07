@@ -37,9 +37,22 @@ export default function getEpisode(router, db) {
                     season
                   ].episode[episode].subtitles[key].toUrl();
                 }
-                return subtitles;
+                return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
-            : null
+            : null,
+          thumbnail:
+            db.structure.shared[category][serie].season[season].episode[episode]
+              .thumbnails &&
+            db.structure.shared[category][serie].season[season].episode[
+              episode
+            ].thumbnails.getRandomPath()
+              ? db.structure.shared[category][serie].season[season].episode[
+                  episode
+                ].thumbnails &&
+                db.structure.shared[category][serie].season[season].episode[
+                  episode
+                ].toUrl() + '/thumbnail'
+              : null
         })
       );
     }

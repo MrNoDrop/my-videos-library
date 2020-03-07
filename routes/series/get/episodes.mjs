@@ -13,6 +13,17 @@ export default function getEpisodes(router, db) {
       res.json(
         response.ok({
           path: ['series', language, category, serie, season],
+          cover: [
+            'series',
+            'shared',
+            category,
+            serie,
+            season,
+            '[episode]',
+            'cover',
+            '[orientation]'
+          ],
+          orientation: { horizontal: 'horizontal', vertical: 'vertical' },
           episodes: db.structure[language][category][serie].season[
             season
           ].episode.list()

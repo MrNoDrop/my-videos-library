@@ -1,16 +1,32 @@
+import check from '../../check/get.mjs';
+
 export default function getEpisodeThumbnail(router, db) {
   router.get(
     '/shared/:category/:serie/:season/:episode/thumbnail',
-    (req, res) => {
+    check.category.bind(this, db),
+    check.serie.bind(this, db),
+    check.season.bind(this, db),
+    check.episode.bind(this, db),
+    check.thumbnail.bind(this, db),
+    async (req, res) => {
       const { category, serie, season, episode } = req.params;
       try {
         res.sendFile(
-          seriesDB.structure.shared[category][serie].season[season].episode[
+          await db.structure.shared[category][serie].season[season].episode[
             episode
           ].thumbnails.getRandomPath()
         );
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        res
+          .status(500)
+          .json(
+            response.error.send.file(
+              { index: 6, value: 'thumbnail' },
+              ['series', 'shared', ...Object.values(req.params), 'thumbnail'],
+              null,
+              'Could not send thumbnail file.'
+            )
+          );
       }
     }
   );

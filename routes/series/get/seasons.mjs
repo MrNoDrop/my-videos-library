@@ -12,6 +12,16 @@ export default function getSeasons(router, db) {
       res.json(
         response.ok({
           path: ['series', language, category, serie],
+          cover: [
+            'series',
+            'shared',
+            category,
+            serie,
+            '[season]',
+            'cover',
+            '[orientation]'
+          ],
+          orientation: { horizontal: 'horizontal', vertical: 'vertical' },
           seasons: db.structure[language][category][serie].season.list()
         })
       );
