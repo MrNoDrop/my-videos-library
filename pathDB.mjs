@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+const errors = { OPERATION_LOCKED: 'OPERATION_LOCKED' };
 function addPredefinedFunctions() {
   this.skipUpdate = true;
   this.addStructureFunction('list', ({ getObject }) => {
@@ -28,12 +29,40 @@ function addPredefinedFunctions() {
     }
     return Object.keys(copy);
   });
-  this.addDirFunction('write', function({ path }, filename, content) {
-    return new Promise((resolve, reject) =>
-      fs.writeFile(`${this.folderLocation}/${path}/${filename}`, content, err =>
-        err ? reject(err) : resolve(this.update())
-      )
-    );
+  this.addDirFunction('includes', ({ getObject }, key) =>
+    getObject()
+      .list()
+      .includes(key)
+  );
+  this.addDirFunction('new', function({ path }, name, content = null) {
+    return new Promise((resolve, reject) => {
+      const lockKey = `/${path}/${name}`;
+      const location = `${this.folderLocation}/${path}/${name}`;
+      if (!this.lock.includes(lockKey)) {
+        this.lock.push(lockKey);
+        if (content) {
+          fs.writeFile(
+            `${this.folderLocation}/${path}/${name}`,
+            content,
+            err => {
+              this.lock.splice(this.lock.indexOf(location), 1);
+              err ? reject(err) : resolve(this.update());
+            }
+          );
+        } else {
+          fs.mkdir(`${this.folderLocation}/${path}/${name}`, err => {
+            this.lock.splice(this.lock.indexOf(location), 1);
+            err ? reject(err) : resolve(this.update());
+          });
+        }
+      } else {
+        reject({
+          type: this.errors.OPERATION_LOCKED,
+          message: 'Already creating a new object at given location.',
+          lock: { key: lockKey }
+        });
+      }
+    });
   });
   this.addDirFunction('delete', ({ path }) => {
     const deleteFolderRecursive = path => {
@@ -98,6 +127,7 @@ function addPredefinedFunctions() {
 }
 
 export default class PathDB {
+  lock = [];
   database = { paths: [], structure: {} };
   functions = {
     dir: [],
@@ -106,6 +136,7 @@ export default class PathDB {
   };
   functionNames = { dir: [], file: [], structure: [] };
   constructor(folderLocation) {
+    this.errors = errors;
     this.folderLocation = folderLocation.replace('\\', '/');
     if (this.folderLocation.endsWith('/')) {
       this.folderLocation = this.folderLocation.substring(
@@ -139,6 +170,9 @@ export default class PathDB {
   stop() {
     this.isMonitoring = true;
     clearInterval(this.interval);
+  }
+  operationIsLocked(key) {
+    return this.lock.includes[key];
   }
   get paths() {
     return this.database.paths;
