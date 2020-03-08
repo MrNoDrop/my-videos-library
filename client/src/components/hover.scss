@@ -14,14 +14,15 @@
   .hovertext-header {
     position: absolute;
     height: 2.5vmin;
-    width: 98%;
+    width: calc(98% - 2vmin);
     border-bottom: 0.3vmin solid #a8a8a893;
+    border-radius: 0.3vmin;
     box-shadow: 0 0 0.5vmin 0.15vmin #a8a8a893;
     background-color: #a8a8a893;
   }
   .hovertext-header-filler {
     height: 2.5vmin;
-    width: 99%;
+    width: calc(99% - 2vmin);
     margin-bottom: 1vmin;
   }
   transition: opacity 0.3s, visibility 0.3s;
