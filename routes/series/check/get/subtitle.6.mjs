@@ -6,7 +6,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
   res,
   next
 ) {
-  const { category, serie, season, episode, subtitle } = req.params;
+  const { category, serie, season, episode, subtitle } = req.parameters;
 
   if (
     db.structure.shared[category][serie].season[season].episode[
@@ -15,30 +15,28 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
   ) {
     next();
   } else {
-    res
-      .status(404)
-      .json(
-        response.error.missing.file(
-          { index: 7, value: subtitle },
-          [
-            'series',
-            'shared',
-            category,
-            serie,
-            season,
-            episode,
-            'subtitles',
-            subtitle
-          ],
-          {
-            existing: {
-              subtitles: db.structure.shared[category][serie].season[
-                season
-              ].episode[episode].subtitles.list()
-            }
-          },
-          'Missing subtitle file.'
-        )
-      );
+    res.status(404).json(
+      response.error.missing.file(
+        { index: 7, value: subtitle },
+        [
+          'series',
+          'shared',
+          category,
+          serie,
+          season,
+          episode,
+          'subtitles',
+          subtitle
+        ],
+        {
+          existing: {
+            subtitles: db.structure.shared[category][serie].season[
+              season
+            ].episode[episode].subtitles.list()
+          }
+        },
+        'Missing subtitle file.'
+      )
+    );
   }
 }

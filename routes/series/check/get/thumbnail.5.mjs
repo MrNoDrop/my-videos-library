@@ -6,7 +6,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeThumbnail(
   res,
   next
 ) {
-  const { category, serie, season, episode } = req.params;
+  const { category, serie, season, episode } = req.parameters;
   const thumbnails =
     db.structure.shared[category][serie].season[season].episode[episode]
       .thumbnails;
@@ -18,7 +18,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeThumbnail(
       .json(
         response.error.missing.file(
           { index: 6, value: 'thumbnail' },
-          ['series', 'shared', ...Object.values(req.params), 'thumbnail'],
+          ['series', 'shared', ...Object.values(req.parameters), 'thumbnail'],
           null,
           'Missing thumbnail file.'
         )

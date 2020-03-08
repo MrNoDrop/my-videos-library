@@ -6,7 +6,7 @@ export default function checkLanguageCategorySerieSeasonEpisode(
   res,
   next
 ) {
-  const { language, category, serie, season, episode } = req.params;
+  const { language, category, serie, season, episode } = req.parameters;
   if (
     db.structure[language || 'shared'][category][serie].season[
       season
@@ -20,7 +20,7 @@ export default function checkLanguageCategorySerieSeasonEpisode(
         [
           'series',
           ...(language ? [] : ['shared']),
-          ...Object.values(req.params)
+          ...Object.values(req.parameters)
         ],
         {
           existing: {

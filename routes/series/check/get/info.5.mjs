@@ -6,7 +6,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeInfo(
   res,
   next
 ) {
-  const { language, category, serie, season, episode } = req.params;
+  const { language, category, serie, season, episode } = req.parameters;
 
   if (
     db.structure[language][category][serie].season[season].episode[episode].info
@@ -18,7 +18,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeInfo(
       .json(
         response.error.missing.file(
           { index: 6, value: 'info' },
-          ['series', ...Object.values(req.params)],
+          ['series', ...Object.values(req.parameters)],
           null,
           'Missing info file.'
         )

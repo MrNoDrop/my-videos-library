@@ -6,7 +6,14 @@ export default async function checkLanguageCategorySerieSeasonEpisodeAudioQualit
   res,
   next
 ) {
-  const { language, category, serie, season, episode, quality } = req.params;
+  const {
+    language,
+    category,
+    serie,
+    season,
+    episode,
+    quality
+  } = req.parameters;
   if (
     db.structure[language][category][serie].season[season].episode[
       episode

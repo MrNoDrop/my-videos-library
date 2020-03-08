@@ -1,7 +1,7 @@
 import response from '../../../predefined/responses.mjs';
 
 export default function checkLanguageCategorieSerie(db, req, res, next) {
-  let { language, category, serie } = req.params;
+  let { language, category, serie } = req.parameters;
   if (db.structure[language || 'shared'][category].includes(serie)) {
     next();
   } else {
@@ -11,7 +11,7 @@ export default function checkLanguageCategorieSerie(db, req, res, next) {
         [
           'series',
           ...(language ? [] : ['shared']),
-          ...Object.values(req.params)
+          ...Object.values(req.parameters)
         ],
         {
           existing: {

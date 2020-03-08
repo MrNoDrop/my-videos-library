@@ -6,7 +6,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeVideo(
   res,
   next
 ) {
-  const { category, serie, season, episode } = req.params;
+  const { category, serie, season, episode } = req.parameters;
 
   if (
     db.structure.shared[category][serie].season[season].episode[episode].video
@@ -35,7 +35,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeVideo(
             .json(
               response.error.unknown(
                 { index: 6, value: 'audio' },
-                ['series', 'shared', ...Object.values(req.params), 'video'],
+                ['series', 'shared', ...Object.values(req.parameters), 'video'],
                 null,
                 'Missing video folder.',
                 error.type !== db.errors.OPERATION_LOCKED && error

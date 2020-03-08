@@ -6,7 +6,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeVideoQualit
   res,
   next
 ) {
-  const { category, serie, season, episode, quality } = req.params;
+  const { category, serie, season, episode, quality } = req.parameters;
   if (
     db.structure.shared[category][serie].season[season].episode[
       episode

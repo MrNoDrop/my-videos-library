@@ -6,7 +6,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeAudio(
   res,
   next
 ) {
-  const { language, category, serie, season, episode } = req.params;
+  const { language, category, serie, season, episode } = req.parameters;
 
   if (
     db.structure[language][category][serie].season[season].episode[episode]
@@ -37,7 +37,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeAudio(
             .json(
               response.error.unknown(
                 { index: 6, value: 'audio' },
-                ['series', ...Object.values(req.params), 'audio'],
+                ['series', ...Object.values(req.parameters), 'audio'],
                 null,
                 'Missing audio folder.',
                 error.type !== db.errors.OPERATION_LOCKED && error

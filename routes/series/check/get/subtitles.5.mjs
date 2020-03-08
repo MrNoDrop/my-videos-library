@@ -6,7 +6,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
   res,
   next
 ) {
-  const { category, serie, season, episode } = req.params;
+  const { category, serie, season, episode } = req.parameters;
 
   if (
     db.structure.shared[category][serie].season[season].episode[episode]
@@ -36,7 +36,7 @@ export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
             .json(
               response.error.unknown(
                 { index: 6, value: 'subtitles' },
-                ['series', ...Object.values(req.params)],
+                ['series', ...Object.values(req.parameters)],
                 null,
                 'Missing subtitles folder.',
                 error.type !== db.errors.OPERATION_LOCKED && error
