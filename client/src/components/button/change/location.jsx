@@ -31,15 +31,38 @@ function ChangeLocationButton({
   changeLocation,
   children,
   className,
+  onMouseEnter,
+  onMouseLeave,
+  onMouseMove,
   ...other
 }) {
   const {
     hidden: hovertextHidden,
     mousePostion,
-    onMouseEnter,
-    onMouseLeave,
-    onMouseMove
+    onMouseEnter: hoverOnMouseEnter,
+    onMouseLeave: hoverOnMouseLeave,
+    onMouseMove: hoverOnMouseMove
   } = Hover.useHide();
+  const mouseEventListeners = {
+    onMouseEnter: e => {
+      if (typeof onMouseEnter === 'function') {
+        onMouseEnter(e);
+      }
+      hoverOnMouseEnter(e);
+    },
+    onMouseLeave: e => {
+      if (typeof onMouseLeave === 'function') {
+        onMouseLeave(e);
+      }
+      hoverOnMouseLeave(e);
+    },
+    onMouseMove: e => {
+      if (typeof onMouseMove === 'function') {
+        onMouseMove(e);
+      }
+      hoverOnMouseMove(e);
+    }
+  };
   const { ref, render } = useRender(parentRef, parentScrollEventCounter);
   useNotifyAboutRenderProcess(render, useRenderingState);
   const [horizontalTrigger, horizontalImageLoaded] = useLoadImage(
@@ -59,7 +82,7 @@ function ChangeLocationButton({
         <div
           key="undefined"
           onClick={() => changeLocation(href)}
-          {...{ ...other, className }}
+          {...{ ...other, ...mouseEventListeners, className }}
         >
           {children}
         </div>
@@ -74,7 +97,7 @@ function ChangeLocationButton({
             className ? ' ' + className : ''
           }`}
           onClick={() => changeLocation(href)}
-          {...{ ...other, onMouseEnter, onMouseLeave, onMouseMove }}
+          {...{ ...other, ...mouseEventListeners }}
         >
           {children}
         </button>
@@ -87,9 +110,7 @@ function ChangeLocationButton({
           key="horizontal"
           {...{
             ref,
-            onMouseEnter,
-            onMouseLeave,
-            onMouseMove,
+            ...mouseEventListeners,
             ...other,
             style: {
               ...style,
@@ -114,9 +135,7 @@ function ChangeLocationButton({
           key="vertical"
           {...{
             ref,
-            onMouseEnter,
-            onMouseLeave,
-            onMouseMove,
+            ...mouseEventListeners,
             ...other,
             style: {
               ...style,
