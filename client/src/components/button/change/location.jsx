@@ -22,6 +22,7 @@ export const supportedViewmodes = {
 function ChangeLocationButton({
   image: { horizontal, vertical },
   parentScrollEventCounter,
+  useRenderingState = [true, () => {}],
   href,
   style,
   viewmode,
@@ -40,6 +41,7 @@ function ChangeLocationButton({
     onMouseMove
   } = Hover.useHide();
   const { ref, render } = useRender(parentRef, parentScrollEventCounter);
+  useNotifyAboutRenderProcess(render, useRenderingState);
   const [horizontalTrigger, horizontalImageLoaded] = useLoadImage(
     render,
     horizontal
@@ -135,6 +137,15 @@ function ChangeLocationButton({
 }
 
 export default connect(null, mapDispatchToProps)(ChangeLocationButton);
+
+function useNotifyAboutRenderProcess(render, useRenderingState) {
+  const [rendering, setRendering] = useRenderingState;
+  useEffect(() => {
+    if (render && !rendering) {
+      setRendering(true);
+    }
+  }, [render, rendering]);
+}
 
 function useRender(parentRef, trigger) {
   const ref = useRef();
