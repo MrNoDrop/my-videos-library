@@ -4,6 +4,7 @@ import response from '../../../predefined/responses.mjs';
 export default function getEpisodeSubtitles(router, db) {
   router.get(
     '/shared/:category/:serie/:season/:episode/subtitles',
+    check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
     check.season.bind(this, db),

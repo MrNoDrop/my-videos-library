@@ -4,6 +4,7 @@ import response from '../../../predefined/responses.mjs';
 export default function getEpisodeAudio(router, db) {
   router.get(
     '/:language/:category/:serie/:season/:episode/audio/:quality',
+    check.preconfiguration,
     check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),

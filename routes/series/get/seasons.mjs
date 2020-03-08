@@ -4,6 +4,7 @@ import check from '../check/get.mjs';
 export default function getSeasons(router, db) {
   router.get(
     '/:language/:category/:serie',
+    check.preconfiguration,
     check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),

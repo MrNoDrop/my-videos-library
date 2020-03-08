@@ -3,6 +3,7 @@ import check from '../../check/get.mjs';
 export default function getEpisodeThumbnail(router, db) {
   router.get(
     '/shared/:category/:serie/:season/:episode/thumbnail',
+    check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
     check.season.bind(this, db),

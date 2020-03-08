@@ -4,6 +4,7 @@ import response from '../../../predefined/responses.mjs';
 export default function getEpisodeVideo(router, db) {
   router.get(
     '/shared/:category/:serie/:season/:episode/video/:quality',
+    check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
     check.season.bind(this, db),

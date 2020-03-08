@@ -4,6 +4,7 @@ import response from '../../../predefined/responses.mjs';
 export default function getEpisodeInfo(router, db) {
   router.get(
     '/:language/:category/:serie/:season/:episode/info',
+    check.preconfiguration,
     check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),
