@@ -1,0 +1,23 @@
+.change-location-button {
+  width: 100%;
+  font-size: 10vmin;
+}
+
+.change-location-image-button {
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0.7vmin;
+  box-shadow: 0 0 0.5vmin 0.15vmin black;
+  border: 0.1vmin solid black;
+  border-radius: 0.5vmin;
+  background-position: center;
+}
+.change-location-image-button.horizontal {
+  width: 44vmin;
+  height: 24.8vmin;
+}
+
+.change-location-image-button.vertical {
+  width: 28.542vmin;
+  height: 40vmin;
+}
