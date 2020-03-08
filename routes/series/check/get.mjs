@@ -1,3 +1,4 @@
+import { default as preconfiguration } from './get/preconfiguration.mjs';
 import { default as language } from './get/language.0.mjs';
 import { default as category } from './get/category.1.mjs';
 import { default as serie } from './get/serie.2.mjs';
@@ -15,6 +16,7 @@ import { default as videos } from './get/videos.5.mjs';
 import { default as video } from './get/video.6.mjs';
 
 export default {
+  preconfiguration,
   simple: { manifest: simpleManifest },
   language,
   category,
