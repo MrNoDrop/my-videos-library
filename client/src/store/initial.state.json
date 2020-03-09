@@ -12,7 +12,8 @@
       "current": {
         "category": null
       }
-    }
+    },
+    "images": {}
   },
   "router": {
     "pathname": "/",

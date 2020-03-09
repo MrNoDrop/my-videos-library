@@ -3,15 +3,21 @@ import ReactDOM from 'react-dom';
 import { push } from 'redux-first-routing';
 import { connect } from 'react-redux';
 import './location.scss';
-import images from '../../../images';
+import staticImages from '../../../images';
 import Hover from '../../hover';
+import useImageLoader from '../../effects/imageLoader';
+import addImage from '../../../store/actions/add/image';
+
+const mapStateToProps = ({ state: { images } }) => ({ images });
 
 const mapDispatchToProps = dispatch => ({
   changeLocation: pathname => {
     pathname.endsWith('/') &&
       (pathname = pathname.substring(0, pathname.length - 1));
     document.location.pathname !== pathname && dispatch(push(pathname));
-  }
+  },
+  addImage: (images, image, imageUrl) =>
+    dispatch(addImage(images, image, imageUrl))
 });
 
 export const supportedViewmodes = {
@@ -36,6 +42,8 @@ function ChangeLocationButton({
   onMouseEnter,
   onMouseLeave,
   onMouseMove,
+  images,
+  addImage,
   ...other
 }) {
   const {
@@ -71,15 +79,23 @@ function ChangeLocationButton({
       hoverOnMouseMove(e);
     }
   };
-  const { ref, render } = useRender(parentRef, parentScrollEventCounter);
-  useNotifyAboutRenderProcess(render, useRenderingState);
-  const [horizontalTrigger, horizontalImageLoaded] = useLoadImage(
-    render,
-    image.horizontal
+  const { ref, render } = useRender(
+    parentRef,
+    parentScrollEventCounter,
+    viewmode
   );
-  const [verticalTrigger, verticalImageLoaded] = useLoadImage(
-    render,
-    image.vertical
+  useNotifyAboutRenderProcess(render, useRenderingState);
+  const horizontalImage = useImageLoader(
+    image.horizontal,
+    images,
+    addImage,
+    render === 'horizontal'
+  );
+  const verticalImage = useImageLoader(
+    image.vertical,
+    images,
+    addImage,
+    render === 'vertical'
   );
   const hover = hovertext && (
     <Hover hidden={hovertextHidden} {...{ mousePostion }}>
@@ -113,7 +129,6 @@ function ChangeLocationButton({
       ];
     case supportedViewmodes.horizontal:
       return [
-        horizontalTrigger,
         hover,
         <div
           key="horizontal"
@@ -123,11 +138,8 @@ function ChangeLocationButton({
             ...other,
             style: {
               ...style,
-              backgroundImage: `url(${
-                horizontalImageLoaded
-                  ? image.horizontal
-                  : images.animated.loading
-              })`
+              backgroundImage: `url(${horizontalImage ||
+                staticImages.animated.loading})`
             }
           }}
           className={`change-location-image-button horizontal${
@@ -139,7 +151,6 @@ function ChangeLocationButton({
       ];
     case supportedViewmodes.vertical:
       return [
-        verticalTrigger,
         hover,
         <div
           key="vertical"
@@ -149,9 +160,8 @@ function ChangeLocationButton({
             ...other,
             style: {
               ...style,
-              backgroundImage: `url(${
-                verticalImageLoaded ? image.vertical : images.animated.loading
-              })`
+              backgroundImage: `url(${verticalImage ||
+                staticImages.animated.loading})`
             }
           }}
           className={`change-location-image-button vertical${
@@ -164,7 +174,10 @@ function ChangeLocationButton({
   }
 }
 
-export default connect(null, mapDispatchToProps)(ChangeLocationButton);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangeLocationButton);
 
 function useNotifyAboutRenderProcess(render, useRenderingState) {
   const [rendering, setRendering] = useRenderingState;
@@ -175,7 +188,7 @@ function useNotifyAboutRenderProcess(render, useRenderingState) {
   }, [render, rendering]);
 }
 
-function useRender(parentRef, trigger) {
+function useRender(parentRef, trigger, image) {
   const ref = useRef();
   const [render, setRender] = useState(false);
   const [firstRun, setFirstRun] = useState(true);
@@ -195,33 +208,11 @@ function useRender(parentRef, trigger) {
         rect.right > parentRect.left &&
         rect.top < parentRect.bottom &&
         rect.bottom > parentRect.top &&
-        !render
+        render !== image
       ) {
-        setRender(true);
+        setRender(image);
       }
     }
-  }, [ref, parentRef, render, setRender, firstRun, trigger]);
+  }, [ref, parentRef, render, setRender, firstRun, trigger, image]);
   return { ref, render };
-}
-
-function useLoadImage(render, image) {
-  const [loadingImage, setLoadingImage] = useState(undefined);
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    if (image && render && !loaded && !loadingImage) {
-      setLoadingImage(
-        <img
-          key={image}
-          src={image}
-          style={{ width: 0, height: 0 }}
-          alt={''}
-          onLoad={() => {
-            setLoaded(true);
-            setLoadingImage(undefined);
-          }}
-        />
-      );
-    }
-  }, [image, render, loadingImage, setLoadingImage, setLoaded]);
-  return [loadingImage, loaded];
 }
