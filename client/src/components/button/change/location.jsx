@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { push } from 'redux-first-routing';
 import { connect } from 'react-redux';
 import './location.scss';
-import image from '../../../images';
+import images from '../../../images';
 import Hover from '../../hover';
 
 const mapDispatchToProps = dispatch => ({
@@ -19,8 +19,9 @@ export const supportedViewmodes = {
   horizontal: 'horizontal',
   vertical: 'vertical'
 };
+
 function ChangeLocationButton({
-  image: { horizontal, vertical },
+  image = {},
   parentScrollEventCounter,
   useRenderingState = [true, () => {}],
   href,
@@ -31,6 +32,7 @@ function ChangeLocationButton({
   changeLocation,
   children,
   className,
+  onClick,
   onMouseEnter,
   onMouseLeave,
   onMouseMove,
@@ -44,6 +46,12 @@ function ChangeLocationButton({
     onMouseMove: hoverOnMouseMove
   } = Hover.useHide();
   const mouseEventListeners = {
+    onClick: e => {
+      if (typeof onClick === 'function') {
+        onClick(e);
+      }
+      changeLocation(href);
+    },
     onMouseEnter: e => {
       if (typeof onMouseEnter === 'function') {
         onMouseEnter(e);
@@ -67,9 +75,12 @@ function ChangeLocationButton({
   useNotifyAboutRenderProcess(render, useRenderingState);
   const [horizontalTrigger, horizontalImageLoaded] = useLoadImage(
     render,
-    horizontal
+    image.horizontal
   );
-  const [verticalTrigger, verticalImageLoaded] = useLoadImage(render, vertical);
+  const [verticalTrigger, verticalImageLoaded] = useLoadImage(
+    render,
+    image.vertical
+  );
   const hover = hovertext && (
     <Hover hidden={hovertextHidden} {...{ mousePostion }}>
       {hovertext}
@@ -81,7 +92,6 @@ function ChangeLocationButton({
         hover,
         <div
           key="undefined"
-          onClick={() => changeLocation(href)}
           {...{ ...other, ...mouseEventListeners, className }}
         >
           {children}
@@ -96,7 +106,6 @@ function ChangeLocationButton({
           className={`change-location-button${
             className ? ' ' + className : ''
           }`}
-          onClick={() => changeLocation(href)}
           {...{ ...other, ...mouseEventListeners }}
         >
           {children}
@@ -115,11 +124,12 @@ function ChangeLocationButton({
             style: {
               ...style,
               backgroundImage: `url(${
-                horizontalImageLoaded ? horizontal : image.animated.loading
+                horizontalImageLoaded
+                  ? image.horizontal
+                  : images.animated.loading
               })`
             }
           }}
-          onClick={() => changeLocation(href)}
           className={`change-location-image-button horizontal${
             className ? ' ' + className : ''
           }`}
@@ -140,11 +150,10 @@ function ChangeLocationButton({
             style: {
               ...style,
               backgroundImage: `url(${
-                verticalImageLoaded ? vertical : image.animated.loading
+                verticalImageLoaded ? image.vertical : images.animated.loading
               })`
             }
           }}
-          onClick={() => changeLocation(href)}
           className={`change-location-image-button vertical${
             className ? ' ' + className : ''
           }`}
@@ -199,7 +208,7 @@ function useLoadImage(render, image) {
   const [loadingImage, setLoadingImage] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    if (render && !loaded && !loadingImage) {
+    if (image && render && !loaded && !loadingImage) {
       setLoadingImage(
         <img
           key={image}
@@ -213,6 +222,6 @@ function useLoadImage(render, image) {
         />
       );
     }
-  }, [render, loadingImage, setLoadingImage, setLoaded]);
+  }, [image, render, loadingImage, setLoadingImage, setLoaded]);
   return [loadingImage, loaded];
 }
