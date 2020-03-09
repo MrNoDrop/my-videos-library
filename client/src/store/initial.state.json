@@ -7,7 +7,12 @@
       "inner": null,
       "outer": null
     },
-    "navigator": { "online": true }
+    "navigator": { "online": true },
+    "series": {
+      "current": {
+        "category": null
+      }
+    }
   },
   "router": {
     "pathname": "/",
