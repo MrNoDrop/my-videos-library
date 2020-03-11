@@ -2,8 +2,10 @@ import React from 'react';
 // import UploadSerieForm from '../components/form/upload/serie';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import SeriesRoute from './series';
+import SeriesCategoriesRoute from './series/categories';
+import SeriesCategoryRoute from './series/category';
 import SeriesViewRoute from './series/view';
+import SerieSeasonsRoute from './series/seasons';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
 import VideoRoute from './video';
@@ -30,35 +32,11 @@ const imagepath = {
 };
 const routesComponents = {
   series: {
-    route: SeriesRoute,
+    route: SeriesCategoriesRoute,
     category: {
-      route: () => (
-        <SeriesViewRoute
-          fetchpath={pathname => {
-            // eslint-disable-next-line
-            const [language, fixedpath, category] = pathname
-              .substring(1, pathname.length)
-              .split('/');
-            return `/series/${language}/${category}`;
-          }}
-          {...{ imagepath }}
-        />
-      ),
+      route: SeriesCategoryRoute,
       serie: {
-        route: () => (
-          <SeriesViewRoute
-            prefix="Season"
-            named={true}
-            fetchpath={pathname => {
-              // eslint-disable-next-line
-              const [language, fixedpath, category, serie] = pathname
-                .substring(1, pathname.length)
-                .split('/');
-              return `/series/${language}/${category}/${serie}`;
-            }}
-            {...{ imagepath }}
-          />
-        ),
+        route: SerieSeasonsRoute,
         seasons: {
           route: () => (
             <SeriesViewRoute
