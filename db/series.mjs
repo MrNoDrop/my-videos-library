@@ -49,17 +49,4 @@ seriesDB.addDirFunction('getRandomPath', getRandomPath, 'thumbnails');
 seriesDB.addDirFunction('getRandomPath', getRandomPath, 'horizontal');
 seriesDB.addDirFunction('getRandomPath', getRandomPath, 'vertical');
 
-const getRandomUrl = ({ getObject }) => {
-  const files = getObject().list();
-  let choosen = files[0];
-  if (files.length > 1) {
-    let index = Math.floor(Math.random() * files.length - 1);
-    index = index < 0 ? 0 : index;
-    choosen = files[index];
-  } else if (files.length < 1) {
-    return null;
-  }
-  return getObject()[choosen].toUrl();
-};
-seriesDB.addDirFunction('getRandomUrl', getRandomUrl, 'thumbnails');
 export default seriesDB;
