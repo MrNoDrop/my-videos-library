@@ -10,7 +10,8 @@
     "navigator": { "online": true },
     "series": {
       "current": {
-        "category": null
+        "category": null,
+        "serie": null
       }
     },
     "images": {}
