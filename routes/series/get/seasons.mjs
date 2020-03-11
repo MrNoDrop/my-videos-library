@@ -8,6 +8,7 @@ export default function getSeasons(router, db) {
     check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),
+    check.seasons.bind(this, db),
     (req, res) => {
       const { language, category, serie } = req.params;
       res.json(

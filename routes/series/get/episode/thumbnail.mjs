@@ -6,7 +6,9 @@ export default function getEpisodeThumbnail(router, db) {
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
+    check.seasons.bind(this, db),
     check.season.bind(this, db),
+    check.episodes.bind(this, db),
     check.episode.bind(this, db),
     check.thumbnail.bind(this, db),
     async (req, res) => {

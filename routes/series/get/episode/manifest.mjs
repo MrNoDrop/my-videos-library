@@ -8,7 +8,9 @@ export default function getEpisodeSubtitle(router, db) {
     check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),
+    check.seasons.bind(this, db),
     check.season.bind(this, db),
+    check.episodes.bind(this, db),
     check.episode.bind(this, db),
     check.simple.manifest.bind(this, db),
     (req, res) => {

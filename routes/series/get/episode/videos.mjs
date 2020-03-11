@@ -7,7 +7,9 @@ export default function getEpisodeVideos(router, db) {
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
+    check.seasons.bind(this, db),
     check.season.bind(this, db),
+    check.episodes.bind(this, db),
     check.episode.bind(this, db),
     check.videos.bind(this, db),
     (req, res) => {
