@@ -10,7 +10,6 @@ export default function Center({
   children,
   ...other
 }) {
-  console.log(availableSpace);
   const ref = useRef();
   return (
     <div
