@@ -122,7 +122,7 @@ function ChangeLocationButton({
           className={`change-location-button${
             className ? ' ' + className : ''
           }`}
-          {...{ ...other, ...mouseEventListeners }}
+          {...{ ...other, ref, ...mouseEventListeners }}
         >
           {children}
         </button>
