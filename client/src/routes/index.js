@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SeriesCategoriesRoute from './series/categories';
 import SeriesCategoryRoute from './series/category';
-import SeriesViewRoute from './series/view';
 import SerieSeasonsRoute from './series/seasons';
 import SerieEpisodesRoute from './series/episodes';
 import MoviesRoute from './movies';
