@@ -43,6 +43,9 @@ function useCenter(ref, availableWidth, disable) {
             let categoryWidth = 0;
             const margin = vmin(1.4);
             for (let child of ref.current.children) {
+              if (child.className.includes('hovertext')) {
+                continue;
+              }
               let { width } = ReactDOM.findDOMNode(
                 getElementRef(child).current
               ).getBoundingClientRect();
