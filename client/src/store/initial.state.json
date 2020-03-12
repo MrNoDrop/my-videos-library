@@ -11,7 +11,8 @@
     "series": {
       "current": {
         "category": null,
-        "serie": null
+        "serie": null,
+        "season": null
       }
     },
     "images": {}
