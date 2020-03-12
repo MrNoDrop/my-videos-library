@@ -6,6 +6,7 @@ import SeriesCategoriesRoute from './series/categories';
 import SeriesCategoryRoute from './series/category';
 import SeriesViewRoute from './series/view';
 import SerieSeasonsRoute from './series/seasons';
+import SerieEpisodesRoute from './series/episodes';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
 import VideoRoute from './video';
@@ -38,49 +39,7 @@ const routesComponents = {
       serie: {
         route: SerieSeasonsRoute,
         seasons: {
-          route: () => (
-            <SeriesViewRoute
-              viewmodes={['list', 'horizontal']}
-              alterSelectedViewmodes={{
-                list: 'list',
-                horizontal: ['horizontal', 'vertical'],
-                vertical: 'horizontal'
-              }}
-              named={true}
-              prefix="Episode"
-              fetchpath={pathname => {
-                const [
-                  language,
-                  // eslint-disable-next-line
-                  fixedpath,
-                  category,
-                  serie,
-                  seasons
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/${language}/${category}/${serie}/${seasons}`;
-              }}
-              imagepath={(pathname, item) => {
-                const [
-                  language,
-                  fixedpath,
-                  ...requestedPath
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/shared/${requestedPath.join(
-                  '/'
-                )}/${item}/thumbnail`;
-              }}
-              infopath={(pathname, item) => {
-                const [
-                  language,
-                  fixedpath,
-                  ...requestedPath
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/${language}/${requestedPath.join(
-                  '/'
-                )}/${item}/info`;
-              }}
-            />
-          ),
+          route: SerieEpisodesRoute,
           episodes: {
             route: VideoRoute
           }
