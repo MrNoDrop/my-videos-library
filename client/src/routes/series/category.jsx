@@ -140,10 +140,7 @@ function useFetchCategorySeries(
         setFetching(language);
         try {
           const { error, payload } = await (
-            await fetch(
-              `/series/${language}/${seriesState.current.category ||
-                pathCategory}`
-            )
+            await fetch(`/series/${language}/${pathCategory}`)
           ).json();
           if (!error) {
             const { series, path } = payload;
