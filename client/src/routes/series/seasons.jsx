@@ -34,7 +34,7 @@ const mapDispatchToProps = dispatch => ({
   changePath: pathname => dispatch(push(pathname))
 });
 
-function SeriesCategoryRoute({
+function SeriesSeasonsRoute({
   language,
   windowInnerDimensions,
   setSeries,
@@ -95,7 +95,9 @@ function SeriesCategoryRoute({
               series[language][series.current.category][series.current.serie]
             )
               .filter(season =>
-                season.toLowerCase().includes(filter.toLowerCase())
+                `${seasonDescriptors[language]} ${season}`
+                  .toLowerCase()
+                  .includes(filter.toLowerCase())
               )
               .map(season => (
                 <ChangeLocationButton
@@ -124,10 +126,7 @@ function SeriesCategoryRoute({
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SeriesCategoryRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(SeriesSeasonsRoute);
 
 function useFetchSerieSeasons(
   language,
