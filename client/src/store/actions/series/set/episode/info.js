@@ -4,9 +4,9 @@ export default (series, language, episode, info) => ({
   type: SET_SERIES_INFO,
   payload: {
     series: {
+      ...series,
       current: {
-        ...series.current,
-        episode
+        ...series.current
       },
       [language]: {
         ...series[language],
