@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './hover.scss';
-import { getElementRect } from './tools/element';
+import { getElementRect, getElementRef } from './tools/element';
 
 export function useHideHover() {
   const [mousePostion, setMousePosition] = useState({ x: 0, y: 0 });
@@ -80,6 +80,9 @@ function useSetHoverPosition(style, hidden, mousePostion) {
   useEffect(() => {
     if (ref.current && !hidden) {
       const { width, height } = getElementRect(ref);
+      const { height: footerHeight } = getElementRect(
+        getElementRef(document.getElementById('menu-footer'))
+      );
       const newStyle = { ...style, ...componentStyle };
       newStyle.top = mousePostion.y + 5;
       newStyle.left = mousePostion.x + 5;
@@ -88,8 +91,9 @@ function useSetHoverPosition(style, hidden, mousePostion) {
       if (Horizontal > window.innerWidth) {
         newStyle.left = mousePostion.x - (Horizontal - window.innerWidth);
       }
-      if (vertical > window.innerHeight) {
-        newStyle.top = mousePostion.y - (vertical - window.innerHeight);
+      if (vertical > window.innerHeight - footerHeight) {
+        newStyle.top =
+          mousePostion.y - (vertical - (window.innerHeight - footerHeight));
       }
       if (JSON.stringify(newStyle) !== JSON.stringify(componentStyle)) {
         setStyle(newStyle);
