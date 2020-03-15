@@ -1,6 +1,8 @@
 {
   "state": {
     "currenttime": {},
+    "subtitles": {},
+    "selected-subtitles": [],
     "viewmode": "horizontal",
     "user": { "language": "en", "name": "user" },
     "window": {
@@ -12,7 +14,8 @@
       "current": {
         "category": null,
         "serie": null,
-        "season": null
+        "season": null,
+        "episode": null
       }
     },
     "images": {}
