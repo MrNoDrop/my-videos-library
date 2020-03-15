@@ -166,16 +166,28 @@ function useFetchSerieSeasons(
                   }
                 }
               });
-            } else if (
-              seriesState[language] &&
-              !seriesState[language][category]
-            ) {
+            } else if (!seriesState[language][category]) {
               setSeries({
                 ...seriesState,
                 current: { ...seriesState.current, category, serie },
                 [language]: {
                   ...seriesState[language],
                   [category]: {
+                    [serie]: seasons.reduce((obj, key) => {
+                      obj[key] = {};
+                      return obj;
+                    }, {})
+                  }
+                }
+              });
+            } else if (!seriesState[language][category][serie]) {
+              setSeries({
+                ...seriesState,
+                current: { ...seriesState.current, category, serie },
+                [language]: {
+                  ...seriesState[language],
+                  [category]: {
+                    ...seriesState[language][category],
                     [serie]: seasons.reduce((obj, key) => {
                       obj[key] = {};
                       return obj;
@@ -192,7 +204,8 @@ function useFetchSerieSeasons(
                   [category]: {
                     ...seriesState[language][category],
                     [serie]: seasons.reduce((obj, key) => {
-                      obj[key] = {};
+                      obj[key] =
+                        seriesState[language][category][serie][key] || {};
                       return obj;
                     }, {})
                   }
