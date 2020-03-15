@@ -2,7 +2,7 @@ import React, { Fragment, useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-routing';
 import { useFitAvailableSpace } from '../../components/effects';
-import setCurrentEpisode from '../../store/actions/series/set/current/season';
+import setCurrentEpisode from '../../store/actions/series/set/current/episode';
 import setSeries from '../../store/actions/series/set';
 import setSeriesEpisodeInfo from '../../store/actions/series/set/episode/info';
 import Bar, { fitAvailableSpaceBarOffset } from '../../components/bar';
@@ -32,8 +32,8 @@ const mapDispatchToProps = dispatch => ({
   setSeries: series => dispatch(setSeries(series)),
   setSeriesEpisodeInfo: (series, language, episode, info) =>
     dispatch(setSeriesEpisodeInfo(series, language, episode, info)),
-  setCurrentEpisode: (series, season) =>
-    dispatch(setCurrentEpisode(series, season)),
+  setCurrentEpisode: (series, episode) =>
+    dispatch(setCurrentEpisode(series, episode)),
   changePath: pathname => dispatch(push(pathname))
 });
 
@@ -122,10 +122,10 @@ function SeriesEpisodesRoute({
                   hovertext={
                     series[language][series.current.category][
                       series.current.serie
-                    ][series.current.season][series.current.episode] &&
+                    ][series.current.season][episode] &&
                     series[language][series.current.category][
                       series.current.serie
-                    ][series.current.season][series.current.episode].info
+                    ][series.current.season][episode].info
                   }
                   parentRef={ref}
                   parentScrollEventCounter={scrollEventCounter}
@@ -228,10 +228,7 @@ function useFetchSerieEpisodes(
                   }
                 }
               });
-            } else if (
-              seriesState[language] &&
-              !seriesState[language][category]
-            ) {
+            } else if (!seriesState[language][category]) {
               setSeries({
                 ...seriesState,
                 current: { ...seriesState.current, category, serie, season },
@@ -247,11 +244,7 @@ function useFetchSerieEpisodes(
                   }
                 }
               });
-            } else if (
-              seriesState[language] &&
-              seriesState[language][category] &&
-              !seriesState[language][category][serie]
-            ) {
+            } else if (!seriesState[language][category][serie]) {
               setSeries({
                 ...seriesState,
                 current: { ...seriesState.current, category, serie, season },
@@ -260,6 +253,24 @@ function useFetchSerieEpisodes(
                   [category]: {
                     ...seriesState[language][category],
                     [serie]: {
+                      [season]: episodes.reduce((obj, key) => {
+                        obj[key] = {};
+                        return obj;
+                      }, {})
+                    }
+                  }
+                }
+              });
+            } else if (!seriesState[language][category][serie][season]) {
+              setSeries({
+                ...seriesState,
+                current: { ...seriesState.current, category, serie, season },
+                [language]: {
+                  ...seriesState[language],
+                  [category]: {
+                    ...seriesState[language][category],
+                    [serie]: {
+                      ...seriesState[language][category][serie],
                       [season]: episodes.reduce((obj, key) => {
                         obj[key] = {};
                         return obj;
@@ -279,7 +290,9 @@ function useFetchSerieEpisodes(
                     [serie]: {
                       ...seriesState[language][category][serie],
                       [season]: episodes.reduce((obj, key) => {
-                        obj[key] = {};
+                        obj[key] =
+                          seriesState[language][category][serie][season][key] ||
+                          {};
                         return obj;
                       }, {})
                     }
