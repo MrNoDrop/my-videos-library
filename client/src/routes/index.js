@@ -6,9 +6,9 @@ import SeriesCategoriesRoute from './series/categories';
 import SeriesCategoryRoute from './series/category';
 import SerieSeasonsRoute from './series/seasons';
 import SerieEpisodesRoute from './series/episodes';
+import SerieVideoRoute from './series/video';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
-import VideoRoute from './video';
 
 const mapStateToProps = ({
   state: {
@@ -16,20 +16,7 @@ const mapStateToProps = ({
   },
   router: { pathname, routes }
 }) => ({ pathname, routes, language });
-const imagepath = {
-  horizontal: (pathname, item) => {
-    const [language, fixedpath, ...requestedPath] = pathname
-      .substring(1, pathname.length)
-      .split('/');
-    return `/series/shared/${requestedPath.join('/')}/${item}/cover/horizontal`;
-  },
-  vertical: (pathname, item) => {
-    const [language, fixedpath, ...requestedPath] = pathname
-      .substring(1, pathname.length)
-      .split('/');
-    return `/series/shared/${requestedPath.join('/')}/${item}/cover/vertical`;
-  }
-};
+
 const routesComponents = {
   series: {
     route: SeriesCategoriesRoute,
@@ -40,7 +27,7 @@ const routesComponents = {
         seasons: {
           route: SerieEpisodesRoute,
           episodes: {
-            route: VideoRoute
+            route: SerieVideoRoute
           }
         }
       }
