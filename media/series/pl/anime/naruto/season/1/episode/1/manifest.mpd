@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--Generated with https://github.com/google/shaka-packager version v2.3.0-5bf8ad5ed5-release-->
-<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" minBufferTime="PT2S" type="static" mediaPresentationDuration="PT1370.160400390625S">
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" minBufferTime="PT2S" type="static" mediaPresentationDuration="PT1390.0970458984375S">
   <Period id="0">
     <AdaptationSet id="0" contentType="video" maxWidth="720" maxHeight="540" frameRate="24000/1001" par="4:3">
-      <Representation id="0" bandwidth="447315" codecs="avc1.640015" mimeType="video/mp4" sar="1:1" width="480" height="360">
+      <Representation id="0" bandwidth="428396" codecs="avc1.640015" mimeType="video/mp4" sar="1:1" width="480" height="360">
         <BaseURL>/series/shared/anime/naruto/1/1/video/360</BaseURL>
-        <SegmentBase indexRange="863-3642" timescale="24000">
+        <SegmentBase indexRange="863-3678" timescale="24000">
           <Initialization range="0-862"/>
         </SegmentBase>
       </Representation>
-      <Representation id="2" bandwidth="877289" codecs="avc1.4d401f" mimeType="video/mp4" sar="1:1" width="640" height="480">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/720</BaseURL>
-        <SegmentBase indexRange="861-3640" timescale="24000">
-          <Initialization range="0-860"/>
+      <Representation id="2" bandwidth="780884" codecs="avc1.64001e" mimeType="video/mp4" sar="1:1" width="720" height="540">
+        <BaseURL>/series/shared/anime/naruto/1/1/video/540</BaseURL>
+        <SegmentBase indexRange="864-3679" timescale="24000">
+          <Initialization range="0-863"/>
         </SegmentBase>
       </Representation>
-      <Representation id="4" bandwidth="824990" codecs="avc1.64001e" mimeType="video/mp4" sar="1:1" width="720" height="540">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/540</BaseURL>
-        <SegmentBase indexRange="864-3643" timescale="24000">
-          <Initialization range="0-863"/>
+      <Representation id="4" bandwidth="4177971" codecs="avc1.42c01e" mimeType="video/mp4" sar="1:1" width="640" height="480">
+        <BaseURL>/series/shared/anime/naruto/1/1/video/720</BaseURL>
+        <SegmentBase indexRange="825-3088" timescale="24000">
+          <Initialization range="0-824"/>
         </SegmentBase>
       </Representation>
     </AdaptationSet>
     <AdaptationSet id="1" contentType="audio">
-      <Representation id="1" bandwidth="68293" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="22050">
+      <Representation id="1" bandwidth="66133" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="22050">
         <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
         <BaseURL>/series/pl/anime/naruto/1/1/audio/360</BaseURL>
-        <SegmentBase indexRange="825-3604" timescale="22050">
+        <SegmentBase indexRange="825-3640" timescale="22050">
           <Initialization range="0-824"/>
         </SegmentBase>
       </Representation>
-      <Representation id="3" bandwidth="168387" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
-        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-        <BaseURL>/series/pl/anime/naruto/1/1/audio/720</BaseURL>
-        <SegmentBase indexRange="796-3575" timescale="44100">
-          <Initialization range="0-795"/>
-        </SegmentBase>
-      </Representation>
-      <Representation id="5" bandwidth="132418" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
+      <Representation id="3" bandwidth="131888" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
         <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
         <BaseURL>/series/pl/anime/naruto/1/1/audio/540</BaseURL>
-        <SegmentBase indexRange="825-3604" timescale="44100">
+        <SegmentBase indexRange="825-3640" timescale="44100">
           <Initialization range="0-824"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="5" bandwidth="136753" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="48000">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/series/pl/anime/naruto/1/1/audio/720</BaseURL>
+        <SegmentBase indexRange="763-3578" timescale="48000">
+          <Initialization range="0-762"/>
         </SegmentBase>
       </Representation>
     </AdaptationSet>
