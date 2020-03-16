@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import addSubtitles from '../store/actions/add/subtitles';
 import setSelectedSubtitles from '../store/actions/set/selected/subtitles';
 import { connect } from 'react-redux';
+import parseSrt from './tools/parseSrt.mjs';
 const mapStateToProps = ({
   state: { 'selected-subtitles': selectedSubtitles, subtitles }
 }) => ({
@@ -142,33 +143,13 @@ function useFetchSubtitles(
           ) {
             continue;
           }
-          let fetchedSubtitles = new TextDecoder('utf-8').decode(
+          freshlyAvailableSubtitles[subtitles[subset]] = parseSrt(
             (
               await (await (await fetch(subtitles[subset])).body)
                 .getReader()
                 .read()
             ).value
           );
-          const toReplace = { '\r': '', ' -> ': ' --> ' };
-          for (let [key, value] of Object.entries(toReplace)) {
-            while (fetchedSubtitles.includes(key)) {
-              fetchedSubtitles = fetchedSubtitles.replace(key, value);
-            }
-          }
-          fetchedSubtitles = fetchedSubtitles.split('\n\n');
-          const formattedSubtitles = fetchedSubtitles.map(entry => {
-            const entry_ = entry.substring(
-              entry.indexOf('\n') + 1,
-              entry.length
-            );
-            const [time, subtitle] = [
-              entry_.substring(0, entry_.indexOf('\n')),
-              entry_.substring(entry_.indexOf('\n') + 1, entry_.length)
-            ];
-            const [start, end] = time.split(' --> ');
-            return [toNumber(start), toNumber(end), subtitle];
-          });
-          freshlyAvailableSubtitles[subtitles[subset]] = formattedSubtitles;
         }
         if (Object.keys(freshlyAvailableSubtitles).length > 0) {
           addSubtitles(availableSubtitles, freshlyAvailableSubtitles);
@@ -231,21 +212,4 @@ function useDetermineCurrentSubtitle(
     availableSubtitles
   ]);
   return currentSubtitle;
-}
-
-function toNumber(formattedTime) {
-  let time = `${formattedTime}`;
-  const toReplace = { '.': ':', ',': ':', '.': ':', ' ': '' };
-  for (let [key, value] of Object.entries(toReplace)) {
-    while (time.includes(key)) {
-      time = time.replace(key, value);
-    }
-  }
-  let [hours, minutes, seconds, millis] = time.split(':');
-
-  return parseFloat(
-    `${parseInt(hours) * 120 +
-      parseInt(minutes) * 60 +
-      parseInt(seconds)}.${millis}`
-  );
 }
