@@ -52,7 +52,6 @@ function Video({
   const [hideControls, setHideControls] = useState(false);
   const [hideControlsTimeout, setHideControlsTimeout] = useState(undefined);
   const [fullscreenMode, setFullscreenMode] = useState(false);
-  const setBlurred = useFocusVideo(videoRef);
   const player = useLoadPlayer(src, videoRef, e => {
     setLoaded(true);
     onLoaded(e);
@@ -163,7 +162,6 @@ function Video({
         key="video"
         autoplay
         ref={videoRef}
-        onBlur={() => setBlurred(true)}
         poster={image}
         onLoadedMetadata={() =>
           player.configure({
@@ -330,14 +328,4 @@ function useLoadPlayer(src, videoRef, onLoaded) {
     setPlayer(shakaPlayer);
   }, [src, videoRef]);
   return player;
-}
-function useFocusVideo(videoRef) {
-  const [blurred, setBlurred] = useState(true);
-  useEffect(() => {
-    if (videoRef.current && blurred) {
-      videoRef.current.focus();
-      setBlurred(false);
-    }
-  }, [videoRef, blurred, setBlurred]);
-  return setBlurred;
 }
