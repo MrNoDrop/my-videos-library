@@ -135,11 +135,7 @@ function Video({
         {...{ ...other }}
       />
       <div className="overlay" style={overlayStyle}>
-        <div className="subtitles-container" {...mouseEventListeners}>
-          {selectedSubtitles.map(current => (
-            <Subtitles {...{ subtitles, videoRef, current }} />
-          ))}
-        </div>
+        <Subtitles {...{ subtitles, videoTime }} />
         <div className="controls">
           <PlaySvg
             className={`play-button`}
@@ -162,7 +158,6 @@ function Video({
             }
             step="0.01"
           />
-          <Subtitles.Button {...{ subtitles }} />
           <FullscreenSvg
             fullscreen={fullscreenMode}
             className={`fullscreen-button`}

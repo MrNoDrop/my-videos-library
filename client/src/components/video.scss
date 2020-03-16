@@ -34,19 +34,4 @@
       padding: 0.23vmin;
     }
   }
-  .subtitles-container {
-    width: 100%;
-    height: calc(100% - 3.5vmin);
-    .subtitles {
-      position: relative;
-      width: max-content;
-      max-width: 90%;
-      margin: 0.9vmin auto;
-      text-align: center;
-      color: black;
-      background-color: rgba(0, 0, 0, 0.514);
-      box-shadow: 0 0 0.9vmin 0.9vmin rgba(0, 0, 0, 0.514);
-      border-radius: 3vmin;
-    }
-  }
 }
