@@ -1,5 +1,6 @@
 import check from '../../check/get.mjs';
 import response from '../../../predefined/responses.mjs';
+import parseSrt from '../../../../modules/parseSrt.mjs';
 
 export default function getEpisodeSubtitle(router, db) {
   router.get(
@@ -13,14 +14,27 @@ export default function getEpisodeSubtitle(router, db) {
     check.episode.bind(this, db),
     check.subtitles.bind(this, db),
     check.subtitle.bind(this, db),
-    (req, res) => {
+    async (req, res) => {
       const { category, serie, season, episode, subtitle } = req.params;
+      const { parsed } = req.query;
       try {
-        res.sendFile(
-          db.structure.shared[category][serie].season[season].episode[
-            episode
-          ].subtitles[subtitle].getAbsolutePath()
-        );
+        if (parsed) {
+          res.json(
+            response.ok(
+              parseSrt(
+                await db.structure.shared[category][serie].season[
+                  season
+                ].episode[episode].subtitles[subtitle].read()
+              )
+            )
+          );
+        } else {
+          res.sendFile(
+            db.structure.shared[category][serie].season[season].episode[
+              episode
+            ].subtitles[subtitle].getAbsolutePath()
+          );
+        }
       } catch (error) {
         res
           .status(500)
