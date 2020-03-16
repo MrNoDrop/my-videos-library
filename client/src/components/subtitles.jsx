@@ -4,29 +4,47 @@ import parseSrt from './tools/parseSrt.mjs';
 import { connect } from 'react-redux';
 import Subtitle from './subtitle';
 import './subtitles.scss';
+import { getElementRect, getElementRef } from './tools/element';
+import { vmin } from './tools/vscale';
 
 const mapStateToProps = ({
-  state: { subtitles, 'selected-subtitles': selected }
-}) => ({ fetched: subtitles, selected });
+  state: {
+    subtitles,
+    'selected-subtitles': selected,
+    window: { inner }
+  }
+}) => ({ fetched: subtitles, selected, windowInnerDimensions: inner });
 
 const mapDispatchToProps = dispatch => ({
   add: (fetched, newSubtitles) => dispatch(addSubtitles(fetched, newSubtitles))
 });
 
 function Subtitles({
+  windowInnerDimensions,
   className,
   videoTime,
   subtitles = {},
   fetched,
   selected,
-  add
+  add,
+  ...other
 }) {
   const ref = useRef();
   useFetchSubtitles(subtitles, fetched, add, selected);
+  const spacerHeight = useDetermineSpacerHeight(
+    ref,
+    windowInnerDimensions,
+    videoTime
+  );
   return (
     <div
-      {...{ ref, className: `subtitles${className ? ` ${className}` : ''}` }}
+      {...{
+        ref,
+        className: `subtitles${className ? ` ${className}` : ''}`,
+        ...other
+      }}
     >
+      <div style={{ width: '100%', height: spacerHeight }} />
       {selected.map(selected => (
         <Subtitle
           {...{
@@ -68,4 +86,26 @@ function useFetchSubtitles(subtitles, fetched, add, selected) {
       })();
     }
   }, [subtitles, fetched, add, fetching, setFetching]);
+}
+
+function useDetermineSpacerHeight(ref, windowInnerDimensions, videoTime) {
+  const [spacerHeight, setSpacerHeight] = useState(0);
+  useEffect(() => {
+    if (ref.current) {
+      let { height } = getElementRect(ref);
+      height -= vmin(6);
+      for (let subtitle of ref.current.children) {
+        const subtitleRef = getElementRef(subtitle);
+        if (!subtitleRef || !subtitleRef.current) {
+          continue;
+        }
+        const { height: subtitleHeight } = getElementRect(subtitleRef);
+        height -= subtitleHeight;
+      }
+      if (height !== spacerHeight) {
+        setSpacerHeight(height);
+      }
+    }
+  }, [ref, windowInnerDimensions, videoTime, spacerHeight, setSpacerHeight]);
+  return spacerHeight;
 }
