@@ -116,7 +116,9 @@ function Video({
   const [timeouttime, setTimeouttime] = useState(undefined);
   const [videoVolume, setVideoVolume] = useState(0.1);
   useEffect(
-    () => videoRef && videoRef.current && (videoRef.current.volume = 0.1),
+    () => {
+      videoRef && videoRef.current && (videoRef.current.volume = 0.1);
+    },
     // eslint-disable-next-line
     []
   );
@@ -253,7 +255,7 @@ function Video({
               setVideoTime(value);
               videoRef.current.currentTime = value;
             }}
-            max={videoRef.current && videoRef.current.duration}
+            max={(videoRef.current && videoRef.current.duration) || 1}
             step="0.01"
           />
           <MuteSvg
