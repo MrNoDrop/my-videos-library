@@ -49,6 +49,8 @@ function Video({
   const videoRef = useRef();
   const playerRef = useRef();
   const [loaded, setLoaded] = useState(false);
+  const [buffered, setBuffered] = useState(0);
+  const [bufferedTimeout, setBufferedTimeout] = useState(undefined);
   const [hideControls, setHideControls] = useState(false);
   const [hideControlsTimeout, setHideControlsTimeout] = useState(undefined);
   const [fullscreenMode, setFullscreenMode] = useState(false);
@@ -156,6 +158,20 @@ function Video({
       }
     }
   }, [videoRef, overlayStyle, setOverlayStyle, windowInnerDimensions]);
+  useEffect(() => {
+    if (videoRef.current) {
+      if (!bufferedTimeout) {
+        setBufferedTimeout(
+          setTimeout(() => {
+            if (videoRef.current.buffered.length !== buffered) {
+              setBuffered(videoRef.current.buffered.length);
+            }
+            setBufferedTimeout(clearTimeout(bufferedTimeout));
+          }, 100)
+        );
+      }
+    }
+  }, [videoRef, buffered, setBuffered, bufferedTimeout, setBufferedTimeout]);
   return (
     <div className="player" ref={playerRef}>
       <video
@@ -163,13 +179,13 @@ function Video({
         autoplay
         ref={videoRef}
         poster={image}
-        onLoadedMetadata={() =>
+        onLoadedMetadata={() => {
           player.configure({
             streaming: {
               bufferBehind: videoRef.current.duration
             }
-          })
-        }
+          });
+        }}
         {...{ ...other }}
       />
       <div
@@ -180,7 +196,8 @@ function Video({
             videoRef.current && !videoRef.current.paused && hideControls
               ? 'none'
               : 'default',
-          ...(() => (loaded ? {} : { backgroundImage: `url(${loading})` }))()
+          ...(() =>
+            loaded && buffered ? {} : { backgroundImage: `url(${loading})` })()
         }}
       >
         <PlaySvg
