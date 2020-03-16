@@ -149,7 +149,7 @@ function useFetchSerieSeasons(
                           subtitles,
                           info: Object.entries(info).map(([key, value]) => (
                             <Fragment>
-                              {`${key} ${value}`}
+                              {`${key}: ${value}`}
                               <br />
                             </Fragment>
                           )),
@@ -174,7 +174,7 @@ function useFetchSerieSeasons(
                           subtitles,
                           info: Object.entries(info).map(([key, value]) => (
                             <Fragment>
-                              {`${key} ${value}`}
+                              {`${key}: ${value}`}
                               <br />
                             </Fragment>
                           )),
@@ -200,7 +200,7 @@ function useFetchSerieSeasons(
                           subtitles,
                           info: Object.entries(info).map(([key, value]) => (
                             <Fragment>
-                              {`${key} ${value}`}
+                              {`${key}: ${value}`}
                               <br />
                             </Fragment>
                           )),
@@ -227,7 +227,7 @@ function useFetchSerieSeasons(
                           subtitles,
                           info: Object.entries(info).map(([key, value]) => (
                             <Fragment>
-                              {`${key} ${value}`}
+                              {`${key}: ${value}`}
                               <br />
                             </Fragment>
                           )),
@@ -255,7 +255,7 @@ function useFetchSerieSeasons(
                           subtitles,
                           info: Object.entries(info).map(([key, value]) => (
                             <Fragment>
-                              {`${key} ${value}`}
+                              {`${key}: ${value}`}
                               <br />
                             </Fragment>
                           )),
