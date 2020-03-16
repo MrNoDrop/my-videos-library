@@ -6,12 +6,14 @@ export function useHideHover() {
   const [mousePostion, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setInfoVisible] = useState(false);
   const [infoVisibleTimeout, setInfoVisibleTimeout] = useState(undefined);
-  const onMouseEnter = () =>
+  const onMouseEnter = e => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
     setInfoVisibleTimeout(
       setTimeout(() => {
         setInfoVisible(true);
       }, 1000)
     );
+  };
 
   const onMouseMove = e => {
     clearTimeout(infoVisibleTimeout);
@@ -23,7 +25,8 @@ export function useHideHover() {
       }, 1000)
     );
   };
-  const onMouseLeave = () => {
+  const onMouseLeave = e => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
     setInfoVisibleTimeout(clearTimeout(infoVisibleTimeout));
     setInfoVisible(false);
   };
