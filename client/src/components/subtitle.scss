@@ -1,8 +1,9 @@
 .subtitle {
   position: relative;
+  box-sizing: border-box;
   width: max-content;
   max-width: 90%;
-  margin: 0.9vmin auto;
+  margin: 2.2vmin auto;
   text-align: center;
   color: black;
   background-color: rgba(0, 0, 0, 0.514);
