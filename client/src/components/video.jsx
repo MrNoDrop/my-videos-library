@@ -73,7 +73,7 @@ function Video({
       }
       videoRef.current.paused
         ? videoRef.current.play()
-        : videoRef.current.pause();
+        : hoverOnMouseMove(e) || videoRef.current.pause();
     },
     onMouseEnter: e => {
       if (typeof onMouseEnter === 'function') {
@@ -87,15 +87,14 @@ function Video({
       if (typeof onMouseLeave === 'function') {
         onMouseLeave(e);
       }
-      if (loaded) {
-        hoverOnMouseLeave(e);
-      }
+      hoverOnMouseLeave(e);
     },
     onMouseMove: e => {
       if (typeof onMouseMove === 'function') {
         onMouseMove(e);
       }
       if (!loaded) {
+        hoverOnMouseLeave(e);
         return;
       }
       if (videoRef.current && videoRef.current.paused) {
