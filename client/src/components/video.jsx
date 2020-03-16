@@ -196,8 +196,8 @@ function Video({
             offset: {
               height:
                 videoRef.current && !videoRef.current.paused && hideControls
-                  ? vmin(2)
-                  : vmin(4)
+                  ? vmin(4)
+                  : vmin(6)
             }
           }}
         />
