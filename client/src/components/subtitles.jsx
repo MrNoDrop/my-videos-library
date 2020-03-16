@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Subtitle from './subtitle';
 import './subtitles.scss';
 import { getElementRect, getElementRef } from './tools/element';
-import { vmin } from './tools/vscale';
 
 const mapStateToProps = ({
   state: {
@@ -26,6 +25,7 @@ function Subtitles({
   subtitles = {},
   fetched,
   selected,
+  offset = { height: 0 },
   add,
   ...other
 }) {
@@ -34,7 +34,8 @@ function Subtitles({
   const spacerHeight = useDetermineSpacerHeight(
     ref,
     windowInnerDimensions,
-    videoTime
+    videoTime,
+    offset
   );
   return (
     <div
@@ -88,12 +89,17 @@ function useFetchSubtitles(subtitles, fetched, add, selected) {
   }, [subtitles, fetched, add, fetching, setFetching]);
 }
 
-function useDetermineSpacerHeight(ref, windowInnerDimensions, videoTime) {
+function useDetermineSpacerHeight(
+  ref,
+  windowInnerDimensions,
+  videoTime,
+  offset
+) {
   const [spacerHeight, setSpacerHeight] = useState(0);
   useEffect(() => {
     if (ref.current) {
       let { height } = getElementRect(ref);
-      height -= vmin(6);
+      height -= offset.height;
       for (let subtitle of ref.current.children) {
         const subtitleRef = getElementRef(subtitle);
         if (!subtitleRef || !subtitleRef.current) {
@@ -106,6 +112,13 @@ function useDetermineSpacerHeight(ref, windowInnerDimensions, videoTime) {
         setSpacerHeight(height);
       }
     }
-  }, [ref, windowInnerDimensions, videoTime, spacerHeight, setSpacerHeight]);
+  }, [
+    ref,
+    windowInnerDimensions,
+    videoTime,
+    spacerHeight,
+    setSpacerHeight,
+    offset
+  ]);
   return spacerHeight;
 }
