@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-export default function PlaySvg({ paused, className, svg, ...other }) {
+export default function PlaySvg({
+  paused,
+  className,
+  svg,
+  locked = false,
+  ...other
+}) {
   const [fill, setFill] = useState('white');
   return (
     <div
@@ -10,10 +16,10 @@ export default function PlaySvg({ paused, className, svg, ...other }) {
         }`,
         ...other
       }}
-      onMouseEnter={() => setFill('grey')}
-      onMouseLeave={() => setFill('white')}
-      onMouseDown={() => setFill('yellow')}
-      onMouseUp={() => setFill('grey')}
+      onMouseEnter={() => !locked && setFill('grey')}
+      onMouseLeave={() => !locked && setFill('white')}
+      onMouseDown={() => !locked && setFill('yellow')}
+      onMouseUp={() => !locked && setFill('grey')}
     >
       {paused ? (
         <svg
