@@ -96,7 +96,7 @@ function Video({
             }
           }
           setTimeouttime(clearTimeout(timeouttime));
-        }, 50)
+        }, 10)
       );
     }
   }, [videoRef, timeouttime, setTimeouttime, videoTime, setVideoTime]);
@@ -135,8 +135,8 @@ function Video({
         {...{ ...other }}
       />
       <div className="overlay" style={overlayStyle}>
-        <Subtitles {...{ subtitles, videoTime }} />
-        <div className="controls">
+        <Subtitles {...{ subtitles, videoTime, ...mouseEventListeners }} />
+        <div className="controls" ref={useRef()}>
           <PlaySvg
             className={`play-button`}
             paused={videoRef.current && videoRef.current.paused}
