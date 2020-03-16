@@ -79,7 +79,7 @@ function Video({
       if (typeof onMouseEnter === 'function') {
         onMouseEnter(e);
       }
-      if (videoRef.current && videoRef.current.paused) {
+      if (videoRef.current && videoRef.current.paused && loaded) {
         hoverOnMouseEnter(e);
       }
     },
@@ -87,11 +87,16 @@ function Video({
       if (typeof onMouseLeave === 'function') {
         onMouseLeave(e);
       }
-      hoverOnMouseLeave(e);
+      if (loaded) {
+        hoverOnMouseLeave(e);
+      }
     },
     onMouseMove: e => {
       if (typeof onMouseMove === 'function') {
         onMouseMove(e);
+      }
+      if (!loaded) {
+        return;
       }
       if (videoRef.current && videoRef.current.paused) {
         hoverOnMouseMove(e);
@@ -109,8 +114,11 @@ function Video({
     }
   };
   const [timeouttime, setTimeouttime] = useState(undefined);
-  const [videoVolume, setVideoVolume] = useState(
-    (videoRef && videoRef.current && videoRef.current.volume) || 0.1
+  const [videoVolume, setVideoVolume] = useState(0.1);
+  useEffect(
+    () => videoRef && videoRef.current && (videoRef.current.volume = 0.1),
+    // eslint-disable-next-line
+    []
   );
   const [videoTime, setVideoTime] = useState(
     (videoRef && videoRef.current && videoRef.current.currentTime) || 0
