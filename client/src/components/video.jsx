@@ -8,7 +8,12 @@ import './video.scss';
 import Subtitles from './subtitles';
 import PlaySvg from '../svg/play';
 import FullscreenSvg from '../svg/fullscreen';
+import MuteSvg from '../svg/mute';
 import Hover from './hover';
+import Slider from './slider';
+import loading from '../svg/loading.svg';
+import { vmin } from './tools/vscale';
+
 shaka.polyfill.installAll();
 
 const mapStateToProps = ({
@@ -39,12 +44,20 @@ function Video({
   windowInnerDimensions,
   ...other
 }) {
-  const inputRef = useRef();
+  const videoVolumeSliderRef = useRef();
+  const videoTimeSliderRef = useRef();
   const videoRef = useRef();
   const playerRef = useRef();
+  const [loaded, setLoaded] = useState(false);
+  const [hideControls, setHideControls] = useState(false);
+  const [hideControlsTimeout, setHideControlsTimeout] = useState(undefined);
   const [fullscreenMode, setFullscreenMode] = useState(false);
   const setBlurred = useFocusVideo(videoRef);
-  const player = useLoadPlayer(src, videoRef, onLoaded);
+  const player = useLoadPlayer(src, videoRef, e => {
+    setLoaded(true);
+    onLoaded(e);
+    videoRef.current.play();
+  });
   const image = useImageLoader(poster, images, addImage, true);
   const {
     hidden: hovertextHidden,
@@ -58,6 +71,9 @@ function Video({
       if (typeof onClick === 'function') {
         onClick(e);
       }
+      videoRef.current.paused
+        ? videoRef.current.play()
+        : videoRef.current.pause();
     },
     onMouseEnter: e => {
       if (typeof onMouseEnter === 'function') {
@@ -80,9 +96,22 @@ function Video({
       if (videoRef.current && videoRef.current.paused) {
         hoverOnMouseMove(e);
       }
+      if (hideControlsTimeout) {
+        clearTimeout(hideControlsTimeout);
+      }
+      setHideControls(false);
+      setHideControlsTimeout(
+        setTimeout(() => {
+          setHideControls(true);
+          setHideControlsTimeout(clearTimeout(hideControlsTimeout));
+        }, 1000)
+      );
     }
   };
   const [timeouttime, setTimeouttime] = useState(undefined);
+  const [videoVolume, setVideoVolume] = useState(
+    (videoRef && videoRef.current && videoRef.current.volume) || 0.1
+  );
   const [videoTime, setVideoTime] = useState(
     (videoRef && videoRef.current && videoRef.current.currentTime) || 0
   );
@@ -101,6 +130,7 @@ function Video({
     }
   }, [videoRef, timeouttime, setTimeouttime, videoTime, setVideoTime]);
   const [overlayStyle, setOverlayStyle] = useState({});
+  const [muted, setMuted] = useState(false);
   useEffect(() => {
     if (videoRef.current) {
       const rect = ReactDOM.findDOMNode(
@@ -122,6 +152,7 @@ function Video({
     <div className="player" ref={playerRef}>
       <video
         key="video"
+        autoplay
         ref={videoRef}
         onBlur={() => setBlurred(true)}
         poster={image}
@@ -134,9 +165,68 @@ function Video({
         }
         {...{ ...other }}
       />
-      <div className="overlay" style={overlayStyle}>
-        <Subtitles {...{ subtitles, videoTime, ...mouseEventListeners }} />
-        <div className="controls" ref={useRef()}>
+      <div
+        className="overlay"
+        style={{
+          ...overlayStyle,
+          cursor:
+            videoRef.current && !videoRef.current.paused && hideControls
+              ? 'none'
+              : 'default',
+          ...(() => (loaded ? {} : { backgroundImage: `url(${loading})` }))()
+        }}
+      >
+        <PlaySvg
+          className={`play-button absolute`}
+          locked={true}
+          hidden={videoRef.current && !videoRef.current.paused}
+          paused={videoRef.current && videoRef.current.paused}
+          {...mouseEventListeners}
+          onClick={() =>
+            videoRef.current.paused
+              ? videoRef.current.play()
+              : videoRef.current.pause()
+          }
+        />
+        <Subtitles
+          {...{
+            subtitles,
+            videoTime,
+            ...mouseEventListeners,
+            offset: {
+              height:
+                videoRef.current && !videoRef.current.paused && hideControls
+                  ? vmin(2)
+                  : vmin(4)
+            }
+          }}
+        />
+        <div
+          className={`controls${
+            videoRef.current && !videoRef.current.paused && hideControls
+              ? ' hidden'
+              : ''
+          }`}
+          ref={useRef()}
+          onMouseEnter={() => {
+            if (hideControlsTimeout) {
+              clearTimeout(hideControlsTimeout);
+            }
+            setHideControls(false);
+          }}
+          onMouseLeave={() => {
+            if (hideControlsTimeout) {
+              clearTimeout(hideControlsTimeout);
+            }
+            setHideControls(false);
+            setHideControlsTimeout(
+              setTimeout(() => {
+                setHideControls(true);
+                setHideControlsTimeout(clearTimeout(hideControlsTimeout));
+              }, 1000)
+            );
+          }}
+        >
           <PlaySvg
             className={`play-button`}
             paused={videoRef.current && videoRef.current.paused}
@@ -146,17 +236,46 @@ function Video({
                 : videoRef.current.pause()
             }
           />
-          <input
-            ref={inputRef}
-            type="range"
+          <Slider
+            className="video-time-slider"
+            ref={videoTimeSliderRef}
             min="0"
             value={videoTime}
+            setValue={value => {
+              setVideoTime(value);
+              videoRef.current.currentTime = value;
+            }}
             max={videoRef.current && videoRef.current.duration}
-            onInput={e =>
-              setVideoTime(e.target.value) ||
-              (videoRef.current.currentTime = e.target.value)
-            }
             step="0.01"
+          />
+          <MuteSvg
+            className="mute-button"
+            muted={videoRef.current && videoRef.current.volume === 0}
+            onClick={() => {
+              if (muted) {
+                videoRef.current.volume = muted;
+                setVideoVolume(muted);
+                setMuted(false);
+              } else {
+                setMuted(videoVolume);
+                setVideoVolume(0);
+                videoRef.current.volume = 0;
+              }
+            }}
+          />
+          <Slider
+            ref={videoVolumeSliderRef}
+            className="video-volume-slider"
+            value={videoVolume}
+            max="0.1"
+            setValue={value => {
+              if (muted && value !== 0) {
+                setMuted(false);
+              }
+              setVideoVolume(value);
+              videoRef.current.volume = value;
+            }}
+            step="0.001"
           />
           <FullscreenSvg
             fullscreen={fullscreenMode}
