@@ -1,0 +1,20 @@
+.video-menu-button {
+  width: 4vmin;
+  height: 4vmin;
+}
+.video-menu {
+  position: fixed;
+  display: block;
+  width: max-content;
+  height: max-content;
+  background-color: rgba(0, 0, 0, 0.61);
+  transition: opacity 0.6s;
+  border-top-left-radius: 1vmin;
+  border-top-right-radius: 1vmin;
+  border: 0.2vmin solid black;
+  color: white;
+  box-sizing: border-box;
+}
+.video-menu.hidden {
+  opacity: 0;
+}

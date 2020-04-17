@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
-import addSubtitles from '../store/actions/add/subtitles';
-import parseSrt from './tools/parseSrt.mjs';
+import addSubtitles from '../../store/actions/add/subtitles';
+import parseSrt from '../tools/parseSrt.mjs';
 import { connect } from 'react-redux';
 import Subtitle from './subtitle';
 import './subtitles.scss';
-import { getElementRect, getElementRef } from './tools/element';
+import { getElementRect, getElementRef } from '../tools/element';
 
 const mapStateToProps = ({
   state: {

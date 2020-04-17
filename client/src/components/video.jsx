@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import useImageLoader from './effects/imageLoader';
 import addImage from '../store/actions/add/image';
 import './video.scss';
-import Subtitles from './subtitles';
+import Subtitles from './video/subtitles';
 import PlaySvg from '../svg/play';
 import FullscreenSvg from '../svg/fullscreen';
 import MuteSvg from '../svg/mute';
@@ -13,6 +13,8 @@ import Hover from './hover';
 import Slider from './slider';
 import loading from '../svg/loading.svg';
 import { vmin } from './tools/vscale';
+import VideoMenu from './video/button/menu';
+import SubtitlesButton from '../svg/subtitles';
 
 shaka.polyfill.installAll();
 
@@ -152,7 +154,6 @@ function Video({
           JSON.stringify(overlayStyle) !==
           JSON.stringify({ top, left, width, height })
         ) {
-          console.log(top, left, width, height);
           setOverlayStyle({ top, left, width, height });
         }
       }
@@ -163,14 +164,18 @@ function Video({
       if (!bufferedTimeout) {
         setBufferedTimeout(
           setTimeout(() => {
-            if (videoRef.current.buffered.length !== buffered) {
+            if (
+              videoRef.current &&
+              videoRef.current.buffered.length !== buffered
+            ) {
               setBuffered(videoRef.current.buffered.length);
             }
             setBufferedTimeout(clearTimeout(bufferedTimeout));
-          }, 100)
+          }, 10)
         );
       }
     }
+    return () => clearTimeout(bufferedTimeout);
   }, [videoRef, buffered, setBuffered, bufferedTimeout, setBufferedTimeout]);
   return (
     <div className="player" ref={playerRef}>
@@ -272,6 +277,13 @@ function Video({
             max={(videoRef.current && videoRef.current.duration) || 1}
             step="0.01"
           />
+          <VideoMenu
+            {...{ button: <SubtitlesButton />, windowInnerDimensions }}
+          >
+            {Object.keys(subtitles).map(language => (
+              <div className="language-button">{language}</div>
+            ))}
+          </VideoMenu>
           <MuteSvg
             className="mute-button"
             muted={videoRef.current && videoRef.current.volume === 0}

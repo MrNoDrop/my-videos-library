@@ -95,26 +95,38 @@ function addPredefinedFunctions() {
   );
   this.addFileFunction('isDirectory', () => false);
   this.addFileFunction('isFile', () => true);
-  this.addFileFunction('read', function({ path, extention }) {
-    return new Promise((resolve, reject) =>
-      fs.readFile(`${this.folderLocation}/${path}`, (err, data) =>
-        err
-          ? reject(err)
-          : resolve(
-              typeof extention === 'string' &&
-                extention.toLowerCase() === 'json'
-                ? JSON.parse(data.toString())
-                : data
-            )
-      )
-    );
+  this.addFileFunction('read', async function({ path, extention }) {
+    if (!this.cache[path]) {
+      const data = await new Promise(async (resolve, reject) => {
+        while (this.lock.includes(path)) {
+          await new Promise(resolve => setTimeout(() => resolve(), 100));
+        }
+        fs.readFile(`${this.folderLocation}/${path}`, (err, data) =>
+          err
+            ? reject(err)
+            : resolve(
+                typeof extention === 'string' &&
+                  extention.toLowerCase() === 'json'
+                  ? JSON.parse(data.toString())
+                  : data
+              )
+        );
+      });
+      this.cache[path] = { data, extention };
+    }
+    return this.cache[path].data;
   });
   this.addFileFunction('write', function({ path }, content) {
-    return new Promise((resolve, reject) =>
-      fs.writeFile(`${this.folderLocation}/${path}`, content, err =>
-        err ? reject(err) : resolve(this.update())
-      )
-    );
+    return new Promise(async (resolve, reject) => {
+      while (this.lock.includes(path)) {
+        await new Promise(resolve => setTimeout(() => resolve(), 100));
+      }
+      this.lock.push(path);
+      fs.writeFile(`${this.folderLocation}/${path}`, content, err => {
+        this.lock.splice(this.lock.indexOf(path), 1);
+        err ? reject(err) : resolve(this.update());
+      });
+    });
   });
   this.addFileFunction('delete', function({ path }) {
     return new Promise((resolve, reject) =>
@@ -128,6 +140,7 @@ function addPredefinedFunctions() {
 
 export default class PathDB {
   lock = [];
+  cache = {};
   database = { paths: [], structure: {} };
   functions = {
     dir: [],
@@ -157,6 +170,31 @@ export default class PathDB {
         this.functions,
         this.folderLocation
       );
+    }
+    this.updateCache();
+  }
+  updateCache() {
+    if (!this.updatingCache) {
+      this.updatingCache = true;
+      new Promise(async resolve => {
+        for (let path in this.cache) {
+          while (this.lock.includes(path)) {
+            await new Promise(resolve => setTimeout(() => resolve(), 100));
+          }
+          fs.readFile(`${this.folderLocation}/${path}`, (err, data) => {
+            if (err) {
+              throw new Error(err);
+            } else {
+              this.cache[path].data =
+                typeof this.cache[path].extention === 'string' &&
+                this.cache[path].extention.toLowerCase() === 'json'
+                  ? JSON.parse(data.toString())
+                  : data;
+            }
+          });
+        }
+        resolve((this.updatingCache = false));
+      });
     }
   }
   monitor(interval = 100) {
@@ -367,7 +405,14 @@ function obj(mapped, functions, folderLocation) {
   let objectified = [];
   let obj = {};
   for (let path of mapped) {
-    objectified.push(objectify.bind(this)(path, functions, folderLocation));
+    const objectifiedPath = objectify.bind(this)(
+      path,
+      functions,
+      folderLocation
+    );
+    if (objectifiedPath) {
+      objectified.push(objectifiedPath);
+    }
   }
   for (let object of objectified) {
     obj = join(obj, object);
@@ -388,6 +433,9 @@ function objectify(
     key = path.substring(0, path.indexOf('/') + 1).replace('/', '');
   } else {
     key = path;
+  }
+  if (!fs.existsSync(`${folderLocation}/${currentPath}/${key}`)) {
+    return;
   }
   let objectKey = `${key}`;
   let isHidden = false;
@@ -415,12 +463,15 @@ function objectify(
       extention,
       ...(key === path
         ? {}
-        : objectify.bind(this)(
-            path.substring(path.indexOf('/') + 1, path.length),
-            functions,
-            folderLocation,
-            `${currentPath}/${key}`
-          ))
+        : (() => {
+            const objectifiedPath = objectify.bind(this)(
+              path.substring(path.indexOf('/') + 1, path.length),
+              functions,
+              folderLocation,
+              `${currentPath}/${key}`
+            );
+            return objectifiedPath ? objectifiedPath : {};
+          })())
     }
   };
   if (typeof functions === 'object' && typeof folderLocation === 'string') {

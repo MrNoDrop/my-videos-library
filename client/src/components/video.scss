@@ -15,6 +15,27 @@
   background-repeat: no-repeat;
   background-position: center;
   background-repeat: none;
+  .video-menu {
+    border-radius: 3vmin !important;
+    box-sizing: border-box;
+    .language-button {
+      font-size: 2.7vmin;
+      border: 0.15vmin solid rgba(255, 255, 255, 0.356);
+      cursor: pointer;
+      background-color: black;
+      transition: color 0.7s, background-color 0.7s, box-shadow 0.7s;
+      border-radius: 3vmin;
+      text-align: center;
+      padding: 0.7vmin;
+      margin: 0.3vmin;
+    }
+    .language-button:hover {
+      color: black;
+      background-color: white;
+      border: 0.15vmin solid rgba(255, 255, 255, 0.377);
+      box-shadow: 0 0 1vmin 1vmin black;
+    }
+  }
   .controls.hidden {
     opacity: 0;
   }

@@ -2,7 +2,7 @@
   "state": {
     "currenttime": {},
     "subtitles": {},
-    "selected-subtitles": ["nl", "fr"],
+    "selected-subtitles": ["fr", "nl"],
     "viewmode": "horizontal",
     "user": { "language": "en", "name": "user" },
     "window": {

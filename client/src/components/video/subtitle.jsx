@@ -10,7 +10,7 @@ function Subtitle({
   ...props
 }) {
   const ref = useRef();
-  const [fontSize, setFontSize] = useState(4);
+  const [fontSize, setFontSize] = useState(5);
   const changeFontSize = event => {
     let delta;
 
@@ -23,7 +23,7 @@ function Subtitle({
     if (delta > 0) {
       setFontSize(fontSize - 0.1 < 2.5 ? 2.5 : fontSize - 0.1);
     } else if (delta < 0) {
-      setFontSize(fontSize + 0.1 > 5 ? 5 : fontSize + 0.1);
+      setFontSize(fontSize + 0.1);
     }
   };
   const currentSubtitle = useDetermineCurrentSubtitle(videoTime, collection);
