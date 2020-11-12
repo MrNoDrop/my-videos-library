@@ -1,13 +1,24 @@
 {
   "state": {
     "currenttime": {},
+    "subtitles": {},
+    "selected-subtitles": ["fr", "nl"],
     "viewmode": "horizontal",
     "user": { "language": "en", "name": "user" },
     "window": {
       "inner": null,
       "outer": null
     },
-    "navigator": { "online": true }
+    "navigator": { "online": true },
+    "series": {
+      "current": {
+        "category": null,
+        "serie": null,
+        "season": null,
+        "episode": null
+      }
+    },
+    "images": {}
   },
   "router": {
     "pathname": "/",

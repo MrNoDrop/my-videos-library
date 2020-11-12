@@ -2,11 +2,13 @@ import React from 'react';
 // import UploadSerieForm from '../components/form/upload/serie';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import SeriesRoute from './series';
-import SeriesViewRoute from './series/view';
+import SeriesCategoriesRoute from './series/categories';
+import SeriesCategoryRoute from './series/category';
+import SerieSeasonsRoute from './series/seasons';
+import SerieEpisodesRoute from './series/episodes';
+import SerieVideoRoute from './series/video';
 import MoviesRoute from './movies';
 import HomeRoute from './home';
-import VideoRoute from './video';
 
 const mapStateToProps = ({
   state: {
@@ -14,97 +16,18 @@ const mapStateToProps = ({
   },
   router: { pathname, routes }
 }) => ({ pathname, routes, language });
-const imagepath = {
-  horizontal: (pathname, item) => {
-    const [language, fixedpath, ...requestedPath] = pathname
-      .substring(1, pathname.length)
-      .split('/');
-    return `/series/shared/${requestedPath.join('/')}/${item}/cover/horizontal`;
-  },
-  vertical: (pathname, item) => {
-    const [language, fixedpath, ...requestedPath] = pathname
-      .substring(1, pathname.length)
-      .split('/');
-    return `/series/shared/${requestedPath.join('/')}/${item}/cover/vertical`;
-  }
-};
+
 const routesComponents = {
   series: {
-    route: SeriesRoute,
+    route: SeriesCategoriesRoute,
     category: {
-      route: () => (
-        <SeriesViewRoute
-          fetchpath={pathname => {
-            // eslint-disable-next-line
-            const [language, fixedpath, category] = pathname
-              .substring(1, pathname.length)
-              .split('/');
-            return `/series/${language}/${category}`;
-          }}
-          {...{ imagepath }}
-        />
-      ),
+      route: SeriesCategoryRoute,
       serie: {
-        route: () => (
-          <SeriesViewRoute
-            prefix="Season"
-            named={true}
-            fetchpath={pathname => {
-              // eslint-disable-next-line
-              const [language, fixedpath, category, serie] = pathname
-                .substring(1, pathname.length)
-                .split('/');
-              return `/series/${language}/${category}/${serie}`;
-            }}
-            {...{ imagepath }}
-          />
-        ),
+        route: SerieSeasonsRoute,
         seasons: {
-          route: () => (
-            <SeriesViewRoute
-              viewmodes={['list', 'horizontal']}
-              alterSelectedViewmodes={{
-                list: 'list',
-                horizontal: ['horizontal', 'vertical'],
-                vertical: 'horizontal'
-              }}
-              named={true}
-              prefix="Episode"
-              fetchpath={pathname => {
-                const [
-                  language,
-                  // eslint-disable-next-line
-                  fixedpath,
-                  category,
-                  serie,
-                  seasons
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/${language}/${category}/${serie}/${seasons}`;
-              }}
-              imagepath={(pathname, item) => {
-                const [
-                  language,
-                  fixedpath,
-                  ...requestedPath
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/shared/${requestedPath.join(
-                  '/'
-                )}/${item}/thumbnail`;
-              }}
-              infopath={(pathname, item) => {
-                const [
-                  language,
-                  fixedpath,
-                  ...requestedPath
-                ] = pathname.substring(1, pathname.length).split('/');
-                return `/series/${language}/${requestedPath.join(
-                  '/'
-                )}/${item}/info`;
-              }}
-            />
-          ),
+          route: SerieEpisodesRoute,
           episodes: {
-            route: VideoRoute
+            route: SerieVideoRoute
           }
         }
       }
