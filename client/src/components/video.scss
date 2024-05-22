@@ -35,6 +35,9 @@
       border: 0.15vmin solid rgba(255, 255, 255, 0.377);
       box-shadow: 0 0 1vmin 1vmin black;
     }
+    .selected {
+      background-color: green;
+    }
   }
   .controls.hidden {
     opacity: 0;

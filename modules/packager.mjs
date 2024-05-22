@@ -3,7 +3,7 @@ import { installPackager as InstallPackager } from "../res/packager/install.mjs"
 import Ffmpeg from "./ffmpeg.mjs";
 import { flat } from "./polyfils.mjs";
 
-Array.prototype.flat = function() {
+Array.prototype.flat = function () {
   return flat(this[0]);
 };
 
@@ -41,7 +41,7 @@ export default class Packager {
         fileName,
         filePath: file,
         outputPath,
-        concatResolution
+        concatResolution,
       });
       if (this.verbose) {
         console.log(`Added input file: ${file}.`);
@@ -84,24 +84,22 @@ export default class Packager {
   }
 
   async save(destination) {
-    if (!(await fs.isCommandAvailable("ffmpeg"))) {
-      await installFFMPEG();
-    }
-    if (!(await fs.isCommandAvailable("packager-win"))) {
-      await installPackager();
-    }
-    if (this.inputs.length === 0) {
+    if (
+      !(await fs.isCommandAvailable("ffmpeg")) ||
+      !(await fs.isCommandAvailable("packager")) ||
+      this.inputs.length === 0
+    ) {
       return;
     }
     let resolution = undefined;
-    let command = "packager-win ";
+    let command = "packager ";
     let manifestName = "";
     for (let {
       resolution: { height },
       fileName,
       filePath,
       outputPath,
-      concatResolution
+      concatResolution,
     } of this.inputs) {
       const outputDestination = outputPath ? outputPath : destination;
       filePath =
@@ -175,7 +173,7 @@ export default class Packager {
 async function getResolution(file) {
   try {
     const {
-      resolution: { w, h }
+      resolution: { w, h },
     } = (await new Ffmpeg(file).metadata)["Input0"].metadata;
     return { width: w, height: h };
   } catch (ffmpegError) {

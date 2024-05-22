@@ -1,0 +1,28 @@
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+
+export default async function checkLanguageCategoryMovieThumbnail(
+  db,
+  req,
+  res,
+  next
+) {
+  const { language, category, movie } = req.parameters;
+  const thumbnails =
+    db.structure.shared[await globalCategory(language, category, db)][movie]
+      .thumbnails;
+  if (thumbnails && thumbnails.list().length >= 1) {
+    next();
+  } else {
+    res
+      .status(404)
+      .json(
+        response.error.missing.file(
+          { index: 4, value: "thumbnail" },
+          ["movies", "shared", ...Object.values(req.parameters), "thumbnail"],
+          null,
+          "Missing thumbnail file."
+        )
+      );
+  }
+}

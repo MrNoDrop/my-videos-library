@@ -1,34 +1,46 @@
-import React, { useRef, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import shaka from 'shaka-player';
-import { connect } from 'react-redux';
-import useImageLoader from './effects/imageLoader';
-import addImage from '../store/actions/add/image';
-import './video.scss';
-import Subtitles from './video/subtitles';
-import PlaySvg from '../svg/play';
-import FullscreenSvg from '../svg/fullscreen';
-import MuteSvg from '../svg/mute';
-import Hover from './hover';
-import Slider from './slider';
-import loading from '../svg/loading.svg';
-import { vmin } from './tools/vscale';
-import VideoMenu from './video/button/menu';
-import SubtitlesButton from '../svg/subtitles';
+import React, { useRef, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import shaka from "shaka-player";
+import { connect } from "react-redux";
+import useImageLoader from "./effects/imageLoader";
+import addImage from "../store/actions/add/image";
+import "./video.scss";
+import Subtitles from "./video/subtitles";
+import PlaySvg from "../svg/play";
+import FullscreenSvg from "../svg/fullscreen";
+import MuteSvg from "../svg/mute";
+import Hover from "./hover";
+import Slider from "./slider";
+import loading from "../svg/loading.svg";
+import { vmin } from "./tools/vscale";
+import VideoMenu from "./video/button/menu";
+import SubtitlesButton from "../svg/subtitles";
+import setSelectedSubtitles from "../store/actions/set/selected/subtitles";
 
 shaka.polyfill.installAll();
 
 const mapStateToProps = ({
   state: {
     images,
-    'selected-subtitles': selectedSubtitles,
-    window: { inner }
-  }
+    "selected-subtitles": selectedSubtitles,
+    window: { inner },
+  },
 }) => ({ images, windowInnerDimensions: inner, selectedSubtitles });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   addImage: (images, image, imageUrl) =>
-    dispatch(addImage(images, image, imageUrl))
+    dispatch(addImage(images, image, imageUrl)),
+  toggleSelectedSubtitle: (selectedSubtitles, selectedSubtitle) => {
+    if (selectedSubtitles.includes(selectedSubtitle)) {
+      dispatch(
+        setSelectedSubtitles(
+          selectedSubtitles.filter((subtitle) => subtitle != selectedSubtitle)
+        )
+      );
+    } else {
+      dispatch(setSelectedSubtitles([...selectedSubtitles, selectedSubtitle]));
+    }
+  },
 });
 function Video({
   src,
@@ -44,6 +56,7 @@ function Video({
   poster,
   addImage,
   windowInnerDimensions,
+  toggleSelectedSubtitle,
   ...other
 }) {
   const videoVolumeSliderRef = useRef();
@@ -56,7 +69,7 @@ function Video({
   const [hideControls, setHideControls] = useState(false);
   const [hideControlsTimeout, setHideControlsTimeout] = useState(undefined);
   const [fullscreenMode, setFullscreenMode] = useState(false);
-  const player = useLoadPlayer(src, videoRef, e => {
+  const player = useLoadPlayer(src, videoRef, (e) => {
     setLoaded(true);
     onLoaded(e);
     videoRef.current.play();
@@ -67,33 +80,33 @@ function Video({
     mousePostion,
     onMouseEnter: hoverOnMouseEnter,
     onMouseLeave: hoverOnMouseLeave,
-    onMouseMove: hoverOnMouseMove
+    onMouseMove: hoverOnMouseMove,
   } = Hover.useHide();
   const mouseEventListeners = {
-    onClick: e => {
-      if (typeof onClick === 'function') {
+    onClick: (e) => {
+      if (typeof onClick === "function") {
         onClick(e);
       }
       videoRef.current.paused
         ? videoRef.current.play()
         : hoverOnMouseMove(e) || videoRef.current.pause();
     },
-    onMouseEnter: e => {
-      if (typeof onMouseEnter === 'function') {
+    onMouseEnter: (e) => {
+      if (typeof onMouseEnter === "function") {
         onMouseEnter(e);
       }
       if (videoRef.current && videoRef.current.paused && loaded) {
         hoverOnMouseEnter(e);
       }
     },
-    onMouseLeave: e => {
-      if (typeof onMouseLeave === 'function') {
+    onMouseLeave: (e) => {
+      if (typeof onMouseLeave === "function") {
         onMouseLeave(e);
       }
       hoverOnMouseLeave(e);
     },
-    onMouseMove: e => {
-      if (typeof onMouseMove === 'function') {
+    onMouseMove: (e) => {
+      if (typeof onMouseMove === "function") {
         onMouseMove(e);
       }
       if (!loaded) {
@@ -113,7 +126,7 @@ function Video({
           setHideControlsTimeout(clearTimeout(hideControlsTimeout));
         }, 1000)
       );
-    }
+    },
   };
   const [timeouttime, setTimeouttime] = useState(undefined);
   const [videoVolume, setVideoVolume] = useState(0.1);
@@ -187,8 +200,8 @@ function Video({
         onLoadedMetadata={() => {
           player.configure({
             streaming: {
-              bufferBehind: videoRef.current.duration
-            }
+              bufferBehind: videoRef.current.duration,
+            },
           });
         }}
         {...{ ...other }}
@@ -199,10 +212,10 @@ function Video({
           ...overlayStyle,
           cursor:
             videoRef.current && !videoRef.current.paused && hideControls
-              ? 'none'
-              : 'default',
+              ? "none"
+              : "default",
           ...(() =>
-            loaded && buffered ? {} : { backgroundImage: `url(${loading})` })()
+            loaded && buffered ? {} : { backgroundImage: `url(${loading})` })(),
         }}
       >
         <PlaySvg
@@ -226,15 +239,15 @@ function Video({
               height:
                 videoRef.current && !videoRef.current.paused && hideControls
                   ? vmin(4)
-                  : vmin(6)
-            }
+                  : vmin(6),
+            },
           }}
         />
         <div
           className={`controls${
             videoRef.current && !videoRef.current.paused && hideControls
-              ? ' hidden'
-              : ''
+              ? " hidden"
+              : ""
           }`}
           ref={useRef()}
           onMouseEnter={() => {
@@ -270,7 +283,7 @@ function Video({
             ref={videoTimeSliderRef}
             min="0"
             value={videoTime}
-            setValue={value => {
+            setValue={(value) => {
               setVideoTime(value);
               videoRef.current.currentTime = value;
             }}
@@ -280,8 +293,17 @@ function Video({
           <VideoMenu
             {...{ button: <SubtitlesButton />, windowInnerDimensions }}
           >
-            {Object.keys(subtitles).map(language => (
-              <div className="language-button">{language}</div>
+            {Object.keys(subtitles).map((language) => (
+              <div
+                className={`language-button${
+                  selectedSubtitles.includes(language) ? " selected" : ""
+                }`}
+                onClick={() => {
+                  toggleSelectedSubtitle(selectedSubtitles, language);
+                }}
+              >
+                {language}
+              </div>
             ))}
           </VideoMenu>
           <MuteSvg
@@ -304,7 +326,7 @@ function Video({
             className="video-volume-slider"
             value={videoVolume}
             max="0.1"
-            setValue={value => {
+            setValue={(value) => {
               if (muted && value !== 0) {
                 setMuted(false);
               }
@@ -349,7 +371,7 @@ function useLoadPlayer(src, videoRef, onLoaded) {
       return;
     }
     const shakaPlayer = new shaka.Player(videoRef.current);
-    shakaPlayer.addEventListener('error', console.error);
+    shakaPlayer.addEventListener("error", console.error);
     shakaPlayer
       .load(src)
       .then(() => onLoaded())

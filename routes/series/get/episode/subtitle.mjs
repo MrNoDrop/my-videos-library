@@ -1,10 +1,10 @@
-import check from '../../check/get.mjs';
-import response from '../../../predefined/responses.mjs';
-import parseSrt from '../../../../modules/parseSrt.mjs';
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
+import parseSrt from "../../../../modules/parseSrt.mjs";
 
 export default function getEpisodeSubtitle(router, db) {
   router.get(
-    '/shared/:category/:serie/:season/:episode/subtitles/:subtitle',
+    "/shared/:category/:serie/:season/:episode/subtitles/:subtitle",
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
@@ -42,17 +42,17 @@ export default function getEpisodeSubtitle(router, db) {
             response.error.send.file(
               { index: 7, value: subtitle },
               [
-                'series',
-                'shared',
+                "series",
+                "shared",
                 category,
                 serie,
                 season,
                 episode,
-                'subtitles',
-                quality
+                "subtitles",
+                subtitle,
               ],
               null,
-              'Could not send subtitle file.',
+              "Could not send subtitle file.",
               error
             )
           );

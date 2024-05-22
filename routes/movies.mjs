@@ -1,0 +1,20 @@
+import express from "express";
+import moviesDB from "../db/movies.mjs";
+import get from "./movies/get.mjs";
+
+const router = express.Router();
+get.languages(router, moviesDB);
+get.categories(router, moviesDB);
+get.movieCover(router, moviesDB);
+get.movies(router, moviesDB);
+get.movie(router, moviesDB);
+get.movieInfo(router, moviesDB);
+get.movieAudios(router, moviesDB);
+get.movieAudio(router, moviesDB);
+get.movieVideos(router, moviesDB);
+get.movieVideo(router, moviesDB);
+get.movieManifest(router, moviesDB);
+get.movieThumbnail(router, moviesDB);
+get.movieSubtitles(router, moviesDB);
+get.movieSubtitle(router, moviesDB);
+export default router;

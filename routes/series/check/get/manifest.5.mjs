@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   db,
@@ -15,10 +15,10 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   } else {
     res.status(404).json(
       response.error.missing.file(
-        { index: 6, value: 'manifest' },
-        ['series', ...Object.values(req.parameters), 'manifest'],
+        { index: 6, value: "manifest" },
+        ["series", ...Object.values(req.parameters), "manifest"],
         {
-          path: ['series', ...Object.values(req.parameters)],
+          path: ["series", ...Object.values(req.parameters)],
           manifest: null,
           info: db.structure[language][category][serie].season[season].episode[
             episode
@@ -30,14 +30,16 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
           subtitles: db.structure.shared[category][serie].season[season]
             .episode[episode].subtitles
             ? (() => {
-                const keys = db.structure.shared[category][serie].season[
-                  season
-                ].episode[episode].subtitles.list();
+                const keys =
+                  db.structure.shared[category][serie].season[season].episode[
+                    episode
+                  ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] = db.structure.shared[category][serie].season[
-                    season
-                  ].episode[episode].subtitles[key].toUrl();
+                  subtitles[key] =
+                    db.structure.shared[category][serie].season[season].episode[
+                      episode
+                    ].subtitles[key].toUrl();
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
@@ -53,10 +55,10 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
                 ].thumbnails &&
                 db.structure.shared[category][serie].season[season].episode[
                   episode
-                ].toUrl() + '/thumbnail'
-              : null
+                ].toUrl() + "/thumbnail"
+              : null,
         },
-        'Missing manifest file.'
+        "Missing manifest file."
       )
     );
   }
