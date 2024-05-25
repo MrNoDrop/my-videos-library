@@ -197,6 +197,7 @@ function Video({
     <div className="player" ref={playerRef}>
       <video
         key="video"
+        className="video"
         autoplay
         ref={videoRef}
         poster={image}
