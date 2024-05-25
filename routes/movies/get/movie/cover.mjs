@@ -1,5 +1,5 @@
 import globalCategory from "../../../tools/globalCategory.mjs";
-import globalMovieTitle from "../../../tools/globalMovieTitle.mjs";
+import globalMovieTitle from "../../../tools/globalTitle.mjs";
 
 export default function getMovieCover(router, db) {
   router.get(

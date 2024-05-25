@@ -1,6 +1,6 @@
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
-import globalMovieTitle from "../../../tools/globalMovieTitle.mjs";
+import globalMovieTitle from "../../../tools/globalTitle.mjs";
 
 export default async function checkLanguageCategoryMovieVideoQuality(
   db,

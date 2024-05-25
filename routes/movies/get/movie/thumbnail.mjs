@@ -1,6 +1,6 @@
 import check from "../../check/get.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
-import globalMovieTitle from "../../../tools/globalMovieTitle.mjs";
+import globalMovieTitle from "../../../tools/globalTitle.mjs";
 
 export default function getMovieThumbnail(router, db) {
   router.get(

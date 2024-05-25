@@ -2,7 +2,7 @@ import check from "../../check/get.mjs";
 import response from "../../../predefined/responses.mjs";
 import parseSrt from "../../../../modules/parseSrt.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
-import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
+import golbalMovieTitle from "../../../tools/globalTitle.mjs";
 
 export default function getMovieSubtitle(router, db) {
   router.get(

@@ -1,6 +1,6 @@
 import response from "../../predefined/responses.mjs";
 import globalCategory from "../../tools/globalCategory.mjs";
-import golbalMovieTitle from "../../tools/globalMovieTitle.mjs";
+import golbalMovieTitle from "../../tools/globalTitle.mjs";
 import check from "../check/get.mjs";
 
 export default function getMovie(router, db) {
