@@ -11,6 +11,7 @@ import setMovies from "../../store/actions/movies/set";
 import setCurrentMovie from "../../store/actions/movies/set/current/movie";
 import addCategoryMovies from "../../store/actions/movies/add/category/movies";
 import setMoviesMovieInfo from "../../store/actions/movies/set/movie/info";
+import setCurrentCategory from "../../store/actions/movies/set/current/category";
 
 const mapStateToProps = ({
   state: {
@@ -30,6 +31,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentMovie: (movies, movie) => dispatch(setCurrentMovie(movies, movie)),
   changePath: (pathname) => dispatch(push(pathname)),
   setMovies: (movies) => dispatch(setMovies(movies)),
+  setCurrentCategory: (movies, category) =>
+    dispatch(setCurrentCategory(movies, category)),
 });
 
 function SeriesCategoryRoute({
@@ -43,9 +46,16 @@ function SeriesCategoryRoute({
   pathname,
   setMovies,
   setMoviesMovieInfo,
+  setCurrentCategory,
 }) {
   const ref = useRef();
   const [filter, setFilter] = useState("");
+  updateCategoryRoute(
+    movies,
+    movies.current.category,
+    pathname,
+    setCurrentCategory
+  );
   useFetchCategoryMovies(
     language,
     addCategoryMovies,
@@ -162,6 +172,17 @@ export default connect(
   mapDispatchToProps
 )(SeriesCategoryRoute);
 
+function updateCategoryRoute(
+  movies,
+  currentCategory,
+  pathname,
+  setCurrentCategory
+) {
+  const category = pathname.split("/")[3];
+  if (category !== currentCategory) {
+    setCurrentCategory(movies, category);
+  }
+}
 function useFetchCategoryMovies(
   language,
   addCategoryMovies,
