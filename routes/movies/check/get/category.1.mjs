@@ -2,7 +2,7 @@ import response from "../../../predefined/responses.mjs";
 
 export default async function checkLanguageCategory(db, req, res, next) {
   const { language, category } = req.parameters;
-  if (db.structure[language || "shared"].includes(category)) {
+  if (db.structure[language].includes(category)) {
     next();
   } else {
     let categoryIndex = undefined;
@@ -23,7 +23,7 @@ export default async function checkLanguageCategory(db, req, res, next) {
         }
       }
     }
-    if (db.structure[language || "shared"].includes(req.parameters.category)) {
+    if (db.structure[language].includes(req.parameters.category)) {
       next();
     } else {
       res.status(400).json(
@@ -35,7 +35,7 @@ export default async function checkLanguageCategory(db, req, res, next) {
             ...Object.values(req.parameters),
           ],
           {
-            existing: { categories: db.structure[language || "shared"].list() },
+            existing: { categories: db.structure[language].list() },
           },
           "Category does not exist."
         )
