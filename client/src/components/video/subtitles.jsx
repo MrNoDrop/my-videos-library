@@ -1,21 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
-import addSubtitles from '../../store/actions/add/subtitles';
-import parseSrt from '../tools/parseSrt.mjs';
-import { connect } from 'react-redux';
-import Subtitle from './subtitle';
-import './subtitles.scss';
-import { getElementRect, getElementRef } from '../tools/element';
+import React, { useRef, useEffect, useState } from "react";
+import addSubtitles from "../../store/actions/add/subtitles";
+import parseSrt from "../tools/parseSrt.mjs";
+import { connect } from "react-redux";
+import Subtitle from "./subtitle";
+import "./subtitles.scss";
+import { getElementRect, getElementRef } from "../tools/element";
 
 const mapStateToProps = ({
   state: {
     subtitles,
-    'selected-subtitles': selected,
-    window: { inner }
-  }
+    "selected-subtitles": selected,
+    window: { inner },
+  },
 }) => ({ fetched: subtitles, selected, windowInnerDimensions: inner });
 
-const mapDispatchToProps = dispatch => ({
-  add: (fetched, newSubtitles) => dispatch(addSubtitles(fetched, newSubtitles))
+const mapDispatchToProps = (dispatch) => ({
+  add: (fetched, newSubtitles) => dispatch(addSubtitles(fetched, newSubtitles)),
 });
 
 function Subtitles({
@@ -41,17 +41,17 @@ function Subtitles({
     <div
       {...{
         ref,
-        className: `subtitles${className ? ` ${className}` : ''}`,
-        ...other
+        className: `subtitles${className ? ` ${className}` : ""}`,
+        ...other,
       }}
     >
-      <div style={{ width: '100%', height: spacerHeight }} />
-      {selected.map(selected => (
+      <div style={{ width: "100%", height: spacerHeight }} />
+      {selected.map((selected) => (
         <Subtitle
           {...{
             key: selected,
             videoTime,
-            collection: fetched[subtitles[selected]]
+            collection: fetched[subtitles[selected]],
           }}
         />
       ))}
@@ -69,7 +69,7 @@ function useFetchSubtitles(subtitles, fetched, add, selected) {
       (async () => {
         const freshSubtitles = {};
         for (let subset in subtitles) {
-          if (fetched[subtitles[subset]] || !selected.includes(subset)) {
+          if (fetched[subtitles[subset]]) {
             continue;
           }
           freshSubtitles[subtitles[subset]] = parseSrt(
@@ -118,7 +118,7 @@ function useDetermineSpacerHeight(
     videoTime,
     spacerHeight,
     setSpacerHeight,
-    offset
+    offset,
   ]);
   return spacerHeight;
 }

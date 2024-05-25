@@ -48,17 +48,17 @@
       "pl": {
         "series": "seriale",
         "movies": "filmy",
-        "home": "home"
+        "home": "dom"
       },
       "fr": {
-        "series": "series",
-        "movies": "movies",
-        "home": "home"
+        "series": "séries",
+        "movies": "films",
+        "home": "maison"
       },
       "nl": {
         "series": "series",
-        "movies": "movies",
-        "home": "home"
+        "movies": "films",
+        "home": "thuis"
       }
     }
   }
