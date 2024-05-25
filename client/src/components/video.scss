@@ -5,6 +5,9 @@
   outline: none;
   position: relative;
 }
+body {
+  background-color: black;
+}
 .player video {
   margin-bottom: -2.5vmin;
   z-index: 0;
