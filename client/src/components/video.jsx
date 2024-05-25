@@ -59,6 +59,9 @@ function Video({
   toggleSelectedSubtitle,
   ...other
 }) {
+  if (!subtitles) {
+    subtitles = {};
+  }
   const videoVolumeSliderRef = useRef();
   const videoTimeSliderRef = useRef();
   const videoRef = useRef();

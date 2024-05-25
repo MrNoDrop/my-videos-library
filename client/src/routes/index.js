@@ -9,6 +9,7 @@ import SerieEpisodesRoute from "./series/episodes";
 import SerieVideoRoute from "./series/video";
 import MoviesCategoriesRoute from "./movies/categories";
 import MoviesCategoryRoute from "./movies/category";
+import MoviesCategoryMovieRoute from "./movies/video";
 import HomeRoute from "./home";
 
 const mapStateToProps = ({
@@ -38,6 +39,9 @@ const routesComponents = {
     route: MoviesCategoriesRoute,
     category: {
       route: MoviesCategoryRoute,
+      movie: {
+        route: MoviesCategoryMovieRoute,
+      },
     },
   },
   home: { route: HomeRoute },
@@ -79,6 +83,26 @@ export default connect(mapStateToProps)(({ pathname, routes, language }) => (
                 component={routesComponents.series.category.serie.route}
               />
             );
+          case 3:
+            return (
+              <Route
+                {...{ path }}
+                exact
+                strict
+                component={routesComponents.series.category.serie.seasons.route}
+              />
+            );
+          case 4:
+            return (
+              <Route
+                {...{ path }}
+                exact
+                strict
+                component={
+                  routesComponents.series.category.serie.seasons.episodes.route
+                }
+              />
+            );
         }
       }
     })()}
@@ -112,27 +136,7 @@ export default connect(mapStateToProps)(({ pathname, routes, language }) => (
                 {...{ path }}
                 exact
                 strict
-                component={routesComponents.movies.category.serie.route}
-              />
-            );
-          case 3:
-            return (
-              <Route
-                {...{ path }}
-                exact
-                strict
-                component={routesComponents.movies.category.serie.seasons.route}
-              />
-            );
-          case 4:
-            return (
-              <Route
-                {...{ path }}
-                exact
-                strict
-                component={
-                  routesComponents.movies.category.serie.seasons.episodes.route
-                }
+                component={routesComponents.movies.category.movie.route}
               />
             );
         }
