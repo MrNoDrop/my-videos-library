@@ -18,6 +18,12 @@
         "episode": null
       }
     },
+    "movies": {
+      "current": {
+        "category": null,
+        "movie": null
+      }
+    },
     "images": {}
   },
   "router": {
