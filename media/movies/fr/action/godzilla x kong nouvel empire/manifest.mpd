@@ -5,21 +5,21 @@
     <AdaptationSet id="0" contentType="audio" subsegmentStartsWithSAP="1">
       <Representation id="0" bandwidth="276686" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="48000">
         <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-        <BaseURL>/movies/pl/akcja/godzilla x kong the new empire/audio/720</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nouvel empire/audio/720</BaseURL>
         <SegmentBase indexRange="833-28440" timescale="48000">
           <Initialization range="0-832"/>
         </SegmentBase>
       </Representation>
       <Representation id="2" bandwidth="140572" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
         <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-        <BaseURL>/movies/pl/akcja/godzilla x kong the new empire/audio/540</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nouvel empire/audio/540</BaseURL>
         <SegmentBase indexRange="833-28440" timescale="44100">
           <Initialization range="0-832"/>
         </SegmentBase>
       </Representation>
       <Representation id="4" bandwidth="69956" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="22050">
         <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-        <BaseURL>/movies/pl/akcja/godzilla x kong the new empire/audio/360</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nouvel empire/audio/360</BaseURL>
         <SegmentBase indexRange="833-28440" timescale="22050">
           <Initialization range="0-832"/>
         </SegmentBase>

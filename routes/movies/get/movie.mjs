@@ -44,7 +44,7 @@ export default function getMovie(router, db) {
           thumbnail:
             db.structure.shared[sharedCategory][sharedMovieTitle].thumbnails &&
             db.structure.shared[sharedCategory][
-              movie
+              sharedMovieTitle
             ].thumbnails.getRandomPath()
               ? db.structure.shared[sharedCategory][sharedMovieTitle]
                   .thumbnails &&
