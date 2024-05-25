@@ -1,5 +1,6 @@
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default async function checkLanguageCategoryMovieThumbnail(
   db,
@@ -9,8 +10,9 @@ export default async function checkLanguageCategoryMovieThumbnail(
 ) {
   const { language, category, movie } = req.parameters;
   const thumbnails =
-    db.structure.shared[await globalCategory(language, category, db)][movie]
-      .thumbnails;
+    db.structure.shared[await globalCategory(language, category, db)][
+      await golbalMovieTitle(language, movie, db)
+    ].thumbnails;
   if (thumbnails && thumbnails.list().length >= 1) {
     next();
   } else {

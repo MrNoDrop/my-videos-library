@@ -1,6 +1,7 @@
 import check from "../../check/get.mjs";
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default function getMovieVideo(router, db) {
   router.get(
@@ -15,7 +16,7 @@ export default function getMovieVideo(router, db) {
       try {
         res.sendFile(
           db.structure.shared[await globalCategory(language, category, db)][
-            movie
+            await golbalMovieTitle(language, movie, db)
           ].video[quality].getAbsolutePath()
         );
       } catch (error) {

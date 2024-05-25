@@ -1,5 +1,6 @@
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default async function checkLanguageCategoryMovieVideoQuality(
   db,
@@ -9,8 +10,11 @@ export default async function checkLanguageCategoryMovieVideoQuality(
 ) {
   const { language, category, movie, quality } = req.parameters;
   const globCategory = await globalCategory(language, category, db);
+  const globMovieTitle = await globalMovieTitle(language, movie, db);
 
-  if (db.structure.shared[globCategory][movie].video.includes(quality)) {
+  if (
+    db.structure.shared[globCategory][globMovieTitle].video.includes(quality)
+  ) {
     next();
   } else {
     res.status(404).json(
@@ -20,9 +24,7 @@ export default async function checkLanguageCategoryMovieVideoQuality(
         {
           existing: {
             qualities:
-              db.structure.shared[globCategory][movie].season[season].episode[
-                episode
-              ].video.list(),
+              db.structure.shared[globCategory][globMovieTitle].video.list(),
           },
         },
         "Missing video file."

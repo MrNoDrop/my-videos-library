@@ -1,4 +1,5 @@
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default function getMovieCover(router, db) {
   router.get(
@@ -8,7 +9,7 @@ export default function getMovieCover(router, db) {
       try {
         res.sendFile(
           db.structure.shared[await globalCategory(language, category, db)][
-            movie
+            await golbalMovieTitle(language, movie, db)
           ].cover[orientation].getRandomPath()
         );
       } catch (err) {

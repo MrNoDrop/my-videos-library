@@ -16,7 +16,10 @@ moviesDB.structure.list = () => {
 moviesDB.addStructureFunction("languages", ({ getObject }) => {
   return getObject()
     .list()
-    .filter((entry) => !["shared", "languages", "categories"].includes(entry));
+    .filter(
+      (entry) =>
+        !["shared", "languages", "categories", "titles"].includes(entry)
+    );
 });
 const toUrl = ({ path, extention }) => {
   let copy = `${path}`;

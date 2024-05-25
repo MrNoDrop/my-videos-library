@@ -2,6 +2,7 @@ import check from "../../check/get.mjs";
 import response from "../../../predefined/responses.mjs";
 import parseSrt from "../../../../modules/parseSrt.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default function getMovieSubtitle(router, db) {
   router.get(
@@ -15,21 +16,22 @@ export default function getMovieSubtitle(router, db) {
       const { language, category, movie, subtitle } = req.params;
       const { parsed } = req.query;
       const globCategory = await globalCategory(language, category, db);
+      const globMovieTitle = await golbalMovieTitle(language, movie, db);
 
       try {
         if (parsed) {
           res.json(
             response.ok(
               parseSrt(
-                await db.structure.shared[globCategory][movie].subtitles[
-                  subtitle
-                ].read()
+                await db.structure.shared[globCategory][
+                  globMovieTitle
+                ].subtitles[subtitle].read()
               )
             )
           );
         } else {
           res.sendFile(
-            db.structure.shared[globCategory][movie].subtitles[
+            db.structure.shared[globCategory][globMovieTitle].subtitles[
               subtitle
             ].getAbsolutePath()
           );

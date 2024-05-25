@@ -1,5 +1,6 @@
 import check from "../../check/get.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import globalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default function getMovieThumbnail(router, db) {
   router.get(
@@ -14,7 +15,9 @@ export default function getMovieThumbnail(router, db) {
         res.sendFile(
           await db.structure.shared[
             await globalCategory(language, category, db)
-          ][movie].thumbnails.getRandomPath()
+          ][
+            await globalMovieTitle(language, movie, db)
+          ].thumbnails.getRandomPath()
         );
       } catch (error) {
         res

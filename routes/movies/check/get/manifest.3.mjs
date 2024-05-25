@@ -1,5 +1,6 @@
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default async function checkLanguageCategoryMovieManifest(
   db,
@@ -11,7 +12,8 @@ export default async function checkLanguageCategoryMovieManifest(
   if (db.structure[language][category][movie].manifest) {
     next();
   } else {
-    const globCategory = await globalCategory(category, db);
+    const globCategory = await globalCategory(language, category, db);
+    const globMovieTitle = await golbalMovieTitle(language, movie, db);
     res.status(404).json(
       response.error.missing.file(
         { index: 4, value: "manifest" },
@@ -25,11 +27,13 @@ export default async function checkLanguageCategoryMovieManifest(
           subtitles: db.structure.shared[globCategory][movie].subtitles
             ? await (async () => {
                 const keys =
-                  db.structure.shared[globCategory][movie].subtitles.list();
+                  db.structure.shared[globCategory][
+                    globMovieTitle
+                  ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
                   subtitles[key] =
-                    db.structure.shared[globCategory][movie].subtitles[
+                    db.structure.shared[globCategory][globMovieTitle].subtitles[
                       key
                     ].toUrl();
                 }
@@ -37,10 +41,13 @@ export default async function checkLanguageCategoryMovieManifest(
               })()
             : null,
           thumbnail:
-            db.structure.shared[globCategory][movie].thumbnails &&
-            db.structure.shared[globCategory][movie].thumbnails.getRandomPath()
-              ? db.structure.shared[globCategory][movie].thumbnails &&
-                db.structure.shared[globCategory][movie].toUrl() + "/thumbnail"
+            db.structure.shared[globCategory][globMovieTitle].thumbnails &&
+            db.structure.shared[globCategory][
+              globMovieTitle
+            ].thumbnails.getRandomPath()
+              ? db.structure.shared[globCategory][globMovieTitle].thumbnails &&
+                db.structure.shared[globCategory][globMovieTitle].toUrl() +
+                  "/thumbnail"
               : null,
         },
         "Missing manifest file."

@@ -1,5 +1,6 @@
 import response from "../../predefined/responses.mjs";
 import globalCategory from "../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../tools/globalMovieTitle.mjs";
 import check from "../check/get.mjs";
 
 export default function getMovie(router, db) {
@@ -13,6 +14,7 @@ export default function getMovie(router, db) {
     async (req, res) => {
       const { language, category, movie } = req.params;
       const sharedCategory = await globalCategory(language, category, db);
+      const sharedMovieTitle = await golbalMovieTitle(language, movie, db);
       res.json(
         response.ok({
           path: ["movies", language, category, movie],
@@ -22,27 +24,31 @@ export default function getMovie(router, db) {
           info: db.structure[language][category][movie].info
             ? await db.structure[language][category][movie].info.read()
             : null,
-          subtitles: db.structure.shared[sharedCategory][movie].subtitles
+          subtitles: db.structure.shared[sharedCategory][sharedMovieTitle]
+            .subtitles
             ? (() => {
                 const keys =
-                  db.structure.shared[sharedCategory][movie].subtitles.list();
+                  db.structure.shared[sharedCategory][
+                    sharedMovieTitle
+                  ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
                   subtitles[key] =
-                    db.structure.shared[sharedCategory][movie].subtitles[
-                      key
-                    ].toUrl();
+                    db.structure.shared[sharedCategory][
+                      sharedMovieTitle
+                    ].subtitles[key].toUrl();
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
             : null,
           thumbnail:
-            db.structure.shared[sharedCategory][movie].thumbnails &&
+            db.structure.shared[sharedCategory][sharedMovieTitle].thumbnails &&
             db.structure.shared[sharedCategory][
               movie
             ].thumbnails.getRandomPath()
-              ? db.structure.shared[sharedCategory][movie].thumbnails &&
-                db.structure.shared[sharedCategory][movie].toUrl() +
+              ? db.structure.shared[sharedCategory][sharedMovieTitle]
+                  .thumbnails &&
+                db.structure.shared[sharedCategory][sharedMovieTitle].toUrl() +
                   "/thumbnail"
               : null,
         })

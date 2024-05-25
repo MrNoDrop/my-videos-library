@@ -1,5 +1,6 @@
 import response from "../../../predefined/responses.mjs";
 import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalMovieTitle.mjs";
 
 export default async function checkLanguageCategoryMovieVideo(
   db,
@@ -9,11 +10,12 @@ export default async function checkLanguageCategoryMovieVideo(
 ) {
   const { language, category, movie } = req.parameters;
   const globCategory = await globalCategory(language, category, db);
+  const globMovieTitle = await golbalMovieTitle(language, movie, db);
 
-  if (db.structure.shared[globCategory][movie].video) {
+  if (db.structure.shared[globCategory][globMovieTitle].video) {
     next();
   } else {
-    db.structure.shared[globCategory][movie]
+    db.structure.shared[globCategory][globMovieTitle]
       .new("video")
       .then(() => next())
       .catch(async (error) => {
@@ -24,7 +26,7 @@ export default async function checkLanguageCategoryMovieVideo(
             ++refresh;
           }
         }
-        if (db.structure.shared[globCategory][movie].video) {
+        if (db.structure.shared[globCategory][globMovieTitle].video) {
           next();
         } else {
           res
