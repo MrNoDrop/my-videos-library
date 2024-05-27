@@ -334,6 +334,9 @@ function Video({
               if (muted && value !== 0) {
                 setMuted(false);
               }
+              if (!muted && value === 0) {
+                setMuted(true);
+              }
               setVideoVolume(value);
               videoRef.current.volume = value;
             }}
