@@ -28,19 +28,19 @@
     <AdaptationSet id="1" contentType="video" maxWidth="1728" maxHeight="720" frameRate="24000/1001" subsegmentAlignment="true" par="12:5">
       <SupplementalProperty schemeIdUri="urn:mpeg:mpegB:cicp:TransferCharacteristics" value="1"/>
       <Representation id="1" bandwidth="1677691" codecs="avc1.640020" mimeType="video/mp4" sar="1:1" width="1728" height="720">
-        <BaseURL>/movies/shared/action/godzilla x kong the new empire/video/720</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nowe imperium/video/720</BaseURL>
         <SegmentBase indexRange="897-28504" timescale="24000">
           <Initialization range="0-896"/>
         </SegmentBase>
       </Representation>
       <Representation id="3" bandwidth="876436" codecs="avc1.64001f" mimeType="video/mp4" sar="1:1" width="1296" height="540">
-        <BaseURL>/movies/shared/action/godzilla x kong the new empire/video/540</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nowe imperium/video/540</BaseURL>
         <SegmentBase indexRange="898-28505" timescale="24000">
           <Initialization range="0-897"/>
         </SegmentBase>
       </Representation>
       <Representation id="5" bandwidth="465423" codecs="avc1.64001e" mimeType="video/mp4" sar="1:1" width="864" height="360">
-        <BaseURL>/movies/shared/action/godzilla x kong the new empire/video/360</BaseURL>
+        <BaseURL>/movies/pl/akcja/godzilla x kong nowe imperium/video/360</BaseURL>
         <SegmentBase indexRange="898-28505" timescale="24000">
           <Initialization range="0-897"/>
         </SegmentBase>
