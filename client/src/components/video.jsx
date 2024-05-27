@@ -132,10 +132,10 @@ function Video({
     },
   };
   const [timeouttime, setTimeouttime] = useState(undefined);
-  const [videoVolume, setVideoVolume] = useState(0.1);
+  const [videoVolume, setVideoVolume] = useState(1);
   useEffect(
     () => {
-      videoRef && videoRef.current && (videoRef.current.volume = 0.1);
+      videoRef && videoRef.current && (videoRef.current.volume = videoVolume);
     },
     // eslint-disable-next-line
     []
