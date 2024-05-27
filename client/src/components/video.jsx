@@ -329,7 +329,7 @@ function Video({
             ref={videoVolumeSliderRef}
             className="video-volume-slider"
             value={videoVolume}
-            max="0.1"
+            max="1"
             setValue={(value) => {
               if (muted && value !== 0) {
                 setMuted(false);
