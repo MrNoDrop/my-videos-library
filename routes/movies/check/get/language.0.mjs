@@ -10,7 +10,7 @@ export default function checkLanguage(db, req, res, next) {
       .json(
         response.error.unknownField(
           { index: 1, value: language },
-          ["movies", ...Object.values(req.parameters)],
+          ["movies", language],
           { existing: { languages: db.structure.languages() } },
           "Language does not exist."
         )

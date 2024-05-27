@@ -34,7 +34,7 @@ export default async function checkLanguageCategoryMovieSubtitles(
             .json(
               response.error.unknown(
                 { index: 4, value: "subtitles" },
-                ["movies", ...Object.values(req.parameters)],
+                ["movies", language, category, movie, "subtitles"],
                 null,
                 "Missing subtitles folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error

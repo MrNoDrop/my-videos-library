@@ -29,11 +29,7 @@ export default async function checkLanguageCategory(db, req, res, next) {
       res.status(400).json(
         response.error.unknownField(
           { index: 2, value: category },
-          [
-            "movies",
-            ...(language ? [] : ["shared"]),
-            ...Object.values(req.parameters),
-          ],
+          ["movies", language, category],
           {
             existing: { categories: db.structure[language]?.list() },
           },

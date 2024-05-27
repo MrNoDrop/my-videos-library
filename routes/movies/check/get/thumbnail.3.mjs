@@ -21,7 +21,7 @@ export default async function checkLanguageCategoryMovieThumbnail(
       .json(
         response.error.missing.file(
           { index: 4, value: "thumbnail" },
-          ["movies", "shared", ...Object.values(req.parameters), "thumbnail"],
+          ["movies", language, category, movie, "thumbnail"],
           null,
           "Missing thumbnail file."
         )

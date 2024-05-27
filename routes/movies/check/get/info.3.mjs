@@ -16,7 +16,7 @@ export default async function checkLanguageCategoryMovieInfo(
       .json(
         response.error.missing.file(
           { index: 4, value: "info" },
-          ["movies", ...Object.values(req.parameters)],
+          ["movies", language, category, movie],
           null,
           "Missing info file."
         )

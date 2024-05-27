@@ -17,9 +17,9 @@ export default async function checkLanguageCategoryMovieManifest(
     res.status(404).json(
       response.error.missing.file(
         { index: 4, value: "manifest" },
-        ["movies", ...Object.values(req.parameters), "manifest"],
+        ["movies", language, category, movie, "manifest"],
         {
-          path: ["movies", ...Object.values(req.parameters)],
+          path: ["movies", language, category, movie],
           manifest: null,
           info: db.structure[language][category][movie].info
             ? await db.structure[language][category][movie].info.read()

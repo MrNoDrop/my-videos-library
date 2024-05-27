@@ -34,7 +34,7 @@ export default async function checkLanguageCategoryMovieVideo(
             .json(
               response.error.unknown(
                 { index: 4, value: "audio" },
-                ["movies", "shared", ...Object.values(req.parameters), "video"],
+                ["movies", language, category, movie, "video"],
                 null,
                 "Missing video folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error

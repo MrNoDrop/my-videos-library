@@ -25,7 +25,7 @@ export default function checkLanguageCategoryMovieAudio(db, req, res, next) {
             .json(
               response.error.unknown(
                 { index: 4, value: "audio" },
-                ["movies", ...Object.values(req.parameters), "audio"],
+                ["movies", language, category, movie, "audio"],
                 null,
                 "Missing audio folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error
