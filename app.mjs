@@ -7,7 +7,6 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 import indexRouter from "./routes/index.mjs";
-import bashRouter from "./routes/bash.mjs";
 import seriesRouter from "./routes/series.mjs";
 import moviesRouter from "./routes/movies.mjs";
 
@@ -22,7 +21,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use("/", indexRouter);
-app.use("/bash", bashRouter);
 app.use("/series", seriesRouter);
 app.use("/movies", moviesRouter);
 
