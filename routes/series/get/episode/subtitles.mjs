@@ -29,10 +29,11 @@ export default function getEpisodeSubtitles(router, db) {
             episode,
             "subtitles",
           ],
-          subtitles:
-            db.structure.shared[globCategory][globSerieTitle].season[
-              season
-            ].episode[episode].subtitles.list(),
+          subtitles: db.structure.shared[globCategory][globSerieTitle].season[
+            season
+          ].episode[episode].subtitles
+            .list()
+            .map((subtitle) => subtitle.replace("_srt", "")),
         })
       );
     }

@@ -15,10 +15,11 @@ export default function getMovieSubtitles(router, db) {
       res.json(
         response.ok({
           path: ["movies", language, category, movie, "subtitles"],
-          subtitles:
-            db.structure.shared[await globalCategory(language, category, db)][
-              await golbalMovieTitle(language, movie, db)
-            ].subtitles.list(),
+          subtitles: db.structure.shared[
+            await globalCategory(language, category, db)
+          ][await golbalMovieTitle(language, movie, db)].subtitles
+            .list()
+            .map((subtitle) => subtitle.replace("_srt", "")),
         })
       );
     }

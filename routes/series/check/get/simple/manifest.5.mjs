@@ -9,7 +9,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   const { language, category, serie, season, episode } = req.params;
   if (
     db.structure[language][category][serie].season[season].episode[episode]
-      .manifest
+      .manifest_mpd
   ) {
     next();
   } else {

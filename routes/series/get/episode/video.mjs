@@ -25,7 +25,7 @@ export default function getEpisodeVideo(router, db) {
         res.sendFile(
           db.structure.shared[globCategory][globSerieTitle].season[
             season
-          ].episode[episode].video[quality].getAbsolutePath()
+          ].episode[episode].video[`${quality}_mp4`].getAbsolutePath()
         );
       } catch (error) {
         res

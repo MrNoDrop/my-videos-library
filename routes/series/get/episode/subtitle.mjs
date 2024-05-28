@@ -30,7 +30,7 @@ export default async function getEpisodeSubtitle(router, db) {
               parseSrt(
                 await db.structure.shared[globCategory][globSerieTitle].season[
                   season
-                ].episode[episode].subtitles[subtitle].read()
+                ].episode[episode].subtitles[`${subtitle}_srt`].read()
               )
             )
           );
@@ -38,7 +38,7 @@ export default async function getEpisodeSubtitle(router, db) {
           res.sendFile(
             db.structure.shared[globCategory][globSerieTitle].season[
               season
-            ].episode[episode].subtitles[subtitle].getAbsolutePath()
+            ].episode[episode].subtitles[`${subtitle}_srt`].getAbsolutePath()
           );
         }
       } catch (error) {

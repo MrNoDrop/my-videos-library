@@ -16,7 +16,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
   if (
     db.structure.shared[globCategory][globSerieTitle].season[season].episode[
       episode
-    ].subtitles.includes(subtitle)
+    ].subtitles.includes(`${subtitle}_srt`)
   ) {
     next();
   } else {
@@ -35,10 +35,11 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
         ],
         {
           existing: {
-            subtitles:
-              db.structure.shared[globCategory][globSerieTitle].season[
-                season
-              ].episode[episode].subtitles.list(),
+            subtitles: db.structure.shared[globCategory][globSerieTitle].season[
+              season
+            ].episode[episode].subtitles
+              .list()
+              .map((subtitle) => subtitle.replace("_srt", "")),
           },
         },
         "Missing subtitle file."

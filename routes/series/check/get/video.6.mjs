@@ -16,7 +16,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeVideoQualit
   if (
     db.structure.shared[globCategory][globSerieTitle].season[season].episode[
       episode
-    ].video.includes(quality)
+    ].video.includes(`${quality}_mp4`)
   ) {
     next();
   } else {
@@ -35,10 +35,11 @@ export default async function checkLanguageCategorySerieSeasonEpisodeVideoQualit
         ],
         {
           existing: {
-            qualities:
-              db.structure.shared[globCategory][globSerieTitle].season[
-                season
-              ].episode[episode].video.list(),
+            qualities: db.structure.shared[globCategory][globSerieTitle].season[
+              season
+            ].episode[episode].video
+              .list()
+              .map((quality) => quality.replace("_mp4", "")),
           },
         },
         "Missing video file."

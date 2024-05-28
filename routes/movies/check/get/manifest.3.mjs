@@ -32,10 +32,11 @@ export default async function checkLanguageCategoryMovieManifest(
                   ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] = db.structure.shared[globCategory][
-                    globMovieTitle
-                  ].subtitles[key]
+                  subtitles[key.replace("_srt", "")] = db.structure.shared[
+                    globCategory
+                  ][globMovieTitle].subtitles[key]
                     .toUrl()
+                    .replace("//", "/")
                     .replace("shared", language)
                     .replace(globCategory, category)
                     .replace(globMovieTitle, movie);
@@ -51,6 +52,7 @@ export default async function checkLanguageCategoryMovieManifest(
               ? db.structure.shared[globCategory][globMovieTitle].thumbnails &&
                 db.structure.shared[globCategory][globMovieTitle]
                   .toUrl()
+                  .replace("//", "/")
                   .replace("shared", language)
                   .replace(globCategory, category)
                   .replace(globMovieTitle, movie) + "/thumbnail"

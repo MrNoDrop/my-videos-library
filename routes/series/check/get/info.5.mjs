@@ -9,7 +9,8 @@ export default async function checkLanguageCategorySerieSeasonEpisodeInfo(
   const { language, category, serie, season, episode } = req.parameters;
 
   if (
-    db.structure[language][category][serie].season[season].episode[episode].info
+    db.structure[language][category][serie].season[season].episode[episode]
+      .info_json
   ) {
     next();
   } else {

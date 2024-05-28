@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeAudioQuality(
   db,
@@ -6,18 +6,12 @@ export default async function checkLanguageCategorySerieSeasonEpisodeAudioQualit
   res,
   next
 ) {
-  const {
-    language,
-    category,
-    serie,
-    season,
-    episode,
-    quality
-  } = req.parameters;
+  const { language, category, serie, season, episode, quality } =
+    req.parameters;
   if (
     db.structure[language][category][serie].season[season].episode[
       episode
-    ].audio.includes(quality)
+    ].audio.includes(`${quality}_mp4`)
   ) {
     next();
   } else {
@@ -25,23 +19,25 @@ export default async function checkLanguageCategorySerieSeasonEpisodeAudioQualit
       response.error.missing.file(
         { index: 7, value: quality },
         [
-          'series',
+          "series",
           language,
           category,
           serie,
           season,
           episode,
-          'audio',
-          quality
+          "audio",
+          quality,
         ],
         {
           existing: {
             qualities: db.structure[language][category][serie].season[
               season
-            ].episode[episode].audio.list()
-          }
+            ].episode[episode].audio
+              .list()
+              .map((quality) => quality.replace("_mp4", "")),
+          },
         },
-        'Missing audio file.'
+        "Missing audio file."
       )
     );
   }

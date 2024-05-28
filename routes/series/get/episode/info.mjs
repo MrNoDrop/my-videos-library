@@ -20,7 +20,7 @@ export default function getEpisodeInfo(router, db) {
           path: ["series", language, category, serie, season, episode, "info"],
           info: await db.structure[language][category][serie].season[
             season
-          ].episode[episode].info.read(),
+          ].episode[episode].info_json.read(),
         })
       );
     }

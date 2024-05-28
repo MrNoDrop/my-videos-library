@@ -28,10 +28,10 @@ export default function getEpisode(router, db) {
           ].episode[episode].toUrl()}/manifest`,
           info: db.structure[language][category][serie].season[season].episode[
             episode
-          ].info
+          ].info_json
             ? await db.structure[language][category][serie].season[
                 season
-              ].episode[episode].info.read()
+              ].episode[episode].info_json.read()
             : null,
           subtitles: db.structure.shared[globCategory][globSerieTitle].season[
             season
@@ -43,9 +43,11 @@ export default function getEpisode(router, db) {
                   ].episode[episode].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] = db.structure.shared[globCategory][
-                    globSerieTitle
-                  ].season[season].episode[episode].subtitles[key]
+                  subtitles[key.replace("_srt", "")] = db.structure.shared[
+                    globCategory
+                  ][globSerieTitle].season[season].episode[episode].subtitles[
+                    key
+                  ]
                     .toUrl()
                     .replace("shared", language)
                     .replace(globCategory, category)

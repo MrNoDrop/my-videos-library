@@ -1,9 +1,9 @@
-import check from '../../check/get.mjs';
-import response from '../../../predefined/responses.mjs';
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
 
 export default function getEpisodeAudio(router, db) {
   router.get(
-    '/:language/:category/:serie/:season/:episode/audio/:quality',
+    "/:language/:category/:serie/:season/:episode/audio/:quality",
     check.preconfiguration,
     check.language.bind(this, db),
     check.category.bind(this, db),
@@ -15,19 +15,13 @@ export default function getEpisodeAudio(router, db) {
     check.audios.bind(this, db),
     check.audio.bind(this, db),
     (req, res) => {
-      const {
-        language,
-        category,
-        serie,
-        season,
-        episode,
-        quality
-      } = req.params;
+      const { language, category, serie, season, episode, quality } =
+        req.params;
       try {
         res.sendFile(
           db.structure[language][category][serie].season[season].episode[
             episode
-          ].audio[quality].getAbsolutePath()
+          ].audio[`${quality}_mp4`].getAbsolutePath()
         );
       } catch (error) {
         res
@@ -36,17 +30,17 @@ export default function getEpisodeAudio(router, db) {
             response.error.send.file(
               { index: 7, value: quality },
               [
-                'series',
+                "series",
                 language,
                 category,
                 serie,
                 season,
                 episode,
-                'audio',
-                quality
+                "audio",
+                quality,
               ],
               null,
-              'Could not send audio file.',
+              "Could not send audio file.",
               error
             )
           );

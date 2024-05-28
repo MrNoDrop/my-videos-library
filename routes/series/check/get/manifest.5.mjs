@@ -13,7 +13,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   const globSerieTitle = await globalSerieTitle(language, serie, db);
   if (
     db.structure[language][category][serie].season[season].episode[episode]
-      .manifest
+      .manifest_mpd
   ) {
     next();
   } else {
@@ -26,10 +26,10 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
           manifest: null,
           info: db.structure[language][category][serie].season[season].episode[
             episode
-          ].info
+          ].info_json
             ? await db.structure[language][category][serie].season[
                 season
-              ].episode[episode].info.read()
+              ].episode[episode].info_json.read()
             : null,
           subtitles: db.structure.shared[globCategory][globSerieTitle].season[
             season
@@ -41,11 +41,18 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
                   ].episode[episode].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] =
-                    db.structure.shared[globCategory][globSerieTitle].season[
-                      season
-                    ].episode[episode].subtitles[key].toUrl();
+                  subtitles[key.replace("_srt", "")] = db.structure.shared[
+                    globCategory
+                  ][globSerieTitle].season[season].episode[episode].subtitles[
+                    key
+                  ]
+                    .toUrl()
+                    .replace("//", "/")
+                    .replace("shared", language)
+                    .replace(globCategory, category)
+                    .replace(globSerieTitle, serie);
                 }
+                console.log(subtitles);
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
             : null,
@@ -59,7 +66,12 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
                   .episode[episode].thumbnails &&
                 db.structure.shared[globCategory][globSerieTitle].season[
                   season
-                ].episode[episode].toUrl() + "/thumbnail"
+                ].episode[episode]
+                  .toUrl()
+                  .replace("//", "/")
+                  .replace("shared", language)
+                  .replace(globCategory, category)
+                  .replace(globSerieTitle, serie) + "/thumbnail"
               : null,
         },
         "Missing manifest file."

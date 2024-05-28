@@ -19,7 +19,7 @@ export default function getEpisodeSubtitle(router, db) {
         res.sendFile(
           db.structure[language][category][serie].season[season].episode[
             episode
-          ].manifest.getAbsolutePath()
+          ].manifest_mpd.getAbsolutePath()
         );
       } catch (error) {
         res
