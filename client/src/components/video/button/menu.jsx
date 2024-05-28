@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import './menu.scss';
-import { getElementRect } from '../../tools/element';
-import { vmin } from '../../tools/vscale';
+import React, { useRef, useEffect, useState } from "react";
+import "./menu.scss";
+import { getElementRect } from "../../tools/element";
+import { vmin } from "../../tools/vscale";
 
 function VideoMenuButton({ button, children, windowInnerDimensions }) {
   const buttonRef = useRef();
@@ -17,7 +17,7 @@ function VideoMenuButton({ button, children, windowInnerDimensions }) {
       const newMenuPosition = {};
       newMenuPosition.left = buttonX + buttonWidth / 2 - menuWidth / 2;
       newMenuPosition.top = buttonY - menuHeight + 1 - vmin(0.3);
-      console.log(buttonY - menuHeight, buttonY);
+      // console.log(buttonY - menuHeight, buttonY);
       if (JSON.stringify(menuPosition) !== JSON.stringify(newMenuPosition)) {
         setMenuPosition(newMenuPosition);
       }
@@ -28,13 +28,13 @@ function VideoMenuButton({ button, children, windowInnerDimensions }) {
     menuRef,
     menuPosition,
     setMenuPosition,
-    windowInnerDimensions
+    windowInnerDimensions,
   ]);
   return [
     <div
       key="video-menu"
       ref={menuRef}
-      className={`video-menu${hidden ? ' hidden' : ''}`}
+      className={`video-menu${hidden ? " hidden" : ""}`}
       style={menuPosition}
     >
       {children}
@@ -46,7 +46,7 @@ function VideoMenuButton({ button, children, windowInnerDimensions }) {
       onClick={() => setHidden(!hidden)}
     >
       {button}
-    </div>
+    </div>,
   ];
 }
 
