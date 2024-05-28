@@ -25,7 +25,9 @@ export default function getEpisode(router, db) {
           path: ["series", language, category, serie, season, episode],
           manifest: `${db.structure[language][category][serie].season[
             season
-          ].episode[episode].toUrl()}/manifest`,
+          ].episode[episode]
+            .toUrl()
+            .replace("//", "/")}/manifest`,
           info: db.structure[language][category][serie].season[season].episode[
             episode
           ].info_json
@@ -49,6 +51,7 @@ export default function getEpisode(router, db) {
                     key
                   ]
                     .toUrl()
+                    .replace("//", "/")
                     .replace("shared", language)
                     .replace(globCategory, category)
                     .replace(globSerieTitle, serie);
@@ -68,6 +71,7 @@ export default function getEpisode(router, db) {
                   season
                 ].episode[episode]
                   .toUrl()
+                  .replace("//", "/")
                   .replace("shared", language)
                   .replace(globCategory, category)
                   .replace(globSerieTitle, serie) + "/thumbnail"
