@@ -15,7 +15,7 @@ export default function getMovieAudio(router, db) {
       try {
         res.sendFile(
           db.structure[language][category][movie].audio[
-            quality
+            `${quality}_mp4`
           ].getAbsolutePath()
         );
       } catch (error) {

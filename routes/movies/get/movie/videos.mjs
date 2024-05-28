@@ -15,10 +15,11 @@ export default function getMovieVideos(router, db) {
       res.json(
         response.ok({
           path: ["movies", language, category, movie, "video"],
-          qualities:
-            db.structure.shared[await globalCategory(language, category, db)][
-              await golbalMovieTitle(language, movie, db)
-            ].video.list(),
+          qualities: db.structure.shared[
+            await globalCategory(language, category, db)
+          ][await golbalMovieTitle(language, movie, db)].video
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }

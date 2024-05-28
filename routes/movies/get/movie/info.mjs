@@ -14,7 +14,7 @@ export default function getMovieInfo(router, db) {
       res.json(
         response.ok({
           path: ["movies", ...Object.values(req.params), "info"],
-          info: await db.structure[language][category][movie].info.read(),
+          info: await db.structure[language][category][movie].info_json.read(),
         })
       );
     }

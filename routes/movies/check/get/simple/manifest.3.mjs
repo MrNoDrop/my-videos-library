@@ -7,7 +7,7 @@ export default async function checkLanguageCategoryMovieManifest(
   next
 ) {
   const { language, category, movie } = req.params;
-  if (db.structure[language][category][movie].manifest) {
+  if (db.structure[language][category][movie].manifest_mpd) {
     next();
   } else {
     res

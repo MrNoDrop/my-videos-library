@@ -20,9 +20,12 @@ export default function getMovie(router, db) {
           path: ["movies", language, category, movie],
           manifest: `${db.structure[language][category][movie]
             .toUrl()
-            .replace("shared", language)}/manifest`,
-          info: db.structure[language][category][movie].info
-            ? await db.structure[language][category][movie].info.read()
+            .replace("//", "/")
+            .replace("shared", language)
+            .replace(globCategory, category)
+            .replace(globMovieTitle, movie)}/manifest`,
+          info: db.structure[language][category][movie].info_json
+            ? await db.structure[language][category][movie].info_json.read()
             : null,
           subtitles: db.structure.shared[globCategory][globMovieTitle].subtitles
             ? (() => {
@@ -32,9 +35,9 @@ export default function getMovie(router, db) {
                   ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] = db.structure.shared[globCategory][
-                    globMovieTitle
-                  ].subtitles[key]
+                  subtitles[key.replace("_srt", "")] = db.structure.shared[
+                    globCategory
+                  ][globMovieTitle].subtitles[key]
                     .toUrl()
                     .replace("shared", language)
                     .replace(globCategory, category)

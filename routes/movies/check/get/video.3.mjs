@@ -11,9 +11,10 @@ export default async function checkLanguageCategoryMovieVideoQuality(
   const { language, category, movie, quality } = req.parameters;
   const globCategory = await globalCategory(language, category, db);
   const globMovieTitle = await globalMovieTitle(language, movie, db);
-
   if (
-    db.structure.shared[globCategory][globMovieTitle].video.includes(quality)
+    db.structure.shared[globCategory][globMovieTitle].video.includes(
+      `${quality}_mp4`
+    )
   ) {
     next();
   } else {
@@ -23,8 +24,9 @@ export default async function checkLanguageCategoryMovieVideoQuality(
         ["movies", "shared", category, movie, "video", quality],
         {
           existing: {
-            qualities:
-              db.structure.shared[globCategory][globMovieTitle].video.list(),
+            qualities: db.structure.shared[globCategory][globMovieTitle].video
+              .list()
+              .map((quality) => quality.replace("_mp4", "")),
           },
         },
         "Missing video file."

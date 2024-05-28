@@ -17,7 +17,7 @@ export default function getMovieVideo(router, db) {
         res.sendFile(
           db.structure.shared[await globalCategory(language, category, db)][
             await golbalMovieTitle(language, movie, db)
-          ].video[quality].getAbsolutePath()
+          ].video[`${quality}_mp4`].getAbsolutePath()
         );
       } catch (error) {
         res

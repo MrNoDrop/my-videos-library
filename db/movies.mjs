@@ -1,5 +1,5 @@
 import fs from "../modules/customFS.mjs";
-import PathDB from "../pathDB.mjs";
+import PathDB from "node-system-path-db-es6";
 const supportedLanguages = JSON.parse(
   fs.readFileSync(`${fs.__projectPath}/supported-languages.json`).toString()
 );
@@ -13,8 +13,8 @@ moviesDB.structure.list = () => {
   const languages = moviesDB.structure.list().filter(nonLanguages);
   return languages;
 };
-moviesDB.addStructureFunction("languages", ({ getObject }) => {
-  return getObject()
+moviesDB.addStructureFunction("languages", ({ getDatabaseStructure }) => {
+  return getDatabaseStructure()
     .list()
     .filter(
       (entry) =>
@@ -30,8 +30,8 @@ const toUrl = ({ path, extention }) => {
 };
 moviesDB.addFileFunction("toUrl", toUrl);
 moviesDB.addDirFunction("toUrl", toUrl);
-const getRandomPath = ({ getObject }) => {
-  const files = getObject().list();
+const getRandomPath = ({ getDatabaseStructure }) => {
+  const files = getDatabaseStructure().list();
   let choosen = files[0];
   if (files.length > 1) {
     let index = Math.floor(Math.random() * files.length - 1);
@@ -40,10 +40,16 @@ const getRandomPath = ({ getObject }) => {
   } else if (files.length < 1) {
     return null;
   }
-  return `${moviesDB.folderLocation}/${getObject()[choosen].path}`;
+  return `${moviesDB.folderLocation}/${getDatabaseStructure()[choosen].path}`;
 };
-moviesDB.addDirFunction("getRandomPath", getRandomPath, "thumbnails");
-moviesDB.addDirFunction("getRandomPath", getRandomPath, "horizontal");
-moviesDB.addDirFunction("getRandomPath", getRandomPath, "vertical");
+moviesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("thumbnails")
+);
+moviesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("horizontal")
+);
+moviesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("vertical")
+);
 
 export default moviesDB;

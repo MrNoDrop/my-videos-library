@@ -13,7 +13,7 @@ export default function getMovieSubtitle(router, db) {
       const { language, category, movie } = req.params;
       try {
         res.sendFile(
-          db.structure[language][category][movie].manifest.getAbsolutePath()
+          db.structure[language][category][movie].manifest_mpd.getAbsolutePath()
         );
       } catch (error) {
         res

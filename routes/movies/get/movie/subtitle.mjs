@@ -17,7 +17,6 @@ export default function getMovieSubtitle(router, db) {
       const { parsed } = req.query;
       const globCategory = await globalCategory(language, category, db);
       const globMovieTitle = await golbalMovieTitle(language, movie, db);
-
       try {
         if (parsed) {
           res.json(
@@ -25,14 +24,14 @@ export default function getMovieSubtitle(router, db) {
               parseSrt(
                 await db.structure.shared[globCategory][
                   globMovieTitle
-                ].subtitles[subtitle].read()
+                ].subtitles[`${subtitle}_srt`].read()
               )
             )
           );
         } else {
           res.sendFile(
             db.structure.shared[globCategory][globMovieTitle].subtitles[
-              subtitle
+              `${subtitle}_srt`
             ].getAbsolutePath()
           );
         }

@@ -13,7 +13,7 @@ export default async function checkLanguageCategoryMovieSubtitlesSubtitle(
   const globMovieTitle = await golbalMovieTitle(language, movie, db);
   if (
     db.structure.shared[globCategory][globMovieTitle].subtitles.includes(
-      subtitle
+      `${subtitle}_srt`
     )
   ) {
     next();

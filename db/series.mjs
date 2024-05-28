@@ -1,5 +1,5 @@
 import fs from "../modules/customFS.mjs";
-import PathDB from "../pathDB.mjs";
+import PathDB from "node-system-path-db-es6";
 const supportedLanguages = JSON.parse(
   fs.readFileSync(`${fs.__projectPath}/supported-languages.json`).toString()
 );
@@ -13,8 +13,8 @@ seriesDB.structure.list = () => {
   const languages = seriesDB.structure.list().filter(nonLanguages);
   return languages;
 };
-seriesDB.addStructureFunction("languages", ({ getObject }) => {
-  return getObject()
+seriesDB.addStructureFunction("languages", ({ getDatabaseStructure }) => {
+  return getDatabaseStructure()
     .list()
     .filter(
       (entry) =>
@@ -36,8 +36,8 @@ const toUrl = ({ path, extention }) => {
 };
 seriesDB.addFileFunction("toUrl", toUrl);
 seriesDB.addDirFunction("toUrl", toUrl);
-const getRandomPath = ({ getObject }) => {
-  const files = getObject().list();
+const getRandomPath = ({ getDatabaseStructure }) => {
+  const files = getDatabaseStructure().list();
   let choosen = files[0];
   if (files.length > 1) {
     let index = Math.floor(Math.random() * files.length - 1);
@@ -46,10 +46,16 @@ const getRandomPath = ({ getObject }) => {
   } else if (files.length < 1) {
     return null;
   }
-  return `${seriesDB.folderLocation}/${getObject()[choosen].path}`;
+  return `${seriesDB.folderLocation}/${getDatabaseStructure()[choosen].path}`;
 };
-seriesDB.addDirFunction("getRandomPath", getRandomPath, "thumbnails");
-seriesDB.addDirFunction("getRandomPath", getRandomPath, "horizontal");
-seriesDB.addDirFunction("getRandomPath", getRandomPath, "vertical");
+seriesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("thumbnails")
+);
+seriesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("horizontal")
+);
+seriesDB.addDirFunction("getRandomPath", getRandomPath, (path) =>
+  path.endsWith("vertical")
+);
 
 export default seriesDB;

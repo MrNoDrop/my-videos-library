@@ -7,7 +7,9 @@ export default async function checkLanguageCategoryMovieAudioQuality(
   next
 ) {
   const { language, category, movie, quality } = req.parameters;
-  if (db.structure[language][category][movie].audio.includes(quality)) {
+  if (
+    db.structure[language][category][movie].audio.includes(`${quality}_mp4`)
+  ) {
     next();
   } else {
     res.status(404).json(
@@ -16,7 +18,9 @@ export default async function checkLanguageCategoryMovieAudioQuality(
         ["movies", language, category, movie, "audio", quality],
         {
           existing: {
-            qualities: db.structure[language][category][movie].audio.list(),
+            qualities: db.structure[language][category][movie].audio
+              .list()
+              .map((quality) => quality.replace("_mp4", "")),
           },
         },
         "Missing audio file."
