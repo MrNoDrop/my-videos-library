@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default function checkLanguageCategorySerieSeasonEpisodeAudio(
   db,
@@ -15,9 +15,9 @@ export default function checkLanguageCategorySerieSeasonEpisodeAudio(
     next();
   } else {
     db.structure[language][category][serie].season[season].episode[episode]
-      .new('audio')
+      .new("audio")
       .then(() => next())
-      .catch(async error => {
+      .catch(async (error) => {
         if (error.type === db.errors.OPERATION_LOCKED) {
           let refresh = 0;
           while (db.operationIsLocked(error.lock.key) && refresh < 10) {
@@ -36,10 +36,10 @@ export default function checkLanguageCategorySerieSeasonEpisodeAudio(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 6, value: 'audio' },
-                ['series', ...Object.values(req.parameters), 'audio'],
+                { index: 6, value: "audio" },
+                ["series", language, category, serie, season, episode, "audio"],
                 null,
-                'Missing audio folder.',
+                "Missing audio folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error
               )
             );
@@ -49,5 +49,5 @@ export default function checkLanguageCategorySerieSeasonEpisodeAudio(
 }
 
 function sleep(millis) {
-  return new Promise(resolve => setTimeout(() => resolve(), millis));
+  return new Promise((resolve) => setTimeout(() => resolve(), millis));
 }

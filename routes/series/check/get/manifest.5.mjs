@@ -1,4 +1,6 @@
 import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   db,
@@ -7,6 +9,8 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   next
 ) {
   const { language, category, serie, season, episode } = req.parameters;
+  const globCategory = await globalCategory(language, category, db);
+  const globSerieTitle = await globalSerieTitle(language, serie, db);
   if (
     db.structure[language][category][serie].season[season].episode[episode]
       .manifest
@@ -16,9 +20,9 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
     res.status(404).json(
       response.error.missing.file(
         { index: 6, value: "manifest" },
-        ["series", ...Object.values(req.parameters), "manifest"],
+        ["series", language, category, serie, season, episode, "manifest"],
         {
-          path: ["series", ...Object.values(req.parameters)],
+          path: ["series", language, category, serie, season, episode],
           manifest: null,
           info: db.structure[language][category][serie].season[season].episode[
             episode
@@ -27,35 +31,35 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
                 season
               ].episode[episode].info.read()
             : null,
-          subtitles: db.structure.shared[category][serie].season[season]
-            .episode[episode].subtitles
+          subtitles: db.structure.shared[globCategory][globSerieTitle].season[
+            season
+          ].episode[episode].subtitles
             ? (() => {
                 const keys =
-                  db.structure.shared[category][serie].season[season].episode[
-                    episode
-                  ].subtitles.list();
+                  db.structure.shared[globCategory][globSerieTitle].season[
+                    season
+                  ].episode[episode].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
                   subtitles[key] =
-                    db.structure.shared[category][serie].season[season].episode[
-                      episode
-                    ].subtitles[key].toUrl();
+                    db.structure.shared[globCategory][globSerieTitle].season[
+                      season
+                    ].episode[episode].subtitles[key].toUrl();
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
             : null,
           thumbnail:
-            db.structure.shared[category][serie].season[season].episode[episode]
-              .thumbnails &&
-            db.structure.shared[category][serie].season[season].episode[
-              episode
-            ].thumbnails.getRandomPath()
-              ? db.structure.shared[category][serie].season[season].episode[
-                  episode
-                ].thumbnails &&
-                db.structure.shared[category][serie].season[season].episode[
-                  episode
-                ].toUrl() + "/thumbnail"
+            db.structure.shared[globCategory][globSerieTitle].season[season]
+              .episode[episode].thumbnails &&
+            db.structure.shared[globCategory][globSerieTitle].season[
+              season
+            ].episode[episode].thumbnails.getRandomPath()
+              ? db.structure.shared[globCategory][globSerieTitle].season[season]
+                  .episode[episode].thumbnails &&
+                db.structure.shared[globCategory][globSerieTitle].season[
+                  season
+                ].episode[episode].toUrl() + "/thumbnail"
               : null,
         },
         "Missing manifest file."

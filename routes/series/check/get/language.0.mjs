@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default function checkLanguage(db, req, res, next) {
   const { language } = req.parameters;
@@ -10,9 +10,9 @@ export default function checkLanguage(db, req, res, next) {
       .json(
         response.error.unknownField(
           { index: 1, value: language },
-          ['series', ...Object.values(req.parameters)],
+          ["series", language],
           { existing: { languages: db.structure.languages() } },
-          'Language does not exist.'
+          "Language does not exist."
         )
       );
   }

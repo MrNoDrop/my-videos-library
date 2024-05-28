@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default function checkLanguageCategorySerieSeasonEpisodes(
   db,
@@ -12,9 +12,9 @@ export default function checkLanguageCategorySerieSeasonEpisodes(
     next();
   } else {
     db.structure[language][category][serie].season[season]
-      .new('episode')
+      .new("episode")
       .then(() => next())
-      .catch(async error => {
+      .catch(async (error) => {
         if (error.type === db.errors.OPERATION_LOCKED) {
           let refresh = 0;
           while (db.operationIsLocked(error.lock.key) && refresh < 10) {
@@ -29,10 +29,10 @@ export default function checkLanguageCategorySerieSeasonEpisodes(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 6, value: season },
-                ['series', ...Object.values(req.parameters)],
+                { index: 4, value: season },
+                ["series", language, category, serie, season],
                 null,
-                'Missing episodes folder.',
+                "Missing episodes folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error
               )
             );
@@ -42,5 +42,5 @@ export default function checkLanguageCategorySerieSeasonEpisodes(
 }
 
 function sleep(millis) {
-  return new Promise(resolve => setTimeout(() => resolve(), millis));
+  return new Promise((resolve) => setTimeout(() => resolve(), millis));
 }

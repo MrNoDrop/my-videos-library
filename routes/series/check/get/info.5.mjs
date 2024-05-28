@@ -1,4 +1,4 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeInfo(
   db,
@@ -17,10 +17,10 @@ export default async function checkLanguageCategorySerieSeasonEpisodeInfo(
       .status(404)
       .json(
         response.error.missing.file(
-          { index: 6, value: 'info' },
-          ['series', ...Object.values(req.parameters)],
+          { index: 6, value: "info" },
+          ["series", language, category, serie, season, episode, "info"],
           null,
-          'Missing info file.'
+          "Missing info file."
         )
       );
   }

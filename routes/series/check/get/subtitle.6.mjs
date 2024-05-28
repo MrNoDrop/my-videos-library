@@ -1,4 +1,6 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSubtitle(
   db,
@@ -6,10 +8,13 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
   res,
   next
 ) {
-  const { category, serie, season, episode, subtitle } = req.parameters;
+  const { language, category, serie, season, episode, subtitle } =
+    req.parameters;
+  const globCategory = await globalCategory(language, category, db);
+  const globSerieTitle = await globalSerieTitle(language, serie, db);
 
   if (
-    db.structure.shared[category][serie].season[season].episode[
+    db.structure.shared[globCategory][globSerieTitle].season[season].episode[
       episode
     ].subtitles.includes(subtitle)
   ) {
@@ -19,23 +24,24 @@ export default async function checkLanguageCategorySerieSeasonEpisodeSubtitlesSu
       response.error.missing.file(
         { index: 7, value: subtitle },
         [
-          'series',
-          'shared',
+          "series",
+          language,
           category,
           serie,
           season,
           episode,
-          'subtitles',
-          subtitle
+          "subtitles",
+          subtitle,
         ],
         {
           existing: {
-            subtitles: db.structure.shared[category][serie].season[
-              season
-            ].episode[episode].subtitles.list()
-          }
+            subtitles:
+              db.structure.shared[globCategory][globSerieTitle].season[
+                season
+              ].episode[episode].subtitles.list(),
+          },
         },
-        'Missing subtitle file.'
+        "Missing subtitle file."
       )
     );
   }

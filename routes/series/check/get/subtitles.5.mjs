@@ -1,23 +1,30 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
-export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
+export default async function checkLanguageCategorySerieSeasonEpisodeSubtitles(
   db,
   req,
   res,
   next
 ) {
-  const { category, serie, season, episode } = req.parameters;
+  const { language, category, serie, season, episode } = req.parameters;
+  const globCategory = await globalCategory(language, category, db);
+  const globSerieTitle = await globalSerieTitle(language, serie, db);
 
   if (
-    db.structure.shared[category][serie].season[season].episode[episode]
-      .subtitles
+    db.structure.shared[globCategory][globSerieTitle].season[season].episode[
+      episode
+    ].subtitles
   ) {
     next();
   } else {
-    db.structure.shared[category][serie].season[season].episode[episode]
-      .new('subtitles')
+    db.structure.shared[globCategory][globSerieTitle].season[season].episode[
+      episode
+    ]
+      .new("subtitles")
       .then(() => next())
-      .catch(async error => {
+      .catch(async (error) => {
         if (error.type === db.errors.OPERATION_LOCKED) {
           let refresh = 0;
           while (db.operationIsLocked(error.lock.key) && refresh < 10) {
@@ -26,8 +33,8 @@ export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
           }
         }
         if (
-          db.structure.shared[category][serie].season[season].episode[episode]
-            .subtitles
+          db.structure.shared[globCategory][globSerieTitle].season[season]
+            .episode[episode].subtitles
         ) {
           next();
         } else {
@@ -35,10 +42,18 @@ export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 6, value: 'subtitles' },
-                ['series', ...Object.values(req.parameters)],
+                { index: 6, value: "subtitles" },
+                [
+                  "series",
+                  language,
+                  category,
+                  serie,
+                  season,
+                  episode,
+                  "subtitles",
+                ],
                 null,
-                'Missing subtitles folder.',
+                "Missing subtitles folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error
               )
             );
@@ -48,5 +63,5 @@ export default function checkLanguageCategorySerieSeasonEpisodeSubtitles(
 }
 
 function sleep(millis) {
-  return new Promise(resolve => setTimeout(() => resolve(), millis));
+  return new Promise((resolve) => setTimeout(() => resolve(), millis));
 }

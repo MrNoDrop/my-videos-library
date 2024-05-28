@@ -1,38 +1,41 @@
-import fs from '../modules/customFS.mjs';
-import PathDB from '../pathDB.mjs';
+import fs from "../modules/customFS.mjs";
+import PathDB from "../pathDB.mjs";
 const supportedLanguages = JSON.parse(
   fs.readFileSync(`${fs.__projectPath}/supported-languages.json`).toString()
 );
 const seriesDB = (() => new PathDB(`${fs.__projectPath}/media/series`))();
 seriesDB.monitor();
-seriesDB.isSupportedLanguage = language => {
+seriesDB.isSupportedLanguage = (language) => {
   return supportedLanguages.includes(language);
 };
 seriesDB.structure.list = () => {
-  const nonLanguages = language => !['shared'].includes(language);
+  const nonLanguages = (language) => !["shared"].includes(language);
   const languages = seriesDB.structure.list().filter(nonLanguages);
   return languages;
 };
-seriesDB.addStructureFunction('languages', ({ getObject }) => {
+seriesDB.addStructureFunction("languages", ({ getObject }) => {
   return getObject()
     .list()
-    .filter(entry => !['shared', 'languages'].includes(entry));
+    .filter(
+      (entry) =>
+        !["shared", "languages", "categories", "titles"].includes(entry)
+    );
 });
 const toUrl = ({ path, extention }) => {
   let copy = `${path}`;
-  if (path.includes('/season/')) {
-    copy = copy.replace('/season/', '/');
+  if (path.includes("/season/")) {
+    copy = copy.replace("/season/", "/");
   }
-  if (path.includes('/episode/')) {
-    copy = copy.replace('/episode/', '/');
+  if (path.includes("/episode/")) {
+    copy = copy.replace("/episode/", "/");
   }
   if (extention && path.endsWith(`.${extention}`)) {
     copy = copy.substring(0, copy.lastIndexOf(`.${extention}`));
   }
   return `/series/${copy}`;
 };
-seriesDB.addFileFunction('toUrl', toUrl);
-seriesDB.addDirFunction('toUrl', toUrl);
+seriesDB.addFileFunction("toUrl", toUrl);
+seriesDB.addDirFunction("toUrl", toUrl);
 const getRandomPath = ({ getObject }) => {
   const files = getObject().list();
   let choosen = files[0];
@@ -45,8 +48,8 @@ const getRandomPath = ({ getObject }) => {
   }
   return `${seriesDB.folderLocation}/${getObject()[choosen].path}`;
 };
-seriesDB.addDirFunction('getRandomPath', getRandomPath, 'thumbnails');
-seriesDB.addDirFunction('getRandomPath', getRandomPath, 'horizontal');
-seriesDB.addDirFunction('getRandomPath', getRandomPath, 'vertical');
+seriesDB.addDirFunction("getRandomPath", getRandomPath, "thumbnails");
+seriesDB.addDirFunction("getRandomPath", getRandomPath, "horizontal");
+seriesDB.addDirFunction("getRandomPath", getRandomPath, "vertical");
 
 export default seriesDB;

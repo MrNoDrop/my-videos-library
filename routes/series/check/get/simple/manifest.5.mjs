@@ -1,4 +1,4 @@
-import response from '../../../../predefined/responses.mjs';
+import response from "../../../../predefined/responses.mjs";
 
 export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   db,
@@ -17,10 +17,10 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
       .status(404)
       .json(
         response.error.missing.file(
-          { index: 6, value: 'manifest' },
-          ['series', ...Object.values(req.params), 'manifest'],
+          { index: 6, value: "manifest" },
+          ["series", language, category, serie, season, episode, "manifest"],
           null,
-          'Missing manifest file.'
+          "Missing manifest file."
         )
       );
   }

@@ -1,22 +1,30 @@
-import response from '../../../predefined/responses.mjs';
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
-export default function checkLanguageCategorySerieSeasonEpisodeVideo(
+export default async function checkLanguageCategorySerieSeasonEpisodeVideo(
   db,
   req,
   res,
   next
 ) {
-  const { category, serie, season, episode } = req.parameters;
+  const { language, category, serie, season, episode } = req.parameters;
+  const globCategory = await globalCategory(language, category, db);
+  const globSerieTitle = await globalSerieTitle(language, serie, db);
 
   if (
-    db.structure.shared[category][serie].season[season].episode[episode].video
+    db.structure.shared[globCategory][globSerieTitle].season[season].episode[
+      episode
+    ].video
   ) {
     next();
   } else {
-    db.structure.shared[category][serie].season[season].episode[episode]
-      .new('video')
+    db.structure.shared[globCategory][globSerieTitle].season[season].episode[
+      episode
+    ]
+      .new("video")
       .then(() => next())
-      .catch(async error => {
+      .catch(async (error) => {
         if (error.type === db.errors.OPERATION_LOCKED) {
           let refresh = 0;
           while (db.operationIsLocked(error.lock.key) && refresh < 10) {
@@ -25,8 +33,8 @@ export default function checkLanguageCategorySerieSeasonEpisodeVideo(
           }
         }
         if (
-          db.structure.shared[category][serie].season[season].episode[episode]
-            .video
+          db.structure.shared[globCategory][globSerieTitle].season[season]
+            .episode[episode].video
         ) {
           next();
         } else {
@@ -34,10 +42,10 @@ export default function checkLanguageCategorySerieSeasonEpisodeVideo(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 6, value: 'audio' },
-                ['series', 'shared', ...Object.values(req.parameters), 'video'],
+                { index: 6, value: "audio" },
+                ["series", language, category, serie, season, episode, "video"],
                 null,
-                'Missing video folder.',
+                "Missing video folder.",
                 error.type !== db.errors.OPERATION_LOCKED && error
               )
             );
@@ -47,5 +55,5 @@ export default function checkLanguageCategorySerieSeasonEpisodeVideo(
 }
 
 function sleep(millis) {
-  return new Promise(resolve => setTimeout(() => resolve(), millis));
+  return new Promise((resolve) => setTimeout(() => resolve(), millis));
 }
