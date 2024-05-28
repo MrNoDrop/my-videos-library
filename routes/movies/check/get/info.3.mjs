@@ -8,7 +8,7 @@ export default async function checkLanguageCategoryMovieInfo(
 ) {
   const { language, category, movie } = req.parameters;
 
-  if (db.structure[language][category][movie].info) {
+  if (db.structure[language][category][movie].info_json) {
     next();
   } else {
     res
@@ -16,7 +16,7 @@ export default async function checkLanguageCategoryMovieInfo(
       .json(
         response.error.missing.file(
           { index: 4, value: "info" },
-          ["movies", language, category, movie],
+          ["movies", language, category, movie, "info"],
           null,
           "Missing info file."
         )
