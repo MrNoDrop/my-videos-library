@@ -18,7 +18,9 @@ seriesDB.addStructureFunction("languages", ({ getDatabaseStructure }) => {
     .list()
     .filter(
       (entry) =>
-        !["shared", "languages", "categories", "titles"].includes(entry)
+        !["shared", "languages", "categories_json", "titles_json"].includes(
+          entry
+        )
     );
 });
 const toUrl = ({ path, extention }) => {
