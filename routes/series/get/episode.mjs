@@ -47,7 +47,9 @@ export default function getEpisode(router, db) {
                     globSerieTitle
                   ].season[season].episode[episode].subtitles[key]
                     .toUrl()
-                    .replace("shared", language);
+                    .replace("shared", language)
+                    .replace(globCategory, category)
+                    .replace(globSerieTitle, serie);
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
@@ -64,7 +66,9 @@ export default function getEpisode(router, db) {
                   season
                 ].episode[episode]
                   .toUrl()
-                  .replace("shared", language) + "/thumbnail"
+                  .replace("shared", language)
+                  .replace(globCategory, category)
+                  .replace(globSerieTitle, serie) + "/thumbnail"
               : null,
         })
       );

@@ -13,43 +13,47 @@ export default function getMovie(router, db) {
     check.manifest.bind(this, db),
     async (req, res) => {
       const { language, category, movie } = req.params;
-      const sharedCategory = await globalCategory(language, category, db);
-      const sharedMovieTitle = await golbalMovieTitle(language, movie, db);
+      const globCategory = await globalCategory(language, category, db);
+      const globMovieTitle = await golbalMovieTitle(language, movie, db);
       res.json(
         response.ok({
           path: ["movies", language, category, movie],
-          manifest: `${db.structure[language][category][
-            movie
-          ].toUrl()}/manifest`,
+          manifest: `${db.structure[language][category][movie]
+            .toUrl()
+            .replace("shared", language)}/manifest`,
           info: db.structure[language][category][movie].info
             ? await db.structure[language][category][movie].info.read()
             : null,
-          subtitles: db.structure.shared[sharedCategory][sharedMovieTitle]
-            .subtitles
+          subtitles: db.structure.shared[globCategory][globMovieTitle].subtitles
             ? (() => {
                 const keys =
-                  db.structure.shared[sharedCategory][
-                    sharedMovieTitle
+                  db.structure.shared[globCategory][
+                    globMovieTitle
                   ].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] =
-                    db.structure.shared[sharedCategory][
-                      sharedMovieTitle
-                    ].subtitles[key].toUrl();
+                  subtitles[key] = db.structure.shared[globCategory][
+                    globMovieTitle
+                  ].subtitles[key]
+                    .toUrl()
+                    .replace("shared", language)
+                    .replace(globCategory, category)
+                    .replace(globMovieTitle, movie);
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
             : null,
           thumbnail:
-            db.structure.shared[sharedCategory][sharedMovieTitle].thumbnails &&
-            db.structure.shared[sharedCategory][
-              sharedMovieTitle
+            db.structure.shared[globCategory][globMovieTitle].thumbnails &&
+            db.structure.shared[globCategory][
+              globMovieTitle
             ].thumbnails.getRandomPath()
-              ? db.structure.shared[sharedCategory][sharedMovieTitle]
-                  .thumbnails &&
-                db.structure.shared[sharedCategory][sharedMovieTitle].toUrl() +
-                  "/thumbnail"
+              ? db.structure.shared[globCategory][globMovieTitle].thumbnails &&
+                db.structure.shared[globCategory][globMovieTitle]
+                  .toUrl()
+                  .replace("shared", language)
+                  .replace(globCategory, category)
+                  .replace(globMovieTitle, movie) + "/thumbnail"
               : null,
         })
       );
