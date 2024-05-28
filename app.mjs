@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import indexRouter from "./routes/index.mjs";
 import seriesRouter from "./routes/series.mjs";
 import moviesRouter from "./routes/movies.mjs";
+import homeRouter from "./routes/home.mjs";
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -23,5 +24,6 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use("/", indexRouter);
 app.use("/series", seriesRouter);
 app.use("/movies", moviesRouter);
+app.use("/home", homeRouter);
 
 export default app;
