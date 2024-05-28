@@ -1,9 +1,11 @@
-import check from '../../check/get.mjs';
-import response from '../../../predefined/responses.mjs';
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
 export default function getEpisodeVideos(router, db) {
   router.get(
-    '/shared/:category/:serie/:season/:episode/video',
+    "/:language/:category/:serie/:season/:episode/video",
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
@@ -12,14 +14,18 @@ export default function getEpisodeVideos(router, db) {
     check.episodes.bind(this, db),
     check.episode.bind(this, db),
     check.videos.bind(this, db),
-    (req, res) => {
-      const { category, serie, season, episode } = req.params;
+    async (req, res) => {
+      const { language, category, serie, season, episode } = req.params;
+      const globCategory = await globalCategory(language, category, db);
+      const globSerieTitle = await globalSerieTitle(language, serie, db);
+
       res.json(
         response.ok({
-          path: ['series', 'shared', ...Object.values(req.params), 'video'],
-          qualities: db.structure.shared[category][serie].season[
-            season
-          ].episode[episode].video.list()
+          path: ["series", language, category, serie, season, episode, "video"],
+          qualities:
+            db.structure.shared[globCategory][globSerieTitle].season[
+              season
+            ].episode[episode].video.list(),
         })
       );
     }

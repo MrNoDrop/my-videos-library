@@ -1,9 +1,11 @@
-import check from '../../check/get.mjs';
-import response from '../../../predefined/responses.mjs';
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
 export default function getEpisodeVideo(router, db) {
   router.get(
-    '/shared/:category/:serie/:season/:episode/video/:quality',
+    "/:language/:category/:serie/:season/:episode/video/:quality",
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
@@ -13,13 +15,17 @@ export default function getEpisodeVideo(router, db) {
     check.episode.bind(this, db),
     check.videos.bind(this, db),
     check.video.bind(this, db),
-    (req, res) => {
-      const { category, serie, season, episode, quality } = req.params;
+    async (req, res) => {
+      const { language, category, serie, season, episode, quality } =
+        req.params;
+      const globCategory = await globalCategory(language, category, db);
+      const globSerieTitle = await globalSerieTitle(language, serie, db);
+
       try {
         res.sendFile(
-          db.structure.shared[category][serie].season[season].episode[
-            episode
-          ].video[quality].getAbsolutePath()
+          db.structure.shared[globCategory][globSerieTitle].season[
+            season
+          ].episode[episode].video[quality].getAbsolutePath()
         );
       } catch (error) {
         res
@@ -28,17 +34,17 @@ export default function getEpisodeVideo(router, db) {
             response.error.send.file(
               { index: 7, value: quality },
               [
-                'series',
-                'shared',
+                "series",
+                language,
                 category,
                 serie,
                 season,
                 episode,
-                'video',
-                quality
+                "video",
+                quality,
               ],
               null,
-              'Could not send video file.',
+              "Could not send video file.",
               error
             )
           );

@@ -1,9 +1,9 @@
-import check from '../../check/get.mjs';
-import response from '../../../predefined/responses.mjs';
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
 
 export default function getEpisodeSubtitle(router, db) {
   router.get(
-    '/:language/:category/:serie/:season/:episode/manifest',
+    "/:language/:category/:serie/:season/:episode/manifest",
     check.preconfiguration,
     check.language.bind(this, db),
     check.category.bind(this, db),
@@ -26,10 +26,18 @@ export default function getEpisodeSubtitle(router, db) {
           .status(500)
           .json(
             response.error.send.file(
-              { index: 6, value: 'manifest' },
-              ['series', ...Object.values(req.params), 'manifest'],
+              { index: 6, value: "manifest" },
+              [
+                "series",
+                language,
+                category,
+                serie,
+                season,
+                episode,
+                "manifest",
+              ],
               null,
-              'Could not send manifest file.',
+              "Could not send manifest file.",
               error
             )
           );

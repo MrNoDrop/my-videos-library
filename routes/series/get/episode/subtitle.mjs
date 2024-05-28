@@ -1,10 +1,12 @@
 import check from "../../check/get.mjs";
 import response from "../../../predefined/responses.mjs";
 import parseSrt from "../../../../modules/parseSrt.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import globalSerieTitle from "../../../tools/globalTitle.mjs";
 
-export default function getEpisodeSubtitle(router, db) {
+export default async function getEpisodeSubtitle(router, db) {
   router.get(
-    "/shared/:category/:serie/:season/:episode/subtitles/:subtitle",
+    "/:language/:category/:serie/:season/:episode/subtitles/:subtitle",
     check.preconfiguration,
     check.category.bind(this, db),
     check.serie.bind(this, db),
@@ -15,14 +17,18 @@ export default function getEpisodeSubtitle(router, db) {
     check.subtitles.bind(this, db),
     check.subtitle.bind(this, db),
     async (req, res) => {
-      const { category, serie, season, episode, subtitle } = req.params;
+      const { language, category, serie, season, episode, subtitle } =
+        req.params;
       const { parsed } = req.query;
+      const globCategory = await globalCategory(language, category, db);
+      const globSerieTitle = await globalSerieTitle(language, serie, db);
+
       try {
         if (parsed) {
           res.json(
             response.ok(
               parseSrt(
-                await db.structure.shared[category][serie].season[
+                await db.structure.shared[globCategory][globSerieTitle].season[
                   season
                 ].episode[episode].subtitles[subtitle].read()
               )
@@ -30,9 +36,9 @@ export default function getEpisodeSubtitle(router, db) {
           );
         } else {
           res.sendFile(
-            db.structure.shared[category][serie].season[season].episode[
-              episode
-            ].subtitles[subtitle].getAbsolutePath()
+            db.structure.shared[globCategory][globSerieTitle].season[
+              season
+            ].episode[episode].subtitles[subtitle].getAbsolutePath()
           );
         }
       } catch (error) {
@@ -43,7 +49,7 @@ export default function getEpisodeSubtitle(router, db) {
               { index: 7, value: subtitle },
               [
                 "series",
-                "shared",
+                language,
                 category,
                 serie,
                 season,
