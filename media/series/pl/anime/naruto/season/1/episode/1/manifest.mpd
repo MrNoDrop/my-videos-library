@@ -4,31 +4,31 @@
   <Period id="0">
     <AdaptationSet id="0" contentType="video" maxWidth="720" maxHeight="540" frameRate="24000/1001" par="4:3">
       <Representation id="0" bandwidth="180705" codecs="avc1.64000b" mimeType="video/mp4" sar="1:1" width="192" height="144">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/144</BaseURL>
+        <BaseURL>/series/pl/anime/naruto/1/1/video/144</BaseURL>
         <SegmentBase indexRange="862-3677" timescale="24000">
           <Initialization range="0-861"/>
         </SegmentBase>
       </Representation>
       <Representation id="2" bandwidth="262930" codecs="avc1.64000d" mimeType="video/mp4" sar="1:1" width="320" height="240">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/240</BaseURL>
+        <BaseURL>/series/pl/anime/naruto/1/1/video/240</BaseURL>
         <SegmentBase indexRange="862-3677" timescale="24000">
           <Initialization range="0-861"/>
         </SegmentBase>
       </Representation>
       <Representation id="4" bandwidth="428396" codecs="avc1.640015" mimeType="video/mp4" sar="1:1" width="480" height="360">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/360</BaseURL>
+        <BaseURL>/series/pl/anime/naruto/1/1/video/360</BaseURL>
         <SegmentBase indexRange="863-3678" timescale="24000">
           <Initialization range="0-862"/>
         </SegmentBase>
       </Representation>
       <Representation id="6" bandwidth="780884" codecs="avc1.64001e" mimeType="video/mp4" sar="1:1" width="720" height="540">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/540</BaseURL>
+        <BaseURL>/series/pl/anime/naruto/1/1/video/540</BaseURL>
         <SegmentBase indexRange="864-3679" timescale="24000">
           <Initialization range="0-863"/>
         </SegmentBase>
       </Representation>
       <Representation id="8" bandwidth="4177971" codecs="avc1.42c01e" mimeType="video/mp4" sar="1:1" width="640" height="480">
-        <BaseURL>/series/shared/anime/naruto/1/1/video/720</BaseURL>
+        <BaseURL>/series/pl/anime/naruto/1/1/video/720</BaseURL>
         <SegmentBase indexRange="825-3088" timescale="24000">
           <Initialization range="0-824"/>
         </SegmentBase>

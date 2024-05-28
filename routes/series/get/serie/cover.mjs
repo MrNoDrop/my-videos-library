@@ -8,7 +8,7 @@ export default function getSerieCover(router, db) {
       const { language, category, serie, orientation } = req.params;
       const globCategory = await globalCategory(language, category, db);
       const globSerieTitle = await globalSerieTitle(language, serie, db);
-
+      console.log(language, category, globCategory);
       try {
         res.sendFile(
           db.structure.shared[globCategory][globSerieTitle].cover[

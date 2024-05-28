@@ -1,14 +1,18 @@
 {
   "fr": {
-    "action": 1
+    "action": 1,
+    "anime": 0
   },
   "pl": {
-    "akcja": 1
+    "akcja": 1,
+    "anime": 0
   },
   "nl": {
-    "actie": 1
+    "actie": 1,
+    "anime": 0
   },
   "en": {
-    "action": 1
+    "action": 1,
+    "anime": 0
   }
 }

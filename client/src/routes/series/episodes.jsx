@@ -1,40 +1,40 @@
-import React, { Fragment, useRef, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { push } from 'redux-first-routing';
-import { useFitAvailableSpace } from '../../components/effects';
-import setCurrentEpisode from '../../store/actions/series/set/current/episode';
-import setSeries from '../../store/actions/series/set';
-import setSeriesEpisodeInfo from '../../store/actions/series/set/episode/info';
-import Bar, { fitAvailableSpaceBarOffset } from '../../components/bar';
-import ViewmodeButton from '../../components/button/viewmode';
-import Filter from '../../components/filter';
-import ChangeLocationButton from '../../components/button/change/location';
-import Center from '../../components/center';
-import Nametag from '../../components/nametag';
+import React, { Fragment, useRef, useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { push } from "redux-first-routing";
+import { useFitAvailableSpace } from "../../components/effects";
+import setCurrentEpisode from "../../store/actions/series/set/current/episode";
+import setSeries from "../../store/actions/series/set";
+import setSeriesEpisodeInfo from "../../store/actions/series/set/episode/info";
+import Bar, { fitAvailableSpaceBarOffset } from "../../components/bar";
+import ViewmodeButton from "../../components/button/viewmode";
+import Filter from "../../components/filter";
+import ChangeLocationButton from "../../components/button/change/location";
+import Center from "../../components/center";
+import Nametag from "../../components/nametag";
 
 const episodeDescriptors = {
-  pl: 'Odcinek',
-  en: 'Episode',
-  nl: 'Aflevering',
-  fr: 'Épisode'
+  pl: "Odcinek",
+  en: "Episode",
+  nl: "Aflevering",
+  fr: "Épisode",
 };
 const mapStateToProps = ({
   state: {
     user: { language },
     window: { inner },
     series,
-    viewmode
+    viewmode,
   },
-  router: { pathname }
+  router: { pathname },
 }) => ({ pathname, language, windowInnerDimensions: inner, series, viewmode });
 
-const mapDispatchToProps = dispatch => ({
-  setSeries: series => dispatch(setSeries(series)),
+const mapDispatchToProps = (dispatch) => ({
+  setSeries: (series) => dispatch(setSeries(series)),
   setSeriesEpisodeInfo: (series, language, episode, info) =>
     dispatch(setSeriesEpisodeInfo(series, language, episode, info)),
   setCurrentEpisode: (series, episode) =>
     dispatch(setCurrentEpisode(series, episode)),
-  changePath: pathname => dispatch(push(pathname))
+  changePath: (pathname) => dispatch(push(pathname)),
 });
 
 function SeriesEpisodesRoute({
@@ -46,21 +46,21 @@ function SeriesEpisodesRoute({
   changePath,
   series,
   viewmode,
-  pathname
+  pathname,
 }) {
   const ref = useRef();
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   useFetchSerieEpisodes(language, setSeries, series, pathname, changePath);
   const [scrollEventCounter, setScrollEventCounter] = useState(0);
   return (
     <section
       {...{
-        id: 'route',
+        id: "route",
         ref,
         style: useFitAvailableSpace(
           windowInnerDimensions,
           fitAvailableSpaceBarOffset()
-        )
+        ),
       }}
       onScroll={({ target: { scrollTop } }) => {
         if (
@@ -78,18 +78,18 @@ function SeriesEpisodesRoute({
             widthPercentage: 80,
             marginRightPercentage: 11.5,
             filter,
-            setFilter
+            setFilter,
           }}
         />
         <ViewmodeButton
-          style={{ marginLeft: '-1.5vmin' }}
-          viewmodes={['list', 'horizontal']}
-          alterSelected={{ horizontal: ['horizontal', 'vertical'] }}
+          style={{ marginLeft: "-1.5vmin" }}
+          viewmodes={["list", "horizontal"]}
+          alterSelected={{ horizontal: ["horizontal", "vertical"] }}
         />
       </Bar>
       <Center
         availableSpace={windowInnerDimensions.width}
-        disable={viewmode === 'list'}
+        disable={viewmode === "list"}
       >
         {series[language] &&
         series.current.category &&
@@ -104,20 +104,20 @@ function SeriesEpisodesRoute({
                 series.current.season
               ]
             )
-              .filter(episode =>
+              .filter((episode) =>
                 `${episodeDescriptors[language]} ${episode}`
                   .toLowerCase()
                   .includes(filter.toLowerCase())
               )
-              .map(episode => (
+              .map((episode) => (
                 <ChangeLocationButton
                   {...{
                     key: episode,
-                    viewmode: viewmode === 'vertical' ? 'horizontal' : viewmode
+                    viewmode: viewmode === "vertical" ? "horizontal" : viewmode,
                   }}
                   href={`${pathname}/${episode}`}
                   image={{
-                    horizontal: `/series/shared/${series.current.category}/${series.current.serie}/${series.current.season}/${episode}/thumbnail`
+                    horizontal: `/series/${language}/${series.current.category}/${series.current.serie}/${series.current.season}/${episode}/thumbnail`,
                   }}
                   hovertext={
                     series[language][series.current.category][
@@ -166,7 +166,7 @@ function SeriesEpisodesRoute({
                     }
                   }}
                 >
-                  {viewmode === 'list' ? (
+                  {viewmode === "list" ? (
                     `${episodeDescriptors[language]} ${episode}`
                   ) : (
                     <Nametag>
@@ -175,7 +175,7 @@ function SeriesEpisodesRoute({
                   )}
                 </ChangeLocationButton>
               ))
-          : ''}
+          : ""}
       </Center>
     </section>
   );
@@ -199,7 +199,7 @@ function useFetchSerieEpisodes(
       (async () => {
         setFetching(language);
         try {
-          const path = pathname.substring(1, pathname.length).split('/');
+          const path = pathname.substring(1, pathname.length).split("/");
           path.shift();
           path.shift();
           const [pathCategory, pathSerie, pathSeason] = path;
@@ -223,10 +223,10 @@ function useFetchSerieEpisodes(
                       [season]: episodes.reduce((obj, key) => {
                         obj[key] = {};
                         return obj;
-                      }, {})
-                    }
-                  }
-                }
+                      }, {}),
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category]) {
               setSeries({
@@ -239,10 +239,10 @@ function useFetchSerieEpisodes(
                       [season]: episodes.reduce((obj, key) => {
                         obj[key] = {};
                         return obj;
-                      }, {})
-                    }
-                  }
-                }
+                      }, {}),
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category][serie]) {
               setSeries({
@@ -256,10 +256,10 @@ function useFetchSerieEpisodes(
                       [season]: episodes.reduce((obj, key) => {
                         obj[key] = {};
                         return obj;
-                      }, {})
-                    }
-                  }
-                }
+                      }, {}),
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category][serie][season]) {
               setSeries({
@@ -274,10 +274,10 @@ function useFetchSerieEpisodes(
                       [season]: episodes.reduce((obj, key) => {
                         obj[key] = {};
                         return obj;
-                      }, {})
-                    }
-                  }
-                }
+                      }, {}),
+                    },
+                  },
+                },
               });
             } else {
               setSeries({
@@ -294,21 +294,21 @@ function useFetchSerieEpisodes(
                           seriesState[language][category][serie][season][key] ||
                           {};
                         return obj;
-                      }, {})
-                    }
-                  }
-                }
+                      }, {}),
+                    },
+                  },
+                },
               });
             }
-          } else if (error.type === 'UNKNOWN_FIELD') {
+          } else if (error.type === "UNKNOWN_FIELD") {
             const [series] = pathname
               .substring(1, pathname.length)
-              .split('/')
+              .split("/")
               .splice(1, 1);
             error.fields.shift();
             const [lang, category, serie, season] = error.fields;
             const path = [lang, series, category, serie, season];
-            changePath(`/${path.splice(0, error.field.index).join('/')}`);
+            changePath(`/${path.splice(0, error.field.index).join("/")}`);
           }
         } catch (e) {
           console.log(e);
@@ -322,6 +322,6 @@ function useFetchSerieEpisodes(
     fetching,
     setFetching,
     pathname,
-    changePath
+    changePath,
   ]);
 }

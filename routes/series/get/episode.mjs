@@ -43,10 +43,11 @@ export default function getEpisode(router, db) {
                   ].episode[episode].subtitles.list();
                 const subtitles = {};
                 for (let key of keys) {
-                  subtitles[key] =
-                    db.structure.shared[globCategory][globSerieTitle].season[
-                      season
-                    ].episode[episode].subtitles[key].toUrl();
+                  subtitles[key] = db.structure.shared[globCategory][
+                    globSerieTitle
+                  ].season[season].episode[episode].subtitles[key]
+                    .toUrl()
+                    .replace("shared", language);
                 }
                 return Object.keys(subtitles).length > 0 ? subtitles : null;
               })()
@@ -61,7 +62,9 @@ export default function getEpisode(router, db) {
                   .episode[episode].thumbnails &&
                 db.structure.shared[globCategory][globSerieTitle].season[
                   season
-                ].episode[episode].toUrl() + "/thumbnail"
+                ].episode[episode]
+                  .toUrl()
+                  .replace("shared", language) + "/thumbnail"
               : null,
         })
       );

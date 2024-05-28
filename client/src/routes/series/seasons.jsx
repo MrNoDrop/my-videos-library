@@ -1,37 +1,37 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { push } from 'redux-first-routing';
-import { useFitAvailableSpace } from '../../components/effects';
-import setCurrentSeason from '../../store/actions/series/set/current/season';
-import setSeries from '../../store/actions/series/set';
-import Bar, { fitAvailableSpaceBarOffset } from '../../components/bar';
-import ViewmodeButton from '../../components/button/viewmode';
-import Filter from '../../components/filter';
-import ChangeLocationButton from '../../components/button/change/location';
-import Center from '../../components/center';
-import Nametag from '../../components/nametag';
+import React, { useRef, useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { push } from "redux-first-routing";
+import { useFitAvailableSpace } from "../../components/effects";
+import setCurrentSeason from "../../store/actions/series/set/current/season";
+import setSeries from "../../store/actions/series/set";
+import Bar, { fitAvailableSpaceBarOffset } from "../../components/bar";
+import ViewmodeButton from "../../components/button/viewmode";
+import Filter from "../../components/filter";
+import ChangeLocationButton from "../../components/button/change/location";
+import Center from "../../components/center";
+import Nametag from "../../components/nametag";
 
 const seasonDescriptors = {
-  pl: 'Sezon',
-  en: 'Season',
-  nl: 'seizoen',
-  fr: 'saison'
+  pl: "Sezon",
+  en: "Season",
+  nl: "seizoen",
+  fr: "saison",
 };
 const mapStateToProps = ({
   state: {
     user: { language },
     window: { inner },
     series,
-    viewmode
+    viewmode,
   },
-  router: { pathname }
+  router: { pathname },
 }) => ({ pathname, language, windowInnerDimensions: inner, series, viewmode });
 
-const mapDispatchToProps = dispatch => ({
-  setSeries: series => dispatch(setSeries(series)),
+const mapDispatchToProps = (dispatch) => ({
+  setSeries: (series) => dispatch(setSeries(series)),
   setCurrentSeason: (series, season) =>
     dispatch(setCurrentSeason(series, season)),
-  changePath: pathname => dispatch(push(pathname))
+  changePath: (pathname) => dispatch(push(pathname)),
 });
 
 function SeriesSeasonsRoute({
@@ -42,21 +42,21 @@ function SeriesSeasonsRoute({
   changePath,
   series,
   viewmode,
-  pathname
+  pathname,
 }) {
   const ref = useRef();
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   useFetchSerieSeasons(language, setSeries, series, pathname, changePath);
   const [scrollEventCounter, setScrollEventCounter] = useState(0);
   return (
     <section
       {...{
-        id: 'route',
+        id: "route",
         ref,
         style: useFitAvailableSpace(
           windowInnerDimensions,
           fitAvailableSpaceBarOffset()
-        )
+        ),
       }}
       onScroll={({ target: { scrollTop } }) => {
         if (
@@ -74,17 +74,17 @@ function SeriesSeasonsRoute({
             widthPercentage: 80,
             marginRightPercentage: 11.5,
             filter,
-            setFilter
+            setFilter,
           }}
         />
         <ViewmodeButton
-          style={{ marginLeft: '-1.5vmin' }}
-          viewmodes={['list', 'horizontal', 'vertical']}
+          style={{ marginLeft: "-1.5vmin" }}
+          viewmodes={["list", "horizontal", "vertical"]}
         />
       </Bar>
       <Center
         availableSpace={windowInnerDimensions.width}
-        disable={viewmode === 'list'}
+        disable={viewmode === "list"}
       >
         {series[language] &&
         series.current.category &&
@@ -94,24 +94,24 @@ function SeriesSeasonsRoute({
           ? Object.keys(
               series[language][series.current.category][series.current.serie]
             )
-              .filter(season =>
+              .filter((season) =>
                 `${seasonDescriptors[language]} ${season}`
                   .toLowerCase()
                   .includes(filter.toLowerCase())
               )
-              .map(season => (
+              .map((season) => (
                 <ChangeLocationButton
                   {...{ key: season, viewmode }}
                   href={`${pathname}/${season}`}
                   image={{
-                    horizontal: `/series/shared/${series.current.category}/${series.current.serie}/${season}/cover/horizontal`,
-                    vertical: `/series/shared/${series.current.category}/${series.current.serie}/${season}/cover/vertical`
+                    horizontal: `/series/${language}/${series.current.category}/${series.current.serie}/${season}/cover/horizontal`,
+                    vertical: `/series/${language}/${series.current.category}/${series.current.serie}/${season}/cover/vertical`,
                   }}
                   parentRef={ref}
                   parentScrollEventCounter={scrollEventCounter}
                   onClick={() => setCurrentSeason(series, season)}
                 >
-                  {viewmode === 'list' ? (
+                  {viewmode === "list" ? (
                     `${seasonDescriptors[language]} ${season}`
                   ) : (
                     <Nametag>
@@ -120,7 +120,7 @@ function SeriesSeasonsRoute({
                   )}
                 </ChangeLocationButton>
               ))
-          : ''}
+          : ""}
       </Center>
     </section>
   );
@@ -141,7 +141,7 @@ function useFetchSerieSeasons(
       (async () => {
         setFetching(language);
         try {
-          const path = pathname.substring(1, pathname.length).split('/');
+          const path = pathname.substring(1, pathname.length).split("/");
           path.shift();
           path.shift();
           const [pathCategory, pathSerie] = path;
@@ -162,9 +162,9 @@ function useFetchSerieSeasons(
                     [serie]: seasons.reduce((obj, key) => {
                       obj[key] = {};
                       return obj;
-                    }, {})
-                  }
-                }
+                    }, {}),
+                  },
+                },
               });
             } else if (!seriesState[language][category]) {
               setSeries({
@@ -176,9 +176,9 @@ function useFetchSerieSeasons(
                     [serie]: seasons.reduce((obj, key) => {
                       obj[key] = {};
                       return obj;
-                    }, {})
-                  }
-                }
+                    }, {}),
+                  },
+                },
               });
             } else if (!seriesState[language][category][serie]) {
               setSeries({
@@ -191,9 +191,9 @@ function useFetchSerieSeasons(
                     [serie]: seasons.reduce((obj, key) => {
                       obj[key] = {};
                       return obj;
-                    }, {})
-                  }
-                }
+                    }, {}),
+                  },
+                },
               });
             } else {
               setSeries({
@@ -207,20 +207,20 @@ function useFetchSerieSeasons(
                       obj[key] =
                         seriesState[language][category][serie][key] || {};
                       return obj;
-                    }, {})
-                  }
-                }
+                    }, {}),
+                  },
+                },
               });
             }
-          } else if (error.type === 'UNKNOWN_FIELD') {
+          } else if (error.type === "UNKNOWN_FIELD") {
             const [series] = pathname
               .substring(1, pathname.length)
-              .split('/')
+              .split("/")
               .splice(1, 1);
             error.fields.shift();
             const [lang, category, serie] = error.fields;
             const path = [lang, series, category, serie];
-            changePath(`/${path.splice(0, error.field.index).join('/')}`);
+            changePath(`/${path.splice(0, error.field.index).join("/")}`);
           }
         } catch (e) {
           console.log(e);
@@ -234,6 +234,6 @@ function useFetchSerieSeasons(
     fetching,
     setFetching,
     pathname,
-    changePath
+    changePath,
   ]);
 }

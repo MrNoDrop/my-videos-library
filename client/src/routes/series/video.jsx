@@ -1,26 +1,26 @@
-import React, { Fragment, useRef, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { push } from 'redux-first-routing';
-import { useFitAvailableSpace } from '../../components/effects';
-import setCurrentSeason from '../../store/actions/series/set/current/season';
-import setSeries from '../../store/actions/series/set';
-import Bar, { fitAvailableSpaceBarOffset } from '../../components/bar';
-import Video from '../../components/video';
+import React, { Fragment, useRef, useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { push } from "redux-first-routing";
+import { useFitAvailableSpace } from "../../components/effects";
+import setCurrentSeason from "../../store/actions/series/set/current/season";
+import setSeries from "../../store/actions/series/set";
+import Bar, { fitAvailableSpaceBarOffset } from "../../components/bar";
+import Video from "../../components/video";
 const mapStateToProps = ({
   state: {
     user: { language },
     window: { inner },
     series,
-    viewmode
+    viewmode,
   },
-  router: { pathname }
+  router: { pathname },
 }) => ({ pathname, language, windowInnerDimensions: inner, series, viewmode });
 
-const mapDispatchToProps = dispatch => ({
-  setSeries: series => dispatch(setSeries(series)),
+const mapDispatchToProps = (dispatch) => ({
+  setSeries: (series) => dispatch(setSeries(series)),
   setCurrentSeason: (series, season) =>
     dispatch(setCurrentSeason(series, season)),
-  changePath: pathname => dispatch(push(pathname))
+  changePath: (pathname) => dispatch(push(pathname)),
 });
 
 function SeriesSeasonsRoute({
@@ -29,19 +29,19 @@ function SeriesSeasonsRoute({
   setSeries,
   changePath,
   series,
-  pathname
+  pathname,
 }) {
   const ref = useRef();
   useFetchSerieSeasons(language, setSeries, series, pathname, changePath);
   return (
     <section
       {...{
-        id: 'route',
+        id: "route",
         ref,
         style: useFitAvailableSpace(
           windowInnerDimensions,
           fitAvailableSpaceBarOffset()
-        )
+        ),
       }}
     >
       <Bar />
@@ -95,7 +95,7 @@ function SeriesSeasonsRoute({
           }
         />
       ) : (
-        ''
+        ""
       )}
     </section>
   );
@@ -116,7 +116,7 @@ function useFetchSerieSeasons(
       (async () => {
         setFetching(language);
         try {
-          const path = pathname.substring(1, pathname.length).split('/');
+          const path = pathname.substring(1, pathname.length).split("/");
           path.shift();
           path.shift();
           const [pathCategory, pathSerie, pathSeason, pathEpisode] = path;
@@ -138,7 +138,7 @@ function useFetchSerieSeasons(
                   category,
                   serie,
                   season,
-                  episode
+                  episode,
                 },
                 [language]: {
                   [category]: {
@@ -153,12 +153,12 @@ function useFetchSerieSeasons(
                               <br />
                             </Fragment>
                           )),
-                          manifest
-                        }
-                      }
-                    }
-                  }
-                }
+                          manifest,
+                        },
+                      },
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category]) {
               setSeries({
@@ -178,12 +178,12 @@ function useFetchSerieSeasons(
                               <br />
                             </Fragment>
                           )),
-                          manifest
-                        }
-                      }
-                    }
-                  }
-                }
+                          manifest,
+                        },
+                      },
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category][serie]) {
               setSeries({
@@ -204,12 +204,12 @@ function useFetchSerieSeasons(
                               <br />
                             </Fragment>
                           )),
-                          manifest
-                        }
-                      }
-                    }
-                  }
-                }
+                          manifest,
+                        },
+                      },
+                    },
+                  },
+                },
               });
             } else if (!seriesState[language][category][serie][season]) {
               setSeries({
@@ -231,12 +231,12 @@ function useFetchSerieSeasons(
                               <br />
                             </Fragment>
                           )),
-                          manifest
-                        }
-                      }
-                    }
-                  }
-                }
+                          manifest,
+                        },
+                      },
+                    },
+                  },
+                },
               });
             } else {
               setSeries({
@@ -259,23 +259,23 @@ function useFetchSerieSeasons(
                               <br />
                             </Fragment>
                           )),
-                          manifest
-                        }
-                      }
-                    }
-                  }
-                }
+                          manifest,
+                        },
+                      },
+                    },
+                  },
+                },
               });
             }
-          } else if (error.type === 'UNKNOWN_FIELD') {
+          } else if (error.type === "UNKNOWN_FIELD") {
             const [series] = pathname
               .substring(1, pathname.length)
-              .split('/')
+              .split("/")
               .splice(1, 1);
             error.fields.shift();
             const [lang, category, serie] = error.fields;
             const path = [lang, series, category, serie];
-            changePath(`/${path.splice(0, error.field.index).join('/')}`);
+            changePath(`/${path.splice(0, error.field.index).join("/")}`);
           }
         } catch (e) {
           console.log(e);
@@ -289,6 +289,6 @@ function useFetchSerieSeasons(
     fetching,
     setFetching,
     pathname,
-    changePath
+    changePath,
   ]);
 }
