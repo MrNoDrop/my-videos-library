@@ -1,12 +1,12 @@
-import response from "../../predefined/responses.mjs";
+import response from "../predefined/responses.mjs";
 
 export default function getTrailer(router, moviesDB, seriesDB) {
   router.get(
-    `/:trailerRoutePrefix/:language/:category/:trailer`,
+    `/trailer/:choosenTrailersDB/:language/:category/:trailer`,
     async (req, res) => {
-      const { trailerRoutePrefix, language, category, trailer } = req.params;
-      let trailerDB = undefined;
-      switch (trailerRoutePrefix) {
+      const { choosenTrailersDB, language, category, trailer } = req.params;
+      let trailerDB;
+      switch (choosenTrailersDB) {
         case "series":
           trailerDB = seriesDB;
           break;
@@ -20,16 +20,34 @@ export default function getTrailer(router, moviesDB, seriesDB) {
       if (trailerDB) {
         res.json(
           response.ok({
-            path: [trailerRoutePrefix, language, category, trailer],
-            manifest: null,
+            path: [
+              "trailers",
+              "trailer",
+              choosenTrailersDB,
+              language,
+              category,
+              trailer,
+            ],
+            manifest: `/trailers/trailer/${trailerDB.structure[language][
+              category
+            ][trailer]
+              .toUrl()
+              .replace("//", "/")}/manifest`.replace("//", "/"),
             thumbnail: null,
           })
         );
       } else {
         res.status(400).json(
           response.error.unknownField(
-            { index: 0, value: trailerRoutePrefix },
-            [trailerRoutePrefix, language, category, trailer],
+            { index: 0, value: choosenTrailersDB },
+            [
+              "trailers",
+              "trailer",
+              choosenTrailersDB,
+              language,
+              category,
+              trailer,
+            ],
             {
               existing: ["series", "movies"],
             },

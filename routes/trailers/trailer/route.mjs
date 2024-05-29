@@ -25,14 +25,14 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
         break;
       }
       let trailersDB = undefined;
-      let trailerRoutePrefix = undefined;
+      let choosenTrailersDB = undefined;
       switch (Math.floor(Math.random() * 2)) {
         case SERIES:
-          trailerRoutePrefix = "/series";
+          choosenTrailersDB = "series";
           trailersDB = seriesDB;
           break;
         case MOVIES:
-          trailerRoutePrefix = "/movies";
+          choosenTrailersDB = "movies";
           trailersDB = moviesDB;
           break;
         default:
@@ -43,7 +43,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
         categories[Math.floor(Math.random() * categories.length)];
       const trailers = trailersDB.structure[language][category].list();
       const trailer = trailers[Math.floor(Math.random() * trailers.length)];
-      trailerRoute = `${trailerRoutePrefix}/${language}/${category}/${trailer}`;
+      trailerRoute = `/trailer/${choosenTrailersDB}/${language}/${category}/${trailer}`;
     } while (definedTrailerRoutes.includes(trailerRoute));
     res.json(
       response.ok({
