@@ -39,7 +39,7 @@ export default function getTrailer(router, moviesDB, seriesDB) {
       } else {
         res.status(400).json(
           response.error.unknownField(
-            { index: 0, value: choosenTrailersDB },
+            { index: 2, value: choosenTrailersDB },
             [
               "trailers",
               "trailer",
