@@ -30,7 +30,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
       const trailers = trailersDB.structure[language][category].list();
       const trailer = trailers[Math.floor(Math.random() * trailers.length)];
       trailerRoute = `${trailerRoutePrefix}/${language}/${category}/${trailer}/trailer`;
-    } while (!definedTrailerRoutes.includes(trailerRoute));
+    } while (definedTrailerRoutes.includes(trailerRoute));
     res.json(
       response.ok({
         path: ["trailers", "trailer", "route", language],
