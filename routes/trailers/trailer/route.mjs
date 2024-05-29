@@ -7,9 +7,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
   router.get("/trailer/route/:language", (req, res) => {
     const { language } = req.params;
     const { definedRoutes } = req.query;
-    const definedTrailerRoutes = JSON.parse(
-      definedRoutes ? definedRoutes : "[]"
-    );
+    const definedTrailerRoutes = JSON.parse(definedRoutes || "[]");
     let trailerRoute = null;
     do {
       let trailersDB = undefined;
@@ -32,9 +30,6 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
       const trailers = trailersDB.structure[language][category].list();
       const trailer = trailers[Math.floor(Math.random() * trailers.length)];
       trailerRoute = `${trailerRoutePrefix}/${language}/${category}/${trailer}/trailer`;
-      if (!definedTrailerRoutes.icludes(trailerRoute)) {
-        definedTrailerRoutes.push(trailerRoute);
-      }
     } while (!definedTrailerRoutes.includes(trailerRoute));
     res.json(
       response.ok({
