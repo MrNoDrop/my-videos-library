@@ -1,4 +1,4 @@
-import response from "../predefined/responses.mjs";
+import response from "../../predefined/responses.mjs";
 
 export default function getTrailer(router, moviesDB, seriesDB) {
   router.get(
