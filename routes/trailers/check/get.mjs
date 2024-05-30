@@ -1,4 +1,5 @@
 import { default as preconfiguration } from "./get/preconfiguration.mjs";
+import { default as choosenTrailersDB } from "./get/choosenTrailersDB.2.mjs";
 import { default as language } from "./get/language.3.mjs";
 // import { default as category } from './get/category.1.mjs';
 // import { default as serie } from './get/serie.2.mjs';
@@ -19,6 +20,7 @@ import { default as language } from "./get/language.3.mjs";
 
 export default {
   preconfiguration,
+  choosenTrailersDB,
   //   simple: { manifest: simpleManifest },
   language,
   //   category,

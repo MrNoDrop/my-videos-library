@@ -1,8 +1,12 @@
 import response from "../../predefined/responses.mjs";
+import check from "../check/get.mjs";
 
 export default function getTrailer(router, moviesDB, seriesDB) {
   router.get(
     `/trailer/:choosenTrailersDB/:language/:category/:trailer`,
+    check.preconfiguration,
+    check.choosenTrailersDB.bind(this, moviesDB, seriesDB),
+    check.language.bind(this, moviesDB, seriesDB),
     async (req, res) => {
       const { choosenTrailersDB, language, category, trailer } = req.params;
       let trailerDB;
@@ -14,47 +18,26 @@ export default function getTrailer(router, moviesDB, seriesDB) {
           trailerDB = moviesDB;
           break;
         default:
-          trailerDB = undefined;
-          break;
+          throw new Error("check.choosenTrailersDB failed");
       }
-      if (trailerDB) {
-        res.json(
-          response.ok({
-            path: [
-              "trailers",
-              "trailer",
-              choosenTrailersDB,
-              language,
-              category,
-              trailer,
-            ],
-            manifest: `/trailers/trailer/${trailerDB.structure[language][
-              category
-            ][trailer]
-              .toUrl()
-              .replace("//", "/")}/manifest`.replace("//", "/"),
-            thumbnail: null,
-          })
-        );
-      } else {
-        res.status(400).json(
-          response.error.unknownField(
-            { index: 2, value: choosenTrailersDB },
-            [
-              "trailers",
-              "trailer",
-              choosenTrailersDB,
-              language,
-              category,
-              trailer,
-            ],
-            {
-              existing: ["series", "movies"],
-            },
-            "Trailer does not exist."
-          )
-        );
-      }
+      res.json(
+        response.ok({
+          path: [
+            "trailers",
+            "trailer",
+            choosenTrailersDB,
+            language,
+            category,
+            trailer,
+          ],
+          manifest: `/trailers/trailer/${trailerDB.structure[language][
+            category
+          ][trailer]
+            .toUrl()
+            .replace("//", "/")}/manifest`.replace("//", "/"),
+          thumbnail: null,
+        })
+      );
     }
   );
 }
