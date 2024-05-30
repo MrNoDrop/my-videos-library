@@ -6,7 +6,7 @@ export default async function checkLanguageCategory(db, req, res, next) {
     next();
   } else {
     let categoryIndex = undefined;
-    const categories = await db.structure.categories.read();
+    const categories = await db.structure.categories_json.read();
     loop: for (let language in categories) {
       for (let availableCategory in categories[language]) {
         if (availableCategory === category) {
