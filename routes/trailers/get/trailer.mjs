@@ -32,9 +32,7 @@ export default function getTrailer(router, moviesDB, seriesDB) {
           ],
           manifest: `/trailers/trailer/${trailerDB.structure[language][
             category
-          ][trailer]
-            .toUrl()
-            .replace("//", "/")}/manifest`.replace("//", "/"),
+          ][trailer].toUrl()}/manifest`.replaceAll("//", "/"),
           thumbnail: null,
         })
       );

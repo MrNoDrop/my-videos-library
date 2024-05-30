@@ -1,5 +1,5 @@
 import response from "../../../../predefined/responses.mjs";
-export default function getLanguages(router, moviesDB, seriesDB) {
+export default function getTrailerRouteLanguages(router, moviesDB, seriesDB) {
   router.get("/trailer/route", (req, res) => {
     res.json(
       response.ok({
