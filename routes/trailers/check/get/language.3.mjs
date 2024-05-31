@@ -1,13 +1,8 @@
 import response from "../../../predefined/responses.mjs";
+import urlToFields from "../../../tools/urlToFields.mjs";
 
 export default function checkLanguage(moviesDB, seriesDB, req, res, next) {
   const { language } = req.parameters;
-  let url = undefined;
-  if (req.originalUrl.indexOf("?") !== -1) {
-    url = req.originalUrl.substring(1, req.originalUrl.indexOf("?")).split("/");
-  } else {
-    url = req.originalUrl.substring(1, req.originalUrl.length).split("/");
-  }
   if (
     moviesDB.isSupportedLanguage(language) ||
     seriesDB.isSupportedLanguage(language)
@@ -17,7 +12,7 @@ export default function checkLanguage(moviesDB, seriesDB, req, res, next) {
     res.status(400).json(
       response.error.unknownField(
         { index: 3, value: language },
-        [...url],
+        urlToFields(req.originalUrl),
         {
           existing: {
             languages: [

@@ -8,6 +8,7 @@ export default function getTrailer(router, moviesDB, seriesDB) {
     check.choosenTrailersDB.bind(this, moviesDB, seriesDB),
     check.language.bind(this, moviesDB, seriesDB),
     check.category.bind(this, moviesDB, seriesDB),
+    check.trailer.bind(this, moviesDB, seriesDB),
     async (req, res) => {
       const { choosenTrailersDB, language, category, trailer } = req.params;
       let trailerDB;

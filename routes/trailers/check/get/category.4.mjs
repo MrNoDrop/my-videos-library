@@ -1,4 +1,5 @@
 import response from "../../../predefined/responses.mjs";
+import urlToFields from "../../../tools/urlToFields.mjs";
 
 export default async function checkLanguageCategory(
   moviesDB,
@@ -8,12 +9,6 @@ export default async function checkLanguageCategory(
   next
 ) {
   const { choosenTrailersDB, language, category } = req.parameters;
-  let url = undefined;
-  if (req.originalUrl.indexOf("?") !== -1) {
-    url = req.originalUrl.substring(1, req.originalUrl.indexOf("?")).split("/");
-  } else {
-    url = req.originalUrl.substring(1, req.originalUrl.length).split("/");
-  }
   let trailersDB = undefined;
   switch (choosenTrailersDB) {
     case "series":
@@ -51,7 +46,7 @@ export default async function checkLanguageCategory(
       res.status(400).json(
         response.error.unknownField(
           { index: 4, value: category },
-          [...url],
+          urlToFields(req.originalUrl),
           {
             existing: { categories: trailersDB.structure[language]?.list() },
           },
