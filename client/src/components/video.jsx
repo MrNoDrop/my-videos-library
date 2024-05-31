@@ -194,7 +194,7 @@ function Video({
     return () => clearTimeout(bufferedTimeout);
   }, [videoRef, buffered, setBuffered, bufferedTimeout, setBufferedTimeout]);
   document.body.onkeyup = function ({ key }) {
-    if (key === " ") {
+    if (videoRef?.current && key === " ") {
       videoRef.current.paused
         ? videoRef.current.play()
         : videoRef.current.pause();
