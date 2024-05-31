@@ -1,7 +1,7 @@
 import { default as preconfiguration } from "./get/preconfiguration.mjs";
 import { default as choosenTrailersDB } from "./get/choosenTrailersDB.2.mjs";
 import { default as language } from "./get/language.3.mjs";
-// import { default as category } from './get/category.1.mjs';
+import { default as category } from "./get/category.4.mjs";
 // import { default as serie } from './get/serie.2.mjs';
 // import { default as seasons } from './get/seasons.2.mjs';
 // import { default as season } from './get/season.3.mjs';
@@ -23,7 +23,7 @@ export default {
   choosenTrailersDB,
   //   simple: { manifest: simpleManifest },
   language,
-  //   category,
+  category,
   //   serie,
   //   seasons,
   //   season,
