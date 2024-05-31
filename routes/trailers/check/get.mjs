@@ -8,7 +8,7 @@ import { default as trailer } from "./get/trailer.5.mjs";
 // import { default as season } from './get/season.3.mjs';
 // import { default as episodes } from './get/episodes.3.mjs';
 // import { default as episode } from './get/episode.4.mjs';
-// import { default as simpleManifest } from './get/simple/manifest.5.mjs';
+import { default as simpleManifest } from "./get/simple/manifest.6.mjs";
 // import { default as manifest } from './get/manifest.5.mjs';
 // import { default as info } from './get/info.5.mjs';
 // import { default as thumbnail } from './get/thumbnail.5.mjs';
@@ -22,7 +22,7 @@ import { default as trailer } from "./get/trailer.5.mjs";
 export default {
   preconfiguration,
   choosenTrailersDB,
-  //   simple: { manifest: simpleManifest },
+  simple: { manifest: simpleManifest },
   language,
   category,
   trailer,

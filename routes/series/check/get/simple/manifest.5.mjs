@@ -7,10 +7,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeManifest(
   next
 ) {
   const { language, category, serie, season, episode } = req.params;
-  if (
-    db.structure[language][category][serie].season[season].episode[episode]
-      .manifest_mpd
-  ) {
+  if (db.structure[language][category][serie].manifest_mpd) {
     next();
   } else {
     res

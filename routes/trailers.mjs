@@ -9,5 +9,5 @@ get.trailerRoute(router, moviesDB, seriesDB);
 get.trailer(router, moviesDB, seriesDB);
 // get.trailerAudio(router, moviesDB, seriesDB);
 // get.trailerVideo(router, moviesDB, seriesDB);
-// get.trailerManifest(router, moviesDB, seriesDB);
+get.trailerManifest(router, moviesDB, seriesDB);
 export default router;
