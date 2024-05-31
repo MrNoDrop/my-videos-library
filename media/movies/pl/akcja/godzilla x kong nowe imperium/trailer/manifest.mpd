@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Generated with https://github.com/shaka-project/shaka-packager version v3.2.0-53b8668-release-->
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" minBufferTime="PT3S" type="static" mediaPresentationDuration="PT166.791626S">
+  <Period id="0">
+    <AdaptationSet id="0" contentType="audio" lang="en" subsegmentStartsWithSAP="1">
+      <Representation id="0" bandwidth="130484" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/audio/720</BaseURL>
+        <SegmentBase indexRange="782-1485" timescale="44100">
+          <Initialization range="0-781"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="2" bandwidth="134645" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/audio/540</BaseURL>
+        <SegmentBase indexRange="833-1536" timescale="44100">
+          <Initialization range="0-832"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="4" bandwidth="68591" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="22050">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/audio/360</BaseURL>
+        <SegmentBase indexRange="833-1536" timescale="22050">
+          <Initialization range="0-832"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="1" contentType="video" maxWidth="1280" maxHeight="720" frameRate="24000/1001" par="16:9">
+      <SupplementalProperty schemeIdUri="urn:mpeg:mpegB:cicp:TransferCharacteristics" value="1"/>
+      <Representation id="1" bandwidth="753800" codecs="avc1.4d401f" mimeType="video/mp4" sar="1:1" width="1280" height="720">
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/video/720</BaseURL>
+        <SegmentBase indexRange="873-1300" timescale="24000">
+          <Initialization range="0-872"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="3" bandwidth="807673" codecs="avc1.64001f" mimeType="video/mp4" sar="1:1" width="960" height="540">
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/video/540</BaseURL>
+        <SegmentBase indexRange="898-1601" timescale="24000">
+          <Initialization range="0-897"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="5" bandwidth="450832" codecs="avc1.64001e" mimeType="video/mp4" sar="1:1" width="640" height="360">
+        <BaseURL>/trailers/trailer/movies/pl/akcja/godzilla x kong nowe imperium/video/360</BaseURL>
+        <SegmentBase indexRange="898-1601" timescale="24000">
+          <Initialization range="0-897"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>
