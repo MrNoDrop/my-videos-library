@@ -17,16 +17,19 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
       );
       let trailerRoute = null;
       let allTrailers = 0;
-      seriesDB.structure[language].list().forEach((category) => {
+      seriesDB.structure?.[language]?.list().forEach((category) => {
         const trailers = seriesDB.structure[language][category].list();
         allTrailers += 1 * trailers.length;
       });
-      moviesDB.structure[language].list().forEach((category) => {
+      moviesDB.structure?.[language]?.list().forEach((category) => {
         const trailers = moviesDB.structure[language][category].list();
         allTrailers += 1 * trailers.length;
       });
       do {
-        if (definedTrailerRoutes.length === allTrailers) {
+        if (
+          !moviesDB.structure?.[language] ||
+          definedTrailerRoutes.length === allTrailers
+        ) {
           break;
         }
         let trailersDB = undefined;
@@ -48,7 +51,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
           categories[Math.floor(Math.random() * categories.length)];
         const trailers = trailersDB.structure[language][category].list();
         const trailer = trailers[Math.floor(Math.random() * trailers.length)];
-        trailerRoute = `/trailer/${choosenTrailersDB}/${language}/${category}/${trailer}`;
+        trailerRoute = `/trailers/trailer/${choosenTrailersDB}/${language}/${category}/${trailer}`;
       } while (definedTrailerRoutes.includes(trailerRoute));
       res.json(
         response.ok({
