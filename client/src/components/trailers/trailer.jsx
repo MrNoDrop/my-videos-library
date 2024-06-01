@@ -58,10 +58,10 @@ function Trailer({
     if (!videoRef?.current || !loaded) {
       return;
     }
-    if (mouseEntered) {
+    if (mouseEntered && videoRef.current.paused) {
       videoRef.current.play();
     }
-    if (!mouseEntered) {
+    if (!mouseEntered && !videoRef.current.paused) {
       videoRef.current.pause();
     }
   }, [mouseEntered, videoRef, loaded]);
@@ -90,7 +90,6 @@ function Trailer({
         <video
           key={href}
           ref={videoRef}
-          controls
           poster={image}
           onLoadedData={() => {
             setLoaded(true);
@@ -141,7 +140,6 @@ function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
         onLoaded();
         setPlayer(shakaPlayer);
       } catch (error) {
-        alert(error);
         console.error(error);
       }
     })();
