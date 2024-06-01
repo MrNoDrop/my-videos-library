@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useFitAvailableSpace } from "../components/effects";
 import Trailers from "../components/trailers";
 import Bar from "../components/bar";
+import { vmin } from "../components/tools/vscale";
 
 const mapStateToProps = ({
   state: {
@@ -16,7 +17,7 @@ function HomeRoute({ windowInnerDimensions }) {
       {...{
         id: "route",
         ref: useRef(),
-        style: useFitAvailableSpace(windowInnerDimensions),
+        style: useFitAvailableSpace(windowInnerDimensions, -vmin(3.5)),
       }}
     >
       <Bar />

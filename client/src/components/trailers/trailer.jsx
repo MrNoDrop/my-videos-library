@@ -51,18 +51,28 @@ function Trailer({
     trailer?.thumbnail
   );
   const videoRef = useRef();
+  const [loaded, setLoaded] = useState(false);
   const player = useLoadPlayer(trailer?.manifest, videoRef);
   const [mouseEntered, setMouseEntered] = useState(false);
+  useEffect(() => {
+    if (!videoRef?.current || !loaded) {
+      return;
+    }
+    if (mouseEntered) {
+      videoRef.current.play();
+    }
+    if (!mouseEntered) {
+      videoRef.current.pause();
+    }
+  }, [mouseEntered, videoRef, loaded]);
   return (
     <div
       className="trailer"
       onMouseEnter={() => {
         setMouseEntered(true);
-        videoRef.current.play();
       }}
       onMouseLeave={() => {
         setMouseEntered(false);
-        videoRef.current.pause();
       }}
       onClick={() => {
         const [choosenTrailersDB, language, category, trailer] = href
@@ -73,14 +83,18 @@ function Trailer({
         );
       }}
     >
-      <PlaySvg paused={!mouseEntered} disableEvents={true} />
+      <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
       <img src={trailer?.cover} className="cover" />
 
       {trailer?.manifest && (
         <video
           key={href}
           ref={videoRef}
+          controls
           poster={image}
+          onLoadedData={() => {
+            setLoaded(true);
+          }}
           onLoadedMetadata={() => {
             player.configure({
               streaming: {

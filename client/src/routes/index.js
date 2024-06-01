@@ -142,7 +142,6 @@ export default connect(mapStateToProps)(({ pathname, routes, language }) => (
         }
       }
     })()}
-    <Route path="/" exact strict component={() => "hello"} />
   </Switch>
 ));
 

@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react';
-import { getElementRef, getElementRect } from '../tools/element';
+import { useEffect, useState } from "react";
+import { getElementRef, getElementRect } from "../tools/element";
 
 export function useFitAvailableSpace(windowInnerDimensions, addToResult = 0) {
   const [style, setStyle] = useState({
-    overflowY: 'auto'
+    overflowY: "auto",
   });
   useEffect(() => {
     let menuHeight = 0;
-    const menuHeaderElement = document.getElementById('menu-header');
+    const menuHeaderElement = document.getElementById("menu-header");
     if (menuHeaderElement) {
       const menuHeaderRef = getElementRef(menuHeaderElement);
       const { height } = getElementRect(menuHeaderRef);
-      if (typeof height === 'number') {
+      if (typeof height === "number") {
         menuHeight += height;
       }
     }
-    const menuFooterElement = document.getElementById('menu-footer');
+    const menuFooterElement = document.getElementById("menu-footer");
     if (menuFooterElement) {
       const menuFooterRef = getElementRef(menuFooterElement);
       const { height } = getElementRect(menuFooterRef);
-      if (typeof height === 'number') {
+      if (typeof height === "number") {
         menuHeight += height;
       }
     }
@@ -28,7 +28,7 @@ export function useFitAvailableSpace(windowInnerDimensions, addToResult = 0) {
     if (newHeight !== style.height) {
       setStyle({
         ...style,
-        height: newHeight
+        height: newHeight,
       });
     }
   }, [style, setStyle, windowInnerDimensions, addToResult]);
