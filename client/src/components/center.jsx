@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { vmin } from './tools/vscale';
-import { getElementRef } from './tools/element/getRef';
+import React, { useRef, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import { vmin } from "./tools/vscale";
+import { getElementRef } from "./tools/element/getRef";
 
 export default function Center({
   availableSpace,
@@ -16,7 +16,7 @@ export default function Center({
       ref={ref}
       style={{
         ...style,
-        ...useCenter(ref, availableSpace, disable)
+        ...useCenter(ref, availableSpace, disable),
       }}
       {...other}
     >
@@ -29,6 +29,7 @@ function useCenter(ref, availableWidth, disable) {
   const [timeoutTime, setTimeoutTime] = useState(undefined);
   const [categoryProps, setCategoryProps] = useState({});
   useEffect(() => {
+    let isMounted = true;
     if (!timeoutTime) {
       setTimeoutTime(
         setTimeout(() => {
@@ -43,7 +44,7 @@ function useCenter(ref, availableWidth, disable) {
             let categoryWidth = 0;
             const margin = vmin(1.4);
             for (let child of ref.current.children) {
-              if (child.className.includes('hovertext')) {
+              if (child.className.includes("hovertext")) {
                 continue;
               }
               let { width } = ReactDOM.findDOMNode(
@@ -61,17 +62,20 @@ function useCenter(ref, availableWidth, disable) {
               setCategoryProps({ ...categoryProps, marginLeft });
             }
           }
-          setTimeoutTime(clearTimeout(timeoutTime));
+          if (isMounted) setTimeoutTime(clearTimeout(timeoutTime));
         }, 1)
       );
     }
+    return () => {
+      isMounted = false;
+    };
   }, [
     timeoutTime,
     ref,
     availableWidth,
     categoryProps,
     setCategoryProps,
-    disable
+    disable,
   ]);
   return categoryProps;
 }
