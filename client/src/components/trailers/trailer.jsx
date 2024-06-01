@@ -7,6 +7,7 @@ import { push } from "redux-first-routing";
 import shaka from "shaka-player";
 import "./trailer.scss";
 import PlaySvg from "../../svg/play";
+import staticImages from "../../images";
 
 shaka.polyfill.installAll();
 
@@ -84,7 +85,10 @@ function Trailer({
       }}
     >
       <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
-      <img src={trailer?.cover} className="cover" />
+      <img
+        src={trailer?.cover ? trailer.cover : staticImages.animated.loading}
+        className="cover"
+      />
 
       {trailer?.manifest && (
         <video
