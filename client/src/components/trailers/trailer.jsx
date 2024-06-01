@@ -44,47 +44,43 @@ function Trailer({
   const trailer = trailers[language][href];
   const image = useImageLoader(trailer?.thumbnail, images, addImage, true);
   const videoRef = useRef();
-  const player = useLoadPlayer(trailer?.manifest, videoRef, () => {
-    // videoRef.current.play();
-  });
+  const player = useLoadPlayer(trailer?.manifest, videoRef);
   const [mouseEntered, setMouseEntered] = useState(false);
   return (
-    trailer && (
-      <div
-        className="trailer"
-        onMouseEnter={() => {
-          setMouseEntered(true);
-          videoRef.current.play();
+    <div
+      className="trailer"
+      onMouseEnter={() => {
+        setMouseEntered(true);
+        videoRef.current.play();
+      }}
+      onMouseLeave={() => {
+        setMouseEntered(false);
+        videoRef.current.pause();
+      }}
+      onClick={() => {
+        const [choosenTrailersDB, language, category, trailer] = href
+          .replace("/trailers/trailer/", "")
+          .split("/");
+        changePath(
+          `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
+        );
+      }}
+    >
+      <PlaySvg paused={!mouseEntered} disableEvents={true} />
+      <img src={trailer?.cover} className="cover" />
+      <video
+        key={href}
+        ref={videoRef}
+        poster={image}
+        onLoadedMetadata={() => {
+          player.configure({
+            streaming: {
+              bufferBehind: videoRef.current.duration,
+            },
+          });
         }}
-        onMouseLeave={() => {
-          setMouseEntered(false);
-          videoRef.current.pause();
-        }}
-        onClick={() => {
-          const [choosenTrailersDB, language, category, trailer] = href
-            .replace("/trailers/trailer/", "")
-            .split("/");
-          changePath(
-            `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
-          );
-        }}
-      >
-        <PlaySvg paused={!mouseEntered} disableEvents={true} />
-        <img src={trailer?.cover} className="cover" />
-        <video
-          key={href}
-          ref={videoRef}
-          poster={image}
-          onLoadedMetadata={() => {
-            player.configure({
-              streaming: {
-                bufferBehind: videoRef.current.duration,
-              },
-            });
-          }}
-        />
-      </div>
-    )
+      />
+    </div>
   );
 }
 
@@ -108,10 +104,10 @@ function useFetchTrailer(href, trailers, language, setTrailerRoute) {
     }
   }, [trailers, fetching]);
 }
-function useLoadPlayer(src, videoRef, onLoaded) {
+function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
   const [player, setPlayer] = useState(undefined);
   useEffect(() => {
-    if (!videoRef || !videoRef.current || !src) {
+    if (!videoRef || !videoRef.current || player || !src) {
       return;
     }
     const shakaPlayer = new shaka.Player(videoRef.current);
