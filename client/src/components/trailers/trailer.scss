@@ -3,16 +3,21 @@
   width: max-content;
   height: max-content;
   margin: 0.5vmin auto;
+  cursor: pointer;
   .cover {
-    width: 18.542vmin;
-    height: 30vmin;
+    width: 25.542vmin;
+    height: 37vmin;
   }
   video {
-    height: 30vmin;
-    width: 53.5vmin;
+    height: 37vmin;
+    width: 67.5vmin;
+    background: black;
   }
 }
 
 .trailer:first-child {
-  margin-top: 0;
+  margin-top: 1vmin;
+}
+.trailer:last-child {
+  margin-bottom: 1vmin;
 }

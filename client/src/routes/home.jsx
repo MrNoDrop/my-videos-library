@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { useFitAvailableSpace } from "../components/effects";
 import Trailers from "../components/trailers";
+import Bar from "../components/bar";
 
 const mapStateToProps = ({
   state: {
@@ -18,6 +19,7 @@ function HomeRoute({ windowInnerDimensions }) {
         style: useFitAvailableSpace(windowInnerDimensions),
       }}
     >
+      <Bar />
       <Trailers />
     </section>
   );

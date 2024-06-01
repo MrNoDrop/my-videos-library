@@ -24,7 +24,7 @@ function Trailers({ trailers, language, addTrailerRoute }) {
   return (
     <div className="trailers">
       {Object.keys(trailers[language]).map((trailerRoute) => (
-        <Trailer href={trailerRoute} />
+        <Trailer href={trailerRoute} key={trailerRoute} />
       ))}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function useImageLoader(
   image,
@@ -9,6 +9,9 @@ export default function useImageLoader(
   const [imageBlob, setImageBlob] = useState(undefined);
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
+    if (!image) {
+      return;
+    }
     if (!fetching && !images[image] && allowedToFetch && !imageBlob) {
       setFetching(true);
       (async () => {
@@ -28,7 +31,7 @@ export default function useImageLoader(
     fetching,
     setFetching,
     imageBlob,
-    setImageBlob
+    setImageBlob,
   ]);
   return images[image];
 }

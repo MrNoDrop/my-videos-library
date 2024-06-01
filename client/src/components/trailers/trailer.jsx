@@ -1,38 +1,71 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import setTrailerRoute from "../../store/actions/set/trailer/route";
+import addImage from "../../store/actions/add/image";
+import useImageLoader from "../effects/imageLoader";
+import { push } from "redux-first-routing";
 import shaka from "shaka-player";
 import "./trailer.scss";
 
 const mapStateToProps = ({
   state: {
+    images,
     trailers,
     user: { language },
   },
+  router: { routes },
 }) => ({
   trailers,
   language,
+  images,
+  routes,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changePath: (path) => dispatch(push(path)),
+  addImage: (images, image, imageUrl) =>
+    dispatch(addImage(images, image, imageUrl)),
   setTrailerRoute: (trailers, trailerRoute, language, value) =>
     dispatch(setTrailerRoute(trailers, trailerRoute, language, value)),
 });
 
-function Trailer({ href, trailers, language, setTrailerRoute }) {
+function Trailer({
+  href,
+  trailers,
+  language,
+  setTrailerRoute,
+  addImage,
+  images,
+  changePath,
+  routes,
+}) {
   useFetchTrailer(href, trailers, language, setTrailerRoute);
   const trailer = trailers[language][href];
+  const image = useImageLoader(trailer?.thumbnail, images, addImage, true);
   const videoRef = useRef();
   const player = useLoadPlayer(trailer?.manifest, videoRef, () => {
-    videoRef.current.play();
+    // videoRef.current.play();
   });
   return (
     trailer && (
-      <div className="trailer">
+      <div
+        className="trailer"
+        onMouseEnter={() => videoRef.current.play()}
+        onMouseLeave={() => videoRef.current.pause()}
+        onClick={() => {
+          const [choosenTrailersDB, language, category, trailer] = href
+            .replace("/trailers/trailer/", "")
+            .split("/");
+          changePath(
+            `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
+          );
+        }}
+      >
         <img src={trailer?.cover} className="cover" />
         <video
+          key={href}
           ref={videoRef}
-          controls
+          poster={image}
           onLoadedMetadata={() => {
             player.configure({
               streaming: {
