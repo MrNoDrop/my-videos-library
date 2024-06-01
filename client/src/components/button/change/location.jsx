@@ -1,29 +1,29 @@
-import React, { useRef, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { push } from 'redux-first-routing';
-import { connect } from 'react-redux';
-import './location.scss';
-import staticImages from '../../../images';
-import Hover from '../../hover';
-import useImageLoader from '../../effects/imageLoader';
-import addImage from '../../../store/actions/add/image';
+import React, { useRef, useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { push } from "redux-first-routing";
+import { connect } from "react-redux";
+import "./location.scss";
+import staticImages from "../../../images";
+import Hover from "../../hover";
+import useImageLoader from "../../effects/imageLoader";
+import addImage from "../../../store/actions/add/image";
 
 const mapStateToProps = ({ state: { images } }) => ({ images });
 
-const mapDispatchToProps = dispatch => ({
-  changeLocation: pathname => {
-    pathname.endsWith('/') &&
+const mapDispatchToProps = (dispatch) => ({
+  changeLocation: (pathname) => {
+    pathname.endsWith("/") &&
       (pathname = pathname.substring(0, pathname.length - 1));
     document.location.pathname !== pathname && dispatch(push(pathname));
   },
   addImage: (images, image, imageUrl) =>
-    dispatch(addImage(images, image, imageUrl))
+    dispatch(addImage(images, image, imageUrl)),
 });
 
 export const supportedViewmodes = {
-  list: 'list',
-  horizontal: 'horizontal',
-  vertical: 'vertical'
+  list: "list",
+  horizontal: "horizontal",
+  vertical: "vertical",
 };
 
 function ChangeLocationButton({
@@ -51,33 +51,33 @@ function ChangeLocationButton({
     mousePostion,
     onMouseEnter: hoverOnMouseEnter,
     onMouseLeave: hoverOnMouseLeave,
-    onMouseMove: hoverOnMouseMove
+    onMouseMove: hoverOnMouseMove,
   } = Hover.useHide();
   const mouseEventListeners = {
-    onClick: e => {
-      if (typeof onClick === 'function') {
+    onClick: (e) => {
+      if (typeof onClick === "function") {
         onClick(e);
       }
       changeLocation(href);
     },
-    onMouseEnter: e => {
-      if (typeof onMouseEnter === 'function') {
+    onMouseEnter: (e) => {
+      if (typeof onMouseEnter === "function") {
         onMouseEnter(e);
       }
       hoverOnMouseEnter(e);
     },
-    onMouseLeave: e => {
-      if (typeof onMouseLeave === 'function') {
+    onMouseLeave: (e) => {
+      if (typeof onMouseLeave === "function") {
         onMouseLeave(e);
       }
       hoverOnMouseLeave(e);
     },
-    onMouseMove: e => {
-      if (typeof onMouseMove === 'function') {
+    onMouseMove: (e) => {
+      if (typeof onMouseMove === "function") {
         onMouseMove(e);
       }
       hoverOnMouseMove(e);
-    }
+    },
   };
   const { ref, render } = useRender(
     parentRef,
@@ -89,13 +89,13 @@ function ChangeLocationButton({
     image.horizontal,
     images,
     addImage,
-    render === 'horizontal'
+    render === "horizontal"
   );
   const verticalImage = useImageLoader(
     image.vertical,
     images,
     addImage,
-    render === 'vertical'
+    render === "vertical"
   );
   const hover = hovertext && (
     <Hover hidden={hovertextHidden} {...{ mousePostion }}>
@@ -111,7 +111,7 @@ function ChangeLocationButton({
           {...{ ...other, ...mouseEventListeners, className }}
         >
           {children}
-        </div>
+        </div>,
       ];
 
     case supportedViewmodes.list:
@@ -120,12 +120,12 @@ function ChangeLocationButton({
         <button
           key="list"
           className={`change-location-button${
-            className ? ' ' + className : ''
+            className ? " " + className : ""
           }`}
           {...{ ...other, ref, ...mouseEventListeners }}
         >
           {children}
-        </button>
+        </button>,
       ];
     case supportedViewmodes.horizontal:
       return [
@@ -138,16 +138,17 @@ function ChangeLocationButton({
             ...other,
             style: {
               ...style,
-              backgroundImage: `url(${horizontalImage ||
-                staticImages.animated.loading})`
-            }
+              backgroundImage: `url(${
+                horizontalImage || staticImages.animated.loading
+              })`,
+            },
           }}
           className={`change-location-image-button horizontal${
-            className ? ' ' + className : ''
+            className ? " " + className : ""
           }`}
         >
           {children}
-        </div>
+        </div>,
       ];
     case supportedViewmodes.vertical:
       return [
@@ -160,16 +161,17 @@ function ChangeLocationButton({
             ...other,
             style: {
               ...style,
-              backgroundImage: `url(${verticalImage ||
-                staticImages.animated.loading})`
-            }
+              backgroundImage: `url(${
+                verticalImage || staticImages.animated.loading
+              })`,
+            },
           }}
           className={`change-location-image-button vertical${
-            className ? ' ' + className : ''
+            className ? " " + className : ""
           }`}
         >
           {children}
-        </div>
+        </div>,
       ];
   }
 }
@@ -194,7 +196,7 @@ function useRender(parentRef, trigger, image) {
   const [firstRun, setFirstRun] = useState(true);
 
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && !render) {
       if (firstRun) {
         setFirstRun(false);
         return;
