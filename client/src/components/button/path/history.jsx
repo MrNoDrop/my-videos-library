@@ -1,15 +1,15 @@
-import React, { useRef } from 'react';
-import { push } from 'redux-first-routing';
-import { connect } from 'react-redux';
-import './history.scss';
+import React, { useRef } from "react";
+import { push } from "redux-first-routing";
+import { connect } from "react-redux";
+import "./history.scss";
 
 const mapStateToProps = ({ router: { pathname } }) => ({ pathname });
 
-const mapDispatchToProps = dispatch => ({
-  changePath: path => dispatch(push(path))
+const mapDispatchToProps = (dispatch) => ({
+  changePath: (path) => dispatch(push(path)),
 });
 function PathHistory({ pathname, changePath, ...other }) {
-  let path = pathname.substring(1, pathname.length).split('/');
+  let path = pathname.substring(1, pathname.length).split("/");
   const [language, ...requestedPath] = path;
   let currentPath = `/${language}`;
   const paths = [];
@@ -21,8 +21,9 @@ function PathHistory({ pathname, changePath, ...other }) {
     paths.push((currentPath = `${currentPath}/${pathPiece}`));
     pathButtons.push(
       <div
+        key={index}
         className={`path-history-button${
-          pathIndexes[index] === requestedPath.length - 1 ? ' current' : ''
+          pathIndexes[index] === requestedPath.length - 1 ? " current" : ""
         }`}
         onClick={() =>
           pathname !== paths[index] ? changePath(paths[index]) : null
@@ -30,13 +31,13 @@ function PathHistory({ pathname, changePath, ...other }) {
       >
         <span
           className={`path-history-button-text${
-            pathIndexes[index] === requestedPath.length - 1 ? ' current' : ''
+            pathIndexes[index] === requestedPath.length - 1 ? " current" : ""
           }`}
         >
           {pathPiece}
         </span>
         <span className="path-history-button-separator">
-          {`${pathIndexes[index] !== requestedPath.length - 1 ? ' /' : ''}`}
+          {`${pathIndexes[index] !== requestedPath.length - 1 ? " /" : ""}`}
         </span>
       </div>
     );
