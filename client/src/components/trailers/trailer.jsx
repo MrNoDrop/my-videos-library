@@ -8,7 +8,7 @@ import shaka from "shaka-player";
 import "./trailer.scss";
 import PlaySvg from "../../svg/play";
 import staticImages from "../../images";
-import ReactDOM from "react-dom";
+import useRender from "../effects/useRender";
 
 shaka.polyfill.installAll();
 
@@ -169,32 +169,3 @@ function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
   return player;
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Trailer);
-
-function useRender(parentRef, trigger) {
-  const ref = useRef();
-  const [render, setRender] = useState(false);
-  const [firstRun, setFirstRun] = useState(true);
-
-  useEffect(() => {
-    if (ref.current && !render) {
-      if (firstRun) {
-        setFirstRun(false);
-        return;
-      }
-      const rect = ReactDOM.findDOMNode(ref.current).getBoundingClientRect();
-      const parentRect = ReactDOM.findDOMNode(
-        parentRef.current
-      ).getBoundingClientRect();
-      if (
-        rect.left < parentRect.right &&
-        rect.right > parentRect.left &&
-        rect.top < parentRect.bottom &&
-        rect.bottom > parentRect.top &&
-        !render
-      ) {
-        setRender(true);
-      }
-    }
-  }, [ref, parentRef, render, setRender, firstRun, trigger]);
-  return { ref, render };
-}
