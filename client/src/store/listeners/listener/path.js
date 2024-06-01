@@ -1,21 +1,21 @@
-import { push } from 'redux-first-routing';
+import { push } from "redux-first-routing";
 
 export default ({ getState, dispatch }) => {
+  const { state, router } = getState();
   const {
-    state: {
-      user: { language: storedLanguage }
-    },
-    router: { routes, pathname }
-  } = getState();
-  if (pathname.endsWith('/')) {
+    user: { language: storedLanguage },
+  } = state;
+  const { routes, pathname } = router;
+  if (pathname.endsWith("/")) {
     dispatch(push(pathname.substring(0, pathname.length - 1)));
   } else {
     let route = pathname.substring(1, pathname.length);
-    route = route.split('/');
-    const language = routes['supported-languages'].includes(route[0])
+    route = route.split("/");
+    console.log(route[0]);
+    const language = routes["supported-languages"].includes(route[0])
       ? route[0]
       : storedLanguage;
-    const testingRoute = route[1] ? route[1] : '';
+    const testingRoute = route[1] ? route[1] : "";
     let validRoute = false;
     for (let key in routes[language]) {
       if (testingRoute === routes[language][key]) {
@@ -24,7 +24,7 @@ export default ({ getState, dispatch }) => {
       }
     }
     if (!validRoute) {
-      const testingRouteSylabs = testingRoute.split('');
+      const testingRouteSylabs = testingRoute.split("");
       let match = undefined;
       let highestMatchScore = 0;
       for (let key in routes[language]) {
@@ -44,7 +44,7 @@ export default ({ getState, dispatch }) => {
         newRoute = `/${language}/${routes[language].home}`;
       } else {
         route[1] = match;
-        newRoute = `/${route.join('/')}`;
+        newRoute = `/${route.join("/")}`;
       }
       dispatch(push(newRoute));
     }

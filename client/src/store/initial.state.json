@@ -24,6 +24,7 @@
         "movie": null
       }
     },
+    "trailers": { "pl": {}, "fr": {}, "en": {}, "nl": {} },
     "images": {}
   },
   "router": {

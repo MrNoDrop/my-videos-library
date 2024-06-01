@@ -1,24 +1,24 @@
-import { SET_USER_LANGUAGE } from '../../types';
+import { SET_USER_LANGUAGE } from "../../types";
 
 export default ({
   state: { user } = {
-    user: { language: 'en' }
+    user: { language },
   },
-  router: { routes } = { routes: { 'supported-languages': [] } },
-  language
+  router: { routes } = { routes: { "supported-languages": [] } },
+  language,
 }) => ({
   type: SET_USER_LANGUAGE,
   payload: {
     user: {
       ...user,
       language: checkIfLanguageIsSupported(
-        routes['supported-languages'],
+        routes["supported-languages"],
         language
-      )
-    }
-  }
+      ),
+    },
+  },
 });
 
 function checkIfLanguageIsSupported(supportedLanguages, language) {
-  return supportedLanguages.includes(language) ? language : 'en';
+  return supportedLanguages.includes(language) ? language : "en";
 }

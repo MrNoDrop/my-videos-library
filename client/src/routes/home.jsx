@@ -1,23 +1,24 @@
-import React, { useRef } from 'react';
-import { connect } from 'react-redux';
-import { useFitAvailableSpace } from '../components/effects';
+import React, { useRef } from "react";
+import { connect } from "react-redux";
+import { useFitAvailableSpace } from "../components/effects";
+import Trailers from "../components/trailers";
 
 const mapStateToProps = ({
   state: {
-    window: { inner }
-  }
+    window: { inner },
+  },
 }) => ({ windowInnerDimensions: inner });
 
 function HomeRoute({ windowInnerDimensions }) {
   return (
     <section
       {...{
-        id: 'route',
+        id: "route",
         ref: useRef(),
-        style: useFitAvailableSpace(windowInnerDimensions)
+        style: useFitAvailableSpace(windowInnerDimensions),
       }}
     >
-      home
+      <Trailers />
     </section>
   );
 }

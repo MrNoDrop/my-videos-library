@@ -12,9 +12,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
     (req, res) => {
       const { language } = req.params;
       const { definedRoutes } = req.query;
-      const definedTrailerRoutes = JSON.parse(
-        JSON.parse(definedRoutes || '"[]"')
-      );
+      const definedTrailerRoutes = JSON.parse(definedRoutes || "[]");
       let trailerRoute = null;
       let allTrailers = 0;
       seriesDB.structure?.[language]?.list().forEach((category) => {
@@ -26,10 +24,8 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
         allTrailers += 1 * trailers.length;
       });
       do {
-        if (
-          !moviesDB.structure?.[language] ||
-          definedTrailerRoutes.length === allTrailers
-        ) {
+        console.log(definedTrailerRoutes.length);
+        if (definedTrailerRoutes.length === allTrailers) {
           break;
         }
         let trailersDB = undefined;
@@ -57,6 +53,7 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
         response.ok({
           path: ["trailers", "trailer", "route", language],
           trailerRoute,
+          trailersFetched: definedTrailerRoutes.length === allTrailers,
         })
       );
     }
