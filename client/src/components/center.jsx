@@ -29,7 +29,6 @@ function useCenter(ref, availableWidth, disable) {
   const [timeoutTime, setTimeoutTime] = useState(undefined);
   const [categoryProps, setCategoryProps] = useState({});
   useEffect(() => {
-    let isMounted = true;
     if (!timeoutTime) {
       setTimeoutTime(
         setTimeout(() => {
@@ -62,13 +61,10 @@ function useCenter(ref, availableWidth, disable) {
               setCategoryProps({ ...categoryProps, marginLeft });
             }
           }
-          if (isMounted) setTimeoutTime(clearTimeout(timeoutTime));
+          setTimeoutTime(clearTimeout(timeoutTime));
         }, 1)
       );
     }
-    return () => {
-      isMounted = false;
-    };
   }, [
     timeoutTime,
     ref,
