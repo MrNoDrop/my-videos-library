@@ -19,12 +19,23 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addTrailerRoute(trailers, trailerRoute, language)),
 });
 
-function Trailers({ trailers, language, addTrailerRoute }) {
+function Trailers({
+  trailers,
+  language,
+  addTrailerRoute,
+  parentRef,
+  parentScrollEventCounter,
+}) {
   useFetchTrailerList(trailers, language, addTrailerRoute);
   return (
     <div className="trailers">
       {Object.keys(trailers[language]).map((trailerRoute) => (
-        <Trailer href={trailerRoute} key={trailerRoute} />
+        <Trailer
+          href={trailerRoute}
+          key={trailerRoute}
+          containerRef={parentRef}
+          containerScrollEventCounter={parentScrollEventCounter}
+        />
       ))}
     </div>
   );

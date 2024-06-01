@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useFitAvailableSpace } from "../components/effects";
 import Trailers from "../components/trailers";
-import Bar from "../components/bar";
+import Bar, { fitAvailableSpaceBarOffset } from "../components/bar";
 import { vmin } from "../components/tools/vscale";
 
 const mapStateToProps = ({
@@ -12,16 +12,32 @@ const mapStateToProps = ({
 }) => ({ windowInnerDimensions: inner });
 
 function HomeRoute({ windowInnerDimensions }) {
+  const sectionRef = useRef();
+  const [scrollEventCounter, setScrollEventCounter] = useState(0);
   return (
     <section
       {...{
         id: "route",
-        ref: useRef(),
-        style: useFitAvailableSpace(windowInnerDimensions, -vmin(3.5)),
+        ref: sectionRef,
+        style: useFitAvailableSpace(
+          windowInnerDimensions,
+          fitAvailableSpaceBarOffset()
+        ),
+      }}
+      onScroll={({ target: { scrollTop } }) => {
+        if (
+          scrollTop - scrollEventCounter > 30 ||
+          scrollTop - scrollEventCounter < -30
+        ) {
+          setScrollEventCounter(scrollTop);
+        }
       }}
     >
       <Bar />
-      <Trailers />
+      <Trailers
+        parentRef={sectionRef}
+        parentScrollEventCounter={scrollEventCounter}
+      />
     </section>
   );
 }

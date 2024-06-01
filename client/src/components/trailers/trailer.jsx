@@ -42,6 +42,8 @@ function Trailer({
   images,
   changePath,
   routes,
+  containerRef,
+  containerScrollEventCounter,
 }) {
   useFetchTrailer(href, trailers, language, setTrailerRoute);
   const trailer = trailers[language][href];
