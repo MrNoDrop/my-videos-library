@@ -86,7 +86,9 @@ function Trailer({
         );
       }}
     >
-      <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
+      {image && (
+        <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
+      )}
       <img
         src={trailer?.cover ? trailer.cover : staticImages.animated.loading}
         className="cover"
