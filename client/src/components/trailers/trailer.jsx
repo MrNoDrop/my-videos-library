@@ -176,7 +176,7 @@ function useRender(parentRef, trigger) {
   const [firstRun, setFirstRun] = useState(true);
 
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && !render) {
       if (firstRun) {
         setFirstRun(false);
         return;
