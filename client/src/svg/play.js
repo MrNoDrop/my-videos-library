@@ -25,7 +25,7 @@ export default function PlaySvg({
       {paused ? (
         <svg
           id="Capa_1"
-          enable-background="new 0 0 499.999 499.999"
+          enableBackground="new 0 0 499.999 499.999"
           viewBox="0 0 499.999 499.999"
           xmlns="http://www.w3.org/2000/svg"
           {...svg}
@@ -42,7 +42,7 @@ export default function PlaySvg({
       ) : (
         <svg
           id="Layer_1"
-          enable-background="new 0 0 511.448 511.448"
+          enableBackground="new 0 0 511.448 511.448"
           viewBox="0 0 511.448 511.448"
           xmlns="http://www.w3.org/2000/svg"
           {...svg}

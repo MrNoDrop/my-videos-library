@@ -8,6 +8,8 @@ import shaka from "shaka-player";
 import "./trailer.scss";
 import PlaySvg from "../../svg/play";
 
+shaka.polyfill.installAll();
+
 const mapStateToProps = ({
   state: {
     images,
@@ -56,11 +58,11 @@ function Trailer({
       className="trailer"
       onMouseEnter={() => {
         setMouseEntered(true);
-        videoRef.current.play();
+        videoRef && videoRef.current && videoRef.current.play();
       }}
       onMouseLeave={() => {
         setMouseEntered(false);
-        videoRef.current.pause();
+        videoRef && videoRef.current && videoRef.current.pause();
       }}
       onClick={() => {
         const [choosenTrailersDB, language, category, trailer] = href
@@ -74,18 +76,20 @@ function Trailer({
       <PlaySvg paused={!mouseEntered} disableEvents={true} />
       <img src={trailer?.cover} className="cover" />
 
-      <video
-        key={href}
-        ref={videoRef}
-        poster={image}
-        onLoadedMetadata={() => {
-          player.configure({
-            streaming: {
-              bufferBehind: videoRef.current.duration,
-            },
-          });
-        }}
-      />
+      {trailer?.manifest && (
+        <video
+          key={href}
+          ref={videoRef}
+          poster={image}
+          onLoadedMetadata={() => {
+            player.configure({
+              streaming: {
+                bufferBehind: videoRef.current.duration,
+              },
+            });
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -116,12 +120,17 @@ function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
     if (!videoRef?.current || !src) {
       return;
     }
-    const shakaPlayer = new shaka.Player(videoRef.current);
-    shakaPlayer
-      .load(src)
-      .then(() => onLoaded())
-      .catch(console.error);
-    setPlayer(shakaPlayer);
+    (async () => {
+      const shakaPlayer = new shaka.Player(videoRef.current);
+      try {
+        await shakaPlayer.load(src);
+        onLoaded();
+        setPlayer(shakaPlayer);
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    })();
   }, [src, videoRef]);
   return player;
 }

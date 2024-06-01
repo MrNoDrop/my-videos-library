@@ -18,7 +18,7 @@
     "redux-first-routing": "^0.3.0",
     "redux-thunk": "^2.3.0",
     "sass": "^1.77.2",
-    "shaka-player": "^2.5.9",
+    "shaka-player": "^4.9.0",
     "shaka-player-react": "^1.0.1",
     "socketio": "^1.0.0",
     "yarn": "^1.22.0"

@@ -5015,15 +5015,15 @@ elliptic@^6.5.3, elliptic@^6.5.5:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
-eme-encryption-scheme-polyfill@^2.0.1:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.5.tgz#86338bdd3b13f04ba02fa36758501c7c6c122efe"
-  integrity sha512-z9BKXV4TCYjmar0wiZLObZ0J8HE13VIg7Zq/iyPWdbEfROtxVXEJalknWKtBR5XNezzy15/zWS964TGbcAWlPg==
-
 eme-encryption-scheme-polyfill@^2.1.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.4.tgz#00e0e75e5bf0513adb3322372de8be08cbb7401a"
   integrity sha512-RyYYPjz64N8YSYSrhJQTr7WcIVQpJUqqOBLq8TzXt8IYNtD4xSDOd1KeaUyFB7TdtLVu01McLHqQt8ZiDgQiLQ==
+
+eme-encryption-scheme-polyfill@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.5.tgz#86338bdd3b13f04ba02fa36758501c7c6c122efe"
+  integrity sha512-z9BKXV4TCYjmar0wiZLObZ0J8HE13VIg7Zq/iyPWdbEfROtxVXEJalknWKtBR5XNezzy15/zWS964TGbcAWlPg==
 
 emoji-regex@^7.0.1, emoji-regex@^7.0.2:
   version "7.0.3"
@@ -11307,19 +11307,19 @@ shaka-player-react@^1.0.1:
     rollup-plugin-serve "^1.1.0"
     shaka-player "^3.3.2"
 
-shaka-player@^2.5.9:
-  version "2.5.23"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.23.tgz#db92d1c6cf2314f0180a2cec11b0e2f2560336f5"
-  integrity sha512-3MC9k0OXJGw8AZ4n/ZNCZS2yDxx+3as5KgH6Tx4Q5TRboTBBCu6dYPI5vp1DxKeyU12MBN1Zcbs7AKzXv2EnCg==
-  dependencies:
-    eme-encryption-scheme-polyfill "^2.0.1"
-
 shaka-player@^3.3.2:
   version "3.3.19"
   resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-3.3.19.tgz#ab94898517cb72b7505e009e462e13b827206252"
   integrity sha512-tZowO6D2nlKTYQadiAZ5LcjhJSW5/OO8UVkEax3llgDTusFkjoV1CQCXYVks80pDLAwTWC6kwY5JDobWwC9mJw==
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
+
+shaka-player@^4.9.0:
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.9.0.tgz#4955a707bcec79cddf81fcd33afaee2cf486c520"
+  integrity sha512-+Rch6kAKNbNJS/lOE0o9WIem6nLb97JHZ+fvQ0MijAYgbwcrVWeCyBt1fkyzoXRh3b2ZndfT146AJO58jECe4Q==
+  dependencies:
+    eme-encryption-scheme-polyfill "^2.1.5"
 
 shallow-clone@^0.1.2:
   version "0.1.2"
