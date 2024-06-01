@@ -15,6 +15,7 @@ export default async function checkLanguageCategoryTrailerManifest(
       break;
     case "movies":
       trailersDB = moviesDB;
+      break;
     default:
       throw new Error("Missing check.choosenTrailersDB in path");
   }

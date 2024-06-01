@@ -5,7 +5,7 @@ export default (trailers, trailerRoute, language) => ({
   payload: {
     trailers: {
       ...trailers,
-      [language]: { ...trailers[language], [trailerRoute]: {} },
+      [language]: { ...trailers[language], [trailerRoute]: null },
     },
   },
 });
