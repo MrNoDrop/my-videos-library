@@ -21,7 +21,7 @@ export default async function checkLanguageCategoryMovieVideoQuality(
     res.status(404).json(
       response.error.missing.file(
         { index: 5, value: quality },
-        ["movies", "shared", category, movie, "video", quality],
+        ["movies", language, category, movie, "video", quality],
         {
           existing: {
             qualities: db.structure.shared[globCategory][globMovieTitle].video

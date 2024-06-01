@@ -7,6 +7,7 @@ export default function getMovieVideo(router, db) {
   router.get(
     "/:language/:category/:movie/video/:quality",
     check.preconfiguration,
+    check.language.bind(this, db),
     check.category.bind(this, db),
     check.movie.bind(this, db),
     check.videos.bind(this, db),

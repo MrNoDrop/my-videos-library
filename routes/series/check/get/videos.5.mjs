@@ -42,7 +42,7 @@ export default async function checkLanguageCategorySerieSeasonEpisodeVideo(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 6, value: "audio" },
+                { index: 6, value: "video" },
                 ["series", language, category, serie, season, episode, "video"],
                 null,
                 "Missing video folder.",

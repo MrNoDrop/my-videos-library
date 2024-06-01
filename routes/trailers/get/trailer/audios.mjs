@@ -1,15 +1,16 @@
-import response from "../../predefined/responses.mjs";
-import check from "../check/get.mjs";
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
 
-export default function getTrailer(router, moviesDB, seriesDB) {
+export default function getTrailerAudios(router, moviesDB, seriesDB) {
   router.get(
-    `/trailer/:choosenTrailersDB/:language/:category/:trailer`,
+    "/trailer/:choosenTrailersDB/:language/:category/:trailer/audio",
     check.preconfiguration,
     check.choosenTrailersDB.bind(this, moviesDB, seriesDB),
     check.language.bind(this, moviesDB, seriesDB),
     check.category.bind(this, moviesDB, seriesDB),
     check.trailer.bind(this, moviesDB, seriesDB),
-    async (req, res) => {
+    check.audios.bind(this, moviesDB, seriesDB),
+    (req, res) => {
       const { choosenTrailersDB, language, category, trailer } = req.params;
       let trailerDB;
       switch (choosenTrailersDB) {
@@ -31,16 +32,13 @@ export default function getTrailer(router, moviesDB, seriesDB) {
             language,
             category,
             trailer,
+            "audio",
           ],
-          cover: `/trailers/trailer/${trailerDB.structure[language][category][
+          qualities: trailerDB.structure[language][category][
             trailer
-          ].toUrl()}/cover`.replaceAll("//", "/"),
-          manifest: `/trailers/trailer/${trailerDB.structure[language][
-            category
-          ][trailer].toUrl()}/manifest`.replaceAll("//", "/"),
-          thumbnail: `/trailers/trailer/${trailerDB.structure[language][
-            category
-          ][trailer].toUrl()}/thumbnail`.replaceAll("//", "/"),
+          ].trailer.audio
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }

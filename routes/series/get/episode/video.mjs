@@ -7,6 +7,7 @@ export default function getEpisodeVideo(router, db) {
   router.get(
     "/:language/:category/:serie/:season/:episode/video/:quality",
     check.preconfiguration,
+    check.language.bind(this, db),
     check.category.bind(this, db),
     check.serie.bind(this, db),
     check.seasons.bind(this, db),

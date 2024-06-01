@@ -18,10 +18,11 @@ export default function getEpisodeAudios(router, db) {
       res.json(
         response.ok({
           path: ["series", language, category, serie, season, episode, "audio"],
-          qualities:
-            db.structure[language][category][serie].season[season].episode[
-              episode
-            ].audio.list(),
+          qualities: db.structure[language][category][serie].season[
+            season
+          ].episode[episode].audio
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }

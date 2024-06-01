@@ -13,8 +13,10 @@ export default function getMovieAudios(router, db) {
       const { language, category, movie } = req.params;
       res.json(
         response.ok({
-          path: ["movies", ...Object.values(req.params), "audio"],
-          qualities: db.structure[language][category][movie].audio.list(),
+          path: ["movies", language, category, movie, "audio"],
+          qualities: db.structure[language][category][movie].audio
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }

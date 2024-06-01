@@ -1,14 +1,17 @@
-import response from "../../predefined/responses.mjs";
-import check from "../check/get.mjs";
+import check from "../../check/get.mjs";
+import response from "../../../predefined/responses.mjs";
+import globalCategory from "../../../tools/globalCategory.mjs";
+import golbalMovieTitle from "../../../tools/globalTitle.mjs";
 
-export default function getTrailer(router, moviesDB, seriesDB) {
+export default function getMovieVideos(router, moviesDB, seriesDB) {
   router.get(
-    `/trailer/:choosenTrailersDB/:language/:category/:trailer`,
+    "/trailer/:choosenTrailersDB/:language/:category/:trailer/video",
     check.preconfiguration,
     check.choosenTrailersDB.bind(this, moviesDB, seriesDB),
     check.language.bind(this, moviesDB, seriesDB),
     check.category.bind(this, moviesDB, seriesDB),
     check.trailer.bind(this, moviesDB, seriesDB),
+    check.videos.bind(this, moviesDB, seriesDB),
     async (req, res) => {
       const { choosenTrailersDB, language, category, trailer } = req.params;
       let trailerDB;
@@ -31,16 +34,13 @@ export default function getTrailer(router, moviesDB, seriesDB) {
             language,
             category,
             trailer,
+            "video",
           ],
-          cover: `/trailers/trailer/${trailerDB.structure[language][category][
-            trailer
-          ].toUrl()}/cover`.replaceAll("//", "/"),
-          manifest: `/trailers/trailer/${trailerDB.structure[language][
-            category
-          ][trailer].toUrl()}/manifest`.replaceAll("//", "/"),
-          thumbnail: `/trailers/trailer/${trailerDB.structure[language][
-            category
-          ][trailer].toUrl()}/thumbnail`.replaceAll("//", "/"),
+          qualities: trailerDB.structure.shared[
+            await globalCategory(language, category, trailerDB)
+          ][await golbalMovieTitle(language, trailer, trailerDB)].trailer.video
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }

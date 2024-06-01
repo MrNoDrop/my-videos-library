@@ -33,7 +33,7 @@ export default async function checkLanguageCategoryMovieVideo(
             .status(500)
             .json(
               response.error.unknown(
-                { index: 4, value: "audio" },
+                { index: 4, value: "video" },
                 ["movies", language, category, movie, "video"],
                 null,
                 "Missing video folder.",

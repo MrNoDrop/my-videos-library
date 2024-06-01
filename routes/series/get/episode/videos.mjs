@@ -22,10 +22,11 @@ export default function getEpisodeVideos(router, db) {
       res.json(
         response.ok({
           path: ["series", language, category, serie, season, episode, "video"],
-          qualities:
-            db.structure.shared[globCategory][globSerieTitle].season[
-              season
-            ].episode[episode].video.list(),
+          qualities: db.structure.shared[globCategory][globSerieTitle].season[
+            season
+          ].episode[episode].video
+            .list()
+            .map((quality) => quality.replace("_mp4", "")),
         })
       );
     }
