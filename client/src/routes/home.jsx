@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { useFitAvailableSpace } from "../components/effects";
 import Trailers from "../components/trailers";
 import Bar, { fitAvailableSpaceBarOffset } from "../components/bar";
-import { vmin } from "../components/tools/vscale";
 
 const mapStateToProps = ({
   state: {
