@@ -62,7 +62,7 @@ function Trailer({
           );
         }}
       >
-        <PlaySvg paused={true} />
+        <PlaySvg paused={true} disableEvents={true} />
         <img src={trailer?.cover} className="cover" />
         <video
           key={href}

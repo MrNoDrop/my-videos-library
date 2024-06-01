@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function PlaySvg({
   paused,
   className,
   svg,
   locked = false,
+  disableEvents = false,
   ...other
 }) {
-  const [fill, setFill] = useState('white');
+  const [fill, setFill] = useState("white");
   return (
     <div
       {...{
         className: `play-svg${
-          typeof className === 'string' ? ` ${className}` : ''
+          typeof className === "string" ? ` ${className}` : ""
         }`,
-        ...other
+        ...other,
       }}
-      onMouseEnter={() => !locked && setFill('grey')}
-      onMouseLeave={() => !locked && setFill('white')}
-      onMouseDown={() => !locked && setFill('yellow')}
-      onMouseUp={() => !locked && setFill('grey')}
+      onMouseEnter={() => !disableEvents && !locked && setFill("grey")}
+      onMouseLeave={() => !disableEvents && !locked && setFill("white")}
+      onMouseDown={() => !disableEvents && !locked && setFill("yellow")}
+      onMouseUp={() => !disableEvents && !locked && setFill("grey")}
     >
       {paused ? (
         <svg
