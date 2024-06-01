@@ -11,7 +11,6 @@ export default ({ getState, dispatch }) => {
   } else {
     let route = pathname.substring(1, pathname.length);
     route = route.split("/");
-    console.log(route[0]);
     const language = routes["supported-languages"].includes(route[0])
       ? route[0]
       : storedLanguage;
