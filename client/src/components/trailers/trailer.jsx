@@ -58,11 +58,11 @@ function Trailer({
       className="trailer"
       onMouseEnter={() => {
         setMouseEntered(true);
-        videoRef && videoRef.current && videoRef.current.play();
+        videoRef.current.play();
       }}
       onMouseLeave={() => {
         setMouseEntered(false);
-        videoRef && videoRef.current && videoRef.current.pause();
+        videoRef.current.pause();
       }}
       onClick={() => {
         const [choosenTrailersDB, language, category, trailer] = href
