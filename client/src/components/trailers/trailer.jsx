@@ -42,7 +42,12 @@ function Trailer({
 }) {
   useFetchTrailer(href, trailers, language, setTrailerRoute);
   const trailer = trailers[language][href];
-  const image = useImageLoader(trailer?.thumbnail, images, addImage, true);
+  const image = useImageLoader(
+    trailer?.thumbnail,
+    images,
+    addImage,
+    trailer?.thumbnail
+  );
   const videoRef = useRef();
   const player = useLoadPlayer(trailer?.manifest, videoRef);
   const [mouseEntered, setMouseEntered] = useState(false);
@@ -68,6 +73,7 @@ function Trailer({
     >
       <PlaySvg paused={!mouseEntered} disableEvents={true} />
       <img src={trailer?.cover} className="cover" />
+
       <video
         key={href}
         ref={videoRef}
@@ -107,11 +113,10 @@ function useFetchTrailer(href, trailers, language, setTrailerRoute) {
 function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
   const [player, setPlayer] = useState(undefined);
   useEffect(() => {
-    if (!videoRef || !videoRef.current || player || !src) {
+    if (!videoRef?.current || !src) {
       return;
     }
     const shakaPlayer = new shaka.Player(videoRef.current);
-    shakaPlayer.addEventListener("error", console.error);
     shakaPlayer
       .load(src)
       .then(() => onLoaded())

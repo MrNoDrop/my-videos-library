@@ -5015,7 +5015,12 @@ elliptic@^6.5.3, elliptic@^6.5.5:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
-eme-encryption-scheme-polyfill@^2.0.1, eme-encryption-scheme-polyfill@^2.1.1:
+eme-encryption-scheme-polyfill@^2.0.1:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.5.tgz#86338bdd3b13f04ba02fa36758501c7c6c122efe"
+  integrity sha512-z9BKXV4TCYjmar0wiZLObZ0J8HE13VIg7Zq/iyPWdbEfROtxVXEJalknWKtBR5XNezzy15/zWS964TGbcAWlPg==
+
+eme-encryption-scheme-polyfill@^2.1.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.1.4.tgz#00e0e75e5bf0513adb3322372de8be08cbb7401a"
   integrity sha512-RyYYPjz64N8YSYSrhJQTr7WcIVQpJUqqOBLq8TzXt8IYNtD4xSDOd1KeaUyFB7TdtLVu01McLHqQt8ZiDgQiLQ==
