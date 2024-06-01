@@ -39,7 +39,6 @@ function Filter({
   );
 }
 function space(availableSpace, marginLeft, width, marginRight) {
-  console.log(availableSpace, marginLeft, width, marginRight);
   const style = { marginLeft: 0, marginRight: 0, width: 0 };
   style.marginLeft = (marginLeft / 100) * availableSpace;
   style.width = (width / 100) * availableSpace;
