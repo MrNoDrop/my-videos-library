@@ -8,6 +8,7 @@ import shaka from "shaka-player";
 import "./trailer.scss";
 import PlaySvg from "../../svg/play";
 import staticImages from "../../images";
+import ReactDOM from "react-dom";
 
 shaka.polyfill.installAll();
 
@@ -45,7 +46,11 @@ function Trailer({
   containerRef,
   containerScrollEventCounter,
 }) {
-  useFetchTrailer(href, trailers, language, setTrailerRoute);
+  const { ref: trailerRef, render: fetchTrailer } = useRender(
+    containerRef,
+    containerScrollEventCounter
+  );
+  useFetchTrailer(href, trailers, language, setTrailerRoute, fetchTrailer);
   const trailer = trailers[language][href];
   const image = useImageLoader(
     trailer?.thumbnail,
@@ -70,6 +75,7 @@ function Trailer({
   }, [mouseEntered, videoRef, loaded]);
   return (
     <div
+      ref={trailerRef}
       className="trailer"
       onMouseEnter={() => {
         setMouseEntered(true);
@@ -115,10 +121,18 @@ function Trailer({
   );
 }
 
-function useFetchTrailer(href, trailers, language, setTrailerRoute) {
+function useFetchTrailer(
+  href,
+  trailers,
+  language,
+  setTrailerRoute,
+  fetchTrailer
+) {
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
-    if (!trailers[language][href] && !fetching) {
+    if (!fetchTrailer) {
+      return;
+    } else if (!trailers[language][href] && !fetching) {
       setFetching(true);
       (async () => {
         const { error, payload } = await (await fetch(href)).json();
@@ -133,7 +147,7 @@ function useFetchTrailer(href, trailers, language, setTrailerRoute) {
         setFetching(false);
       })();
     }
-  }, [trailers, fetching]);
+  }, [trailers, fetching, fetchTrailer]);
 }
 function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
   const [player, setPlayer] = useState(undefined);
@@ -155,3 +169,32 @@ function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
   return player;
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Trailer);
+
+function useRender(parentRef, trigger) {
+  const ref = useRef();
+  const [render, setRender] = useState(false);
+  const [firstRun, setFirstRun] = useState(true);
+
+  useEffect(() => {
+    if (ref.current) {
+      if (firstRun) {
+        setFirstRun(false);
+        return;
+      }
+      const rect = ReactDOM.findDOMNode(ref.current).getBoundingClientRect();
+      const parentRect = ReactDOM.findDOMNode(
+        parentRef.current
+      ).getBoundingClientRect();
+      if (
+        rect.left < parentRect.right &&
+        rect.right > parentRect.left &&
+        rect.top < parentRect.bottom &&
+        rect.bottom > parentRect.top &&
+        !render
+      ) {
+        setRender(true);
+      }
+    }
+  }, [ref, parentRef, render, setRender, firstRun, trigger]);
+  return { ref, render };
+}
