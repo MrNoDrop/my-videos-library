@@ -1,0 +1,18 @@
+.trailer {
+  display: flex;
+  width: max-content;
+  height: max-content;
+  margin: 0.5vmin auto;
+  .cover {
+    width: 18.542vmin;
+    height: 30vmin;
+  }
+  video {
+    height: 30vmin;
+    width: 53.5vmin;
+  }
+}
+
+.trailer:first-child {
+  margin-top: 0;
+}

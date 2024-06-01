@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import addTrailerRoute from "../store/actions/add/trailer/route";
 import Trailer from "./trailers/trailer";
+import "./trailers.scss";
 
 const mapStateToProps = ({
   state: {
@@ -21,11 +22,11 @@ const mapDispatchToProps = (dispatch) => ({
 function Trailers({ trailers, language, addTrailerRoute }) {
   useFetchTrailerList(trailers, language, addTrailerRoute);
   return (
-    <>
+    <div className="trailers">
       {Object.keys(trailers[language]).map((trailerRoute) => (
         <Trailer href={trailerRoute} />
       ))}
-    </>
+    </div>
   );
 }
 

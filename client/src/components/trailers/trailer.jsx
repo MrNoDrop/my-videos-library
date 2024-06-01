@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import setTrailerRoute from "../../store/actions/set/trailer/route";
 import shaka from "shaka-player";
+import "./trailer.scss";
 
 const mapStateToProps = ({
   state: {
@@ -28,7 +29,7 @@ function Trailer({ href, trailers, language, setTrailerRoute }) {
   return (
     trailer && (
       <div className="trailer">
-        <img src={trailer?.cover} width={300} height={350} />
+        <img src={trailer?.cover} className="cover" />
         <video
           ref={videoRef}
           controls
