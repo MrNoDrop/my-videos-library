@@ -6,6 +6,7 @@ import useImageLoader from "../effects/imageLoader";
 import { push } from "redux-first-routing";
 import shaka from "shaka-player";
 import "./trailer.scss";
+import PlaySvg from "../../svg/play";
 
 const mapStateToProps = ({
   state: {
@@ -61,6 +62,7 @@ function Trailer({
           );
         }}
       >
+        <PlaySvg paused={true} />
         <img src={trailer?.cover} className="cover" />
         <video
           key={href}
