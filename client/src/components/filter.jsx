@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { getElementRect } from './tools/element/getRect';
-import { getElementRef } from './tools/element/getRef';
-import './filter.scss';
+import React, { useRef, useEffect, useState } from "react";
+import { getElementRect } from "./tools/element/getRect";
+import { getElementRef } from "./tools/element/getRef";
+import "./filter.scss";
 
 const mapStateToProps = ({ state: { window: inner } }) => ({
-  windowInnerDimensions: inner
+  windowInnerDimensions: inner,
 });
 function Filter({
   marginLeftPercentage = 23.5,
@@ -29,16 +29,17 @@ function Filter({
           widthPercentage,
           marginRightPercentage
         ),
-        style
+        style,
       }}
       className="filter"
-      value={filter || ''}
-      onChange={e => setFilter(e.target.value)}
+      value={filter || ""}
+      onChange={(e) => setFilter(e.target.value)}
       {...{ ref, ...other }}
     />
   );
 }
 function space(availableSpace, marginLeft, width, marginRight) {
+  console.log(availableSpace, marginLeft, width, marginRight);
   const style = { marginLeft: 0, marginRight: 0, width: 0 };
   style.marginLeft = (marginLeft / 100) * availableSpace;
   style.width = (width / 100) * availableSpace;
@@ -52,7 +53,7 @@ function space(availableSpace, marginLeft, width, marginRight) {
 
 function useGetAvailableSpace(includeSelf = true, ...triggers) {
   const ref = useRef();
-  const [availableSpace, setAvailableSpace] = useState({});
+  const [availableSpace, setAvailableSpace] = useState(0);
   useEffect(() => {
     if (ref.current) {
       const parent = ref.current.parentNode;
