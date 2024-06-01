@@ -47,12 +47,19 @@ function Trailer({
   const player = useLoadPlayer(trailer?.manifest, videoRef, () => {
     // videoRef.current.play();
   });
+  const [mouseEntered, setMouseEntered] = useState(false);
   return (
     trailer && (
       <div
         className="trailer"
-        onMouseEnter={() => videoRef.current.play()}
-        onMouseLeave={() => videoRef.current.pause()}
+        onMouseEnter={() => {
+          setMouseEntered(true);
+          videoRef.current.play();
+        }}
+        onMouseLeave={() => {
+          setMouseEntered(false);
+          videoRef.current.pause();
+        }}
         onClick={() => {
           const [choosenTrailersDB, language, category, trailer] = href
             .replace("/trailers/trailer/", "")
@@ -62,7 +69,7 @@ function Trailer({
           );
         }}
       >
-        <PlaySvg paused={true} disableEvents={true} />
+        <PlaySvg paused={!mouseEntered} disableEvents={true} />
         <img src={trailer?.cover} className="cover" />
         <video
           key={href}
