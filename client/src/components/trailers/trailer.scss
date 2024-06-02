@@ -29,9 +29,6 @@
     right: 0.5vmin;
     bottom: 0.5vmin;
   }
-  .fullscreen-svg {
-    z-index: 1;
-  }
 }
 
 .trailer:first-child {
@@ -46,7 +43,7 @@
   width: 100%;
   height: 71.2%;
   background-color: red;
-  z-index: 2;
+  z-index: 1;
   video {
     position: absolute;
     width: 100%;
