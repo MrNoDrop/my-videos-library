@@ -25,6 +25,7 @@
       }
     },
     "trailers": { "pl": {}, "fr": {}, "en": {}, "nl": {} },
+    "watched": { "movies": {}, "series": {} },
     "images": {}
   },
   "router": {

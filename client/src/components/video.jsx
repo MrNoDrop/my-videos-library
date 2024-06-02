@@ -16,6 +16,8 @@ import { vmin } from "./tools/vscale";
 import VideoMenu from "./video/button/menu";
 import SubtitlesButton from "../svg/subtitles";
 import setSelectedSubtitles from "../store/actions/set/selected/subtitles";
+import setWatchedMovie from "../store/actions/set/watched/movie";
+import setWatchedSerie from "../store/actions/set/watched/serie";
 
 shaka.polyfill.installAll();
 
@@ -24,8 +26,9 @@ const mapStateToProps = ({
     images,
     "selected-subtitles": selectedSubtitles,
     window: { inner },
+    watched,
   },
-}) => ({ images, windowInnerDimensions: inner, selectedSubtitles });
+}) => ({ images, windowInnerDimensions: inner, selectedSubtitles, watched });
 
 const mapDispatchToProps = (dispatch) => ({
   addImage: (images, image, imageUrl) =>
@@ -41,6 +44,28 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(setSelectedSubtitles([...selectedSubtitles, selectedSubtitle]));
     }
   },
+  setWatchedMovie: (watched, language, category, title, value) =>
+    dispatch(setWatchedMovie(watched, language, category, title, value)),
+  setWatchedSerie: (
+    watched,
+    language,
+    category,
+    title,
+    season,
+    episode,
+    value
+  ) =>
+    dispatch(
+      setWatchedSerie(
+        watched,
+        language,
+        category,
+        title,
+        season,
+        episode,
+        value
+      )
+    ),
 });
 function Video({
   src,
@@ -57,11 +82,19 @@ function Video({
   addImage,
   windowInnerDimensions,
   toggleSelectedSubtitle,
+  watched,
+  setWatchedMovie,
+  setWatchedSerie,
   ...other
 }) {
   if (!subtitles) {
     subtitles = {};
   }
+  const [selectedContentDB, language, category, title, season, episode] = src
+    .replace("/manifest", "")
+    .replace("/movies", "movies")
+    .replace("/series", "series")
+    .split("/");
   const videoVolumeSliderRef = useRef();
   const videoTimeSliderRef = useRef();
   const videoRef = useRef();
@@ -72,12 +105,35 @@ function Video({
   const [hideControls, setHideControls] = useState(false);
   const [hideControlsTimeout, setHideControlsTimeout] = useState(undefined);
   const [fullscreenMode, setFullscreenMode] = useState(false);
+  const [videoTime, setVideoTime] = useState(0);
+  const [timeouttime, setTimeouttime] = useState(undefined);
+  const [videoVolume, setVideoVolume] = useState(1);
+  const image = useImageLoader(poster, images, addImage, true);
   const player = useLoadPlayer(src, videoRef, (e) => {
     setLoaded(true);
     onLoaded(e);
     videoRef.current.play();
   });
-  const image = useImageLoader(poster, images, addImage, true);
+  useEffect(() => {
+    if (videoRef?.current.duration) {
+      switch (selectedContentDB) {
+        case "movies":
+          setWatchedMovie(watched, language, category, title, {
+            duration: videoRef.current.duration,
+            progres: videoTime,
+          });
+          break;
+        case "series":
+          setWatchedSerie(watched, language, category, title, season, episode, {
+            duration: videoRef.current.duration,
+            progres: videoTime,
+          });
+          break;
+        default:
+          throw new Error("missing case.");
+      }
+    }
+  }, [videoRef?.current, videoTime]);
   const {
     hidden: hovertextHidden,
     mousePostion,
@@ -131,8 +187,6 @@ function Video({
       );
     },
   };
-  const [timeouttime, setTimeouttime] = useState(undefined);
-  const [videoVolume, setVideoVolume] = useState(1);
   useEffect(
     () => {
       videoRef && videoRef.current && (videoRef.current.volume = videoVolume);
@@ -140,14 +194,11 @@ function Video({
     // eslint-disable-next-line
     []
   );
-  const [videoTime, setVideoTime] = useState(
-    (videoRef && videoRef.current && videoRef.current.currentTime) || 0
-  );
   useEffect(() => {
     if (!timeouttime) {
       setTimeouttime(
         setTimeout(() => {
-          if (videoRef && videoRef.current) {
+          if (videoRef?.current) {
             if (videoTime !== videoRef.current.currentTime) {
               setVideoTime(videoRef.current.currentTime);
             }
@@ -209,6 +260,28 @@ function Video({
         ref={videoRef}
         poster={image}
         onLoadedMetadata={() => {
+          videoRef.current.currentTime = (() => {
+            switch (selectedContentDB) {
+              case "movies":
+                return (
+                  watched.movies[language]?.[category]?.[title]?.progres || 0
+                );
+              case "series":
+                return (
+                  watched.series[language]?.[category]?.[title]?.[season]?.[
+                    episode
+                  ]?.progres || 0
+                );
+              default:
+                try {
+                  throw new Error("missing case.");
+                } catch (e) {
+                  console.error(e);
+                }
+                break;
+            }
+            return 0;
+          })();
           player.configure({
             streaming: {
               bufferBehind: videoRef.current.duration,
