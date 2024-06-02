@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 export default function FullscreenSVG({
   fullscreen,
   className,
   svg = {},
   ...other
 }) {
-  const [fill, setFill] = useState('white');
+  const [fill, setFill] = useState("white");
   return (
     <div
       {...{
         className: `fullscreen-svg${
-          typeof className === 'string' ? ` ${className}` : ''
+          typeof className === "string" ? ` ${className}` : ""
         }`,
-        ...other
+        ...other,
       }}
-      onMouseEnter={() => setFill('grey')}
-      onMouseLeave={() => setFill('white')}
-      onMouseDown={() => setFill('yellow')}
-      onMouseUp={() => setFill('grey')}
+      onMouseEnter={() => setFill("grey")}
+      onMouseLeave={() => setFill("white")}
+      onMouseDown={() => setFill("yellow")}
+      onMouseUp={() => setFill("grey")}
     >
       {fullscreen ? (
         <svg
@@ -29,7 +29,7 @@ export default function FullscreenSVG({
           space="preserve"
           {...{
             ...svg,
-            style: { enableBackground: 'new 0 0 32 32', ...svg.style }
+            style: { enableBackground: "new 0 0 32 32", ...svg.style },
           }}
         >
           <g>
@@ -54,21 +54,6 @@ export default function FullscreenSVG({
               </g>
             </g>
           </g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
         </svg>
       ) : (
         <svg
@@ -80,7 +65,7 @@ export default function FullscreenSVG({
           space="preserve"
           {...{
             ...svg,
-            style: { enableBackground: 'new 0 0 488.4 488.4', ...svg.style }
+            style: { enableBackground: "new 0 0 488.4 488.4", ...svg.style },
           }}
         >
           <g>
@@ -106,21 +91,6 @@ export default function FullscreenSVG({
               </g>
             </g>
           </g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
         </svg>
       )}
     </div>
