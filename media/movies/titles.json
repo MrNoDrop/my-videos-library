@@ -1,6 +1,6 @@
 {
-  "pl": { "godzilla x kong nowe imperium": 0 },
-  "fr": { "godzilla x kong nouvel empire": 0 },
-  "nl": { "godzilla x kong nieuw imperium": 0 },
-  "en": { "godzilla x kong the new empire": 0 }
+  "pl": { "godzilla x kong nowe imperium": 0, "Godzilla Minus Jeden": 1 },
+  "fr": { "godzilla x kong nouvel empire": 0, "Godzilla moins un": 1 },
+  "nl": { "godzilla x kong nieuw imperium": 0, "Godzilla Minus één": 1 },
+  "en": { "godzilla x kong the new empire": 0, "Godzilla Minus One": 1 }
 }
