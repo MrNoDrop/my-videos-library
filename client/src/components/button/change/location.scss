@@ -14,10 +14,19 @@
   background-position: center;
   cursor: pointer;
   float: left;
+  position: relative;
+  .progress-bar {
+    position: absolute;
+  }
 }
 .change-location-image-button.horizontal {
   width: 44vmin;
   height: 24.8vmin;
+  .progress-bar {
+    width: 42vmin;
+    left: 1vmin;
+    bottom: 1vmin;
+  }
 }
 
 .change-location-image-button.vertical {

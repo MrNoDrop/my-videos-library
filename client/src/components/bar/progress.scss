@@ -1,0 +1,12 @@
+.progress-bar {
+  width: inherit;
+  height: 1vmin;
+  background-color: white;
+  border-radius: 1vmin;
+  .progress {
+    height: inherit;
+    float: left;
+    background-color: #d8d8d8;
+    border-radius: 1vmin;
+  }
+}

@@ -120,13 +120,13 @@ function Video({
         case "movies":
           setWatchedMovie(watched, language, category, title, {
             duration: videoRef.current.duration,
-            progres: videoTime,
+            progress: videoTime,
           });
           break;
         case "series":
           setWatchedSerie(watched, language, category, title, season, episode, {
             duration: videoRef.current.duration,
-            progres: videoTime,
+            progress: videoTime,
           });
           break;
         default:
@@ -264,13 +264,13 @@ function Video({
             switch (selectedContentDB) {
               case "movies":
                 return (
-                  watched.movies[language]?.[category]?.[title]?.progres || 0
+                  watched.movies[language]?.[category]?.[title]?.progress || 0
                 );
               case "series":
                 return (
                   watched.series[language]?.[category]?.[title]?.[season]?.[
                     episode
-                  ]?.progres || 0
+                  ]?.progress || 0
                 );
               default:
                 try {

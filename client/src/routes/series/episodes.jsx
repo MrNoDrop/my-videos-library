@@ -11,6 +11,7 @@ import Filter from "../../components/filter";
 import ChangeLocationButton from "../../components/button/change/location";
 import Center from "../../components/center";
 import Nametag from "../../components/nametag";
+import ProgressBar from "../../components/bar/progress";
 
 const episodeDescriptors = {
   pl: "Odcinek",
@@ -24,9 +25,17 @@ const mapStateToProps = ({
     window: { inner },
     series,
     viewmode,
+    watched,
   },
   router: { pathname },
-}) => ({ pathname, language, windowInnerDimensions: inner, series, viewmode });
+}) => ({
+  pathname,
+  language,
+  windowInnerDimensions: inner,
+  series,
+  viewmode,
+  watched,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   setSeries: (series) => dispatch(setSeries(series)),
@@ -47,7 +56,13 @@ function SeriesEpisodesRoute({
   series,
   viewmode,
   pathname,
+  watched,
 }) {
+  const [category, title, season] = pathname
+    .substring(1, pathname.length)
+    .split("/")
+    .splice(2, 3);
+  console.log(category, title, season);
   const ref = useRef();
   const [filter, setFilter] = useState("");
   useFetchSerieEpisodes(language, setSeries, series, pathname, changePath);
@@ -172,6 +187,22 @@ function SeriesEpisodesRoute({
                     <Nametag>
                       {episodeDescriptors[language]} {episode}
                     </Nametag>
+                  )}
+                  {watched.series[language]?.[category]?.[title]?.[season]?.[
+                    episode
+                  ] && (
+                    <ProgressBar
+                      progress={
+                        watched.series[language][category][title][season][
+                          episode
+                        ].progress
+                      }
+                      duration={
+                        watched.series[language][category][title][season][
+                          episode
+                        ].duration
+                      }
+                    />
                   )}
                 </ChangeLocationButton>
               ))
