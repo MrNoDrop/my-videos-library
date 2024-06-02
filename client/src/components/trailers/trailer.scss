@@ -22,6 +22,16 @@
     width: 67.5vmin;
     background: black;
   }
+  .fullscreen-svg {
+    position: absolute;
+    width: 3vmin;
+    height: 3vmin;
+    right: 0.5vmin;
+    bottom: 0.5vmin;
+  }
+  .fullscreen-svg {
+    z-index: 1;
+  }
 }
 
 .trailer:first-child {
@@ -29,4 +39,17 @@
 }
 .trailer:last-child {
   margin-bottom: 1vmin;
+}
+.trailer.fullscreen-video {
+  position: fixed;
+  top: 14.1vmin;
+  width: 100%;
+  height: 71.2%;
+  background-color: red;
+  z-index: 2;
+  video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }

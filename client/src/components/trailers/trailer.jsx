@@ -9,6 +9,7 @@ import "./trailer.scss";
 import PlaySvg from "../../svg/play";
 import staticImages from "../../images";
 import useRender from "../effects/useRender";
+import FullscreenSVG from "../../svg/fullscreen";
 
 shaka.polyfill.installAll();
 
@@ -62,6 +63,7 @@ function Trailer({
   const [loaded, setLoaded] = useState(false);
   const player = useLoadPlayer(trailer?.manifest, videoRef);
   const [mouseEntered, setMouseEntered] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   useEffect(() => {
     if (!videoRef?.current || !loaded) {
       return;
@@ -76,7 +78,7 @@ function Trailer({
   return (
     <div
       ref={trailerRef}
-      className="trailer"
+      className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
       onMouseEnter={() => {
         setMouseEntered(true);
       }}
@@ -117,6 +119,13 @@ function Trailer({
           }}
         />
       )}
+      <FullscreenSVG
+        {...{ fullscreen }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setFullscreen(!fullscreen);
+        }}
+      />
     </div>
   );
 }
