@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Generated with https://github.com/shaka-project/shaka-packager version v3.2.0-53b8668-release-->
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" minBufferTime="PT3S" type="static" mediaPresentationDuration="PT7478.220703S">
+  <Period id="0">
+    <AdaptationSet id="0" contentType="audio" subsegmentStartsWithSAP="1">
+      <Representation id="0" bandwidth="151993" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="48000">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/audio/720</BaseURL>
+        <SegmentBase indexRange="833-30780" timescale="48000">
+          <Initialization range="0-832"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="2" bandwidth="147759" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="44100">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/audio/540</BaseURL>
+        <SegmentBase indexRange="833-30780" timescale="44100">
+          <Initialization range="0-832"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="4" bandwidth="76338" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="22050">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/audio/360</BaseURL>
+        <SegmentBase indexRange="833-30780" timescale="22050">
+          <Initialization range="0-832"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet id="1" contentType="video" maxWidth="1720" maxHeight="720" frameRate="24000/1001">
+      <Representation id="1" bandwidth="1528872" codecs="avc1.4d4020" mimeType="video/mp4" sar="8192:8209" width="1720" height="720">
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/video/720</BaseURL>
+        <SegmentBase indexRange="863-9510" timescale="24000">
+          <Initialization range="0-862"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="3" bandwidth="858694" codecs="avc1.64001f" mimeType="video/mp4" sar="4095:4096" width="1290" height="540">
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/video/540</BaseURL>
+        <SegmentBase indexRange="896-30843" timescale="24000">
+          <Initialization range="0-895"/>
+        </SegmentBase>
+      </Representation>
+      <Representation id="5" bandwidth="459120" codecs="avc1.64001e" mimeType="video/mp4" sar="4095:4096" width="860" height="360">
+        <BaseURL>/movies/pl/akcja/Godzilla Minus Jeden/video/360</BaseURL>
+        <SegmentBase indexRange="896-30843" timescale="24000">
+          <Initialization range="0-895"/>
+        </SegmentBase>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>
