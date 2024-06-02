@@ -68,8 +68,9 @@ function SeriesRoute({
             .filter((category) =>
               category.toLowerCase().includes(filter.toLowerCase())
             )
-            .map((category) => (
+            .map((category, index) => (
               <ChangeLocationButton
+                key={`${category}${index}`}
                 viewmode="list"
                 href={`${pathname}/${category}`}
                 onClick={() => setCurrentCategory(series, category)}
