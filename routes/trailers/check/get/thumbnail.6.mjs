@@ -25,7 +25,7 @@ export default async function checkLanguageCategoryTrailerThumbnail(
     trailerDB.structure.shared[
       await globalCategory(language, category, trailerDB)
     ][await golbalTrailerTitle(language, trailer, trailerDB)].trailer
-      .thumbnails;
+      ?.thumbnails;
   if (thumbnails && thumbnails.list().length >= 1) {
     next();
   } else {
