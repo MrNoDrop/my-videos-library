@@ -41,12 +41,11 @@
   position: fixed;
   top: 14.1vmin;
   width: 100%;
-  height: 71.2%;
   background-color: red;
   z-index: 1;
   video {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: inherit;
   }
 }

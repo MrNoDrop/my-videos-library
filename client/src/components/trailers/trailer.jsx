@@ -10,6 +10,8 @@ import PlaySvg from "../../svg/play";
 import staticImages from "../../images";
 import useRender from "../effects/useRender";
 import FullscreenSVG from "../../svg/fullscreen";
+import { useFitAvailableSpace } from "../effects";
+import { fitAvailableSpaceBarOffset } from "../bar";
 
 shaka.polyfill.installAll();
 
@@ -18,6 +20,7 @@ const mapStateToProps = ({
     images,
     trailers,
     user: { language },
+    window: { inner },
   },
   router: { routes },
 }) => ({
@@ -25,6 +28,7 @@ const mapStateToProps = ({
   language,
   images,
   routes,
+  windowInnerDimensions: inner,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -46,6 +50,7 @@ function Trailer({
   routes,
   containerRef,
   containerScrollEventCounter,
+  windowInnerDimensions,
 }) {
   const { ref: trailerRef, render: fetchTrailer } = useRender(
     containerRef,
@@ -64,6 +69,10 @@ function Trailer({
   const player = useLoadPlayer(trailer?.manifest, videoRef);
   const [mouseEntered, setMouseEntered] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const trailerFullscreenStyle = useFitAvailableSpace(
+    windowInnerDimensions,
+    fitAvailableSpaceBarOffset()
+  );
   useEffect(() => {
     if (!videoRef?.current || !loaded) {
       return;
@@ -79,6 +88,7 @@ function Trailer({
     <div
       ref={trailerRef}
       className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
+      style={fullscreen ? trailerFullscreenStyle : {}}
       onMouseEnter={() => {
         setMouseEntered(true);
       }}
