@@ -44,6 +44,7 @@ function ChangeLocationButton({
   onMouseMove,
   images,
   addImage,
+  key,
   ...other
 }) {
   const {
@@ -106,10 +107,7 @@ function ChangeLocationButton({
     default:
       return [
         hover,
-        <div
-          key="undefined"
-          {...{ ...other, ...mouseEventListeners, className }}
-        >
+        <div {...{ key, ...other, ...mouseEventListeners, className }}>
           {children}
         </div>,
       ];
@@ -118,11 +116,10 @@ function ChangeLocationButton({
       return [
         hover,
         <button
-          key="list"
           className={`change-location-button${
             className ? " " + className : ""
           }`}
-          {...{ ...other, ref, ...mouseEventListeners }}
+          {...{ key, ...other, ref, ...mouseEventListeners }}
         >
           {children}
         </button>,
@@ -131,8 +128,8 @@ function ChangeLocationButton({
       return [
         hover,
         <div
-          key="horizontal"
           {...{
+            key,
             ref,
             ...mouseEventListeners,
             ...other,
@@ -154,8 +151,8 @@ function ChangeLocationButton({
       return [
         hover,
         <div
-          key="vertical"
           {...{
+            key,
             ref,
             ...mouseEventListeners,
             ...other,
