@@ -58,11 +58,17 @@ function Trailer({
   );
   useFetchTrailer(href, trailers, language, setTrailerRoute, fetchTrailer);
   const trailer = trailers[language][href];
-  const image = useImageLoader(
+  const poster = useImageLoader(
     trailer?.thumbnail,
     images,
     addImage,
     trailer?.thumbnail
+  );
+  const cover = useImageLoader(
+    trailer?.cover,
+    images,
+    addImage,
+    trailer?.cover
   );
   const videoRef = useRef();
   const [loaded, setLoaded] = useState(false);
@@ -104,12 +110,12 @@ function Trailer({
         );
       }}
     >
-      {image && (
+      {poster && (
         <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
       )}
       <img
         alt=""
-        src={trailer?.cover ? trailer.cover : staticImages.animated.loading}
+        src={cover ? cover : staticImages.animated.loading}
         className="cover"
       />
 
@@ -117,7 +123,7 @@ function Trailer({
         <video
           key={href}
           ref={videoRef}
-          poster={image}
+          poster={poster}
           onLoadedData={() => {
             setLoaded(true);
           }}
