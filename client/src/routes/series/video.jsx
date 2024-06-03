@@ -45,27 +45,9 @@ function SeriesSeasonsRoute({
       }}
     >
       <Bar />
-      {series[language] &&
-      series.current.category &&
-      series[language][series.current.category] &&
-      series.current.serie &&
-      series[language][series.current.category][series.current.serie] &&
-      series.current.season &&
-      series[language][series.current.category][series.current.serie][
+      {series[language]?.[series.current.category]?.[series.current.serie]?.[
         series.current.season
-      ] &&
-      series.current.episode &&
-      series[language][series.current.category][series.current.serie][
-        series.current.season
-      ][series.current.episode] &&
-      series[language][series.current.category][series.current.serie][
-        series.current.season
-      ][series.current.episode].manifest ? (
-        // console.log(
-        //     series[language][series.current.category][series.current.serie][
-        //       series.current.season
-        //     ][series.current.episode]
-        //   ) ||
+      ]?.[series.current.episode]?.manifest && (
         <Video
           src={
             series[language][series.current.category][series.current.serie][
@@ -94,8 +76,6 @@ function SeriesSeasonsRoute({
             ][series.current.episode].subtitles
           }
         />
-      ) : (
-        ""
       )}
     </section>
   );

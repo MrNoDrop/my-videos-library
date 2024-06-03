@@ -42,13 +42,8 @@ function SeriesSeasonsRoute({
       }}
     >
       <Bar />
-      {movies[language] &&
-      movies.current.category &&
-      movies[language][movies.current.category] &&
-      movies.current.movie &&
-      movies[language][movies.current.category][movies.current.movie] &&
-      movies[language][movies.current.category][movies.current.movie]
-        .manifest ? (
+      {movies[language]?.[movies.current.category]?.[movies.current.movie]
+        ?.manifest && (
         <Video
           src={
             movies[language][movies.current.category][movies.current.movie]
@@ -68,8 +63,6 @@ function SeriesSeasonsRoute({
               .subtitles
           }
         />
-      ) : (
-        ""
       )}
     </section>
   );
