@@ -12,6 +12,7 @@ import setCurrentMovie from "../../store/actions/movies/set/current/movie";
 import addCategoryMovies from "../../store/actions/movies/add/category/movies";
 import setMoviesMovieInfo from "../../store/actions/movies/set/movie/info";
 import setCurrentCategory from "../../store/actions/movies/set/current/category";
+import ProgressBar from "../../components/bar/progress";
 
 const mapStateToProps = ({
   state: {
@@ -19,9 +20,17 @@ const mapStateToProps = ({
     window: { inner },
     movies,
     viewmode,
+    watched,
   },
   router: { pathname },
-}) => ({ pathname, language, windowInnerDimensions: inner, movies, viewmode });
+}) => ({
+  pathname,
+  language,
+  windowInnerDimensions: inner,
+  movies,
+  viewmode,
+  watched,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   addCategoryMovies: (moviesState, language, category, movies) =>
@@ -47,7 +56,12 @@ function SeriesCategoryRoute({
   setMovies,
   setMoviesMovieInfo,
   setCurrentCategory,
+  watched,
 }) {
+  const [category] = pathname
+    .substring(1, pathname.length)
+    .split("/")
+    .splice(2, 1);
   const ref = useRef();
   const [filter, setFilter] = useState("");
   updateCategoryRoute(
@@ -159,6 +173,16 @@ function SeriesCategoryRoute({
                   }}
                 >
                   {viewmode === "list" && movie}
+                  {watched.movies[language]?.[category]?.[movie] && (
+                    <ProgressBar
+                      progress={
+                        watched.movies[language][category][movie].progress
+                      }
+                      duration={
+                        watched.movies[language][category][movie].duration
+                      }
+                    />
+                  )}
                 </ChangeLocationButton>
               ))
           : ""}
