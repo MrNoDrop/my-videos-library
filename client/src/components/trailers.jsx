@@ -45,7 +45,6 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
   const [trailerListFetched, setTrailerListFetched] = useState(false);
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
-    let isMounted = true;
     if (!fetching && !trailerListFetched) {
       setFetching(true);
       (async () => {
@@ -61,7 +60,7 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
         ).json();
         if (!error) {
           if (trailersFetched) {
-            if (isMounted) setTrailerListFetched(trailersFetched);
+            setTrailerListFetched(trailersFetched);
           }
           if (trailerRoute) {
             addTrailerRoute(trailers, trailerRoute, language);
@@ -70,9 +69,6 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
       })();
       setFetching(false);
     }
-    return () => {
-      isMounted = false;
-    };
   }, [fetching, trailerListFetched, trailers]);
 }
 

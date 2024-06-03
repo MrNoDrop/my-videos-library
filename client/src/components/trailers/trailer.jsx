@@ -118,7 +118,13 @@ function Trailer({
         src={cover ? cover : staticImages.animated.loading}
         className="cover"
       />
-
+      {!loaded && (
+        <img
+          alt=""
+          src={staticImages.animated.loading1}
+          className="loading-video"
+        />
+      )}
       {trailer?.manifest && (
         <video
           key={href}

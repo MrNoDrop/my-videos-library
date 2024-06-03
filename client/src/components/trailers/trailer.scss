@@ -28,6 +28,13 @@
     right: 0.5vmin;
     bottom: 0.5vmin;
   }
+  .loading-video {
+    position: absolute;
+    left: 48vmin;
+    top: 8vmin;
+    width: 20vmin;
+    height: 20vmin;
+  }
 }
 
 .trailer:first-child {
