@@ -1,6 +1,22 @@
 {
-  "pl": { "godzilla x kong nowe imperium": 0, "Godzilla Minus Jeden": 1 },
-  "fr": { "godzilla x kong nouvel empire": 0, "Godzilla moins un": 1 },
-  "nl": { "godzilla x kong nieuw imperium": 0, "Godzilla Minus één": 1 },
-  "en": { "godzilla x kong the new empire": 0, "Godzilla Minus One": 1 }
+  "pl": {
+    "godzilla x kong nowe imperium": 0,
+    "Godzilla Minus Jeden": 1,
+    "pandemonium": 2
+  },
+  "fr": {
+    "godzilla x kong nouvel empire": 0,
+    "Godzilla moins un": 1,
+    "pandemonium": 2
+  },
+  "nl": {
+    "godzilla x kong nieuw imperium": 0,
+    "Godzilla Minus één": 1,
+    "pandemonium": 2
+  },
+  "en": {
+    "godzilla x kong the new empire": 0,
+    "Godzilla Minus One": 1,
+    "pandemonium": 2
+  }
 }
