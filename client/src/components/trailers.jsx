@@ -29,6 +29,7 @@ function Trailers({
   useFetchTrailerList(trailers, language, addTrailerRoute);
   return (
     <div className="trailers">
+      {/* <div style={{ width: "100%", height: "800px" }}>y</div> */}
       {Object.keys(trailers[language]).map((trailerRoute) => (
         <Trailer
           href={trailerRoute}
@@ -45,6 +46,7 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
   const [trailerListFetched, setTrailerListFetched] = useState(false);
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
+    let isMounted = true;
     if (!fetching && !trailerListFetched) {
       setFetching(true);
       (async () => {
@@ -60,7 +62,7 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
         ).json();
         if (!error) {
           if (trailersFetched) {
-            setTrailerListFetched(trailersFetched);
+            if (isMounted) setTrailerListFetched(trailersFetched);
           }
           if (trailerRoute) {
             addTrailerRoute(trailers, trailerRoute, language);
@@ -69,6 +71,9 @@ function useFetchTrailerList(trailers, language, addTrailerRoute) {
       })();
       setFetching(false);
     }
+    return () => {
+      isMounted = false;
+    };
   }, [fetching, trailerListFetched, trailers]);
 }
 

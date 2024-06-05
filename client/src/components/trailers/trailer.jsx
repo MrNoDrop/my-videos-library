@@ -12,6 +12,8 @@ import useRender from "../effects/useRender";
 import FullscreenSVG from "../../svg/fullscreen";
 import { useFitAvailableSpace } from "../effects";
 import { fitAvailableSpaceBarOffset } from "../bar";
+import savePlayer from "../../store/actions/save/player";
+import Player from "../player";
 
 shaka.polyfill.installAll();
 
@@ -21,6 +23,7 @@ const mapStateToProps = ({
     trailers,
     user: { language },
     window: { inner },
+    players,
   },
   router: { routes },
 }) => ({
@@ -29,6 +32,7 @@ const mapStateToProps = ({
   images,
   routes,
   windowInnerDimensions: inner,
+  players,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -37,6 +41,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addImage(images, image, imageUrl)),
   setTrailerRoute: (trailers, trailerRoute, language, value) =>
     dispatch(setTrailerRoute(trailers, trailerRoute, language, value)),
+  savePlayer: (players, href, player, playerLoading) =>
+    dispatch(savePlayer(players, href, player, playerLoading)),
 });
 
 function Trailer({
@@ -51,6 +57,8 @@ function Trailer({
   containerRef,
   containerScrollEventCounter,
   windowInnerDimensions,
+  players,
+  savePlayer,
 }) {
   const { ref: trailerRef, render: fetchTrailer } = useRender(
     containerRef,
@@ -72,7 +80,39 @@ function Trailer({
   );
   const videoRef = useRef();
   const [loaded, setLoaded] = useState(false);
-  const player = useLoadPlayer(trailer?.manifest, videoRef);
+  const [error, setError] = useState(undefined);
+  const [player] = useState(players[href]?.player || new shaka.Player());
+  const [playerAttached, setPlayerAttached] = useState(false);
+  const [playerLoading, setPlayerLoading] = useState(
+    players[href]?.loading || false
+  );
+  const [playerLoaded, setPlayerLoaded] = useState(false);
+  // useEffect(() => {
+  //   if (!playerAttached && player && videoRef?.current) {
+  //     player.attach(videoRef.current);
+  //     setPlayerAttached(true);
+  //   }
+  // }, [player, videoRef?.current, playerAttached]);
+  // useEffect(() => {
+  //   if (!playerLoading && player && playerAttached && trailer?.manifest) {
+  //     player
+  //       .load(trailer.manifest)
+  //       .then(() => alert())
+  //       .catch(console.error);
+  //     setPlayerLoading(true);
+  //   }
+  // }, [playerLoading, players[href]?.player, playerAttached, trailer?.manifest]);
+  // useEffect(() => {
+  //   if (!players[href]?.player && player) {
+  //     savePlayer(players, href, player, playerLoading);
+  //   }
+  // }, [players[href]?.player, player]);
+
+  // useEffect(() => {
+  //   if (playerLoading && player && players[href]?.loading !== playerLoading) {
+  //     savePlayer(players, href, player, playerLoading);
+  //   }
+  // }, [player, players[href]?.loading, playerLoading]);
   const [mouseEntered, setMouseEntered] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const trailerFullscreenStyle = useFitAvailableSpace(
@@ -90,66 +130,77 @@ function Trailer({
       videoRef.current.pause();
     }
   }, [mouseEntered, videoRef, loaded]);
+  const [video] = useState(
+    <video
+      key={href}
+      ref={videoRef}
+      poster={poster}
+      onLoadedData={() => {
+        setLoaded(true);
+      }}
+      onLoadedMetadata={() => {
+        player.configure({
+          streaming: {
+            bufferBehind: videoRef.current.duration,
+          },
+        });
+      }}
+    />
+  );
   return (
-    <div
-      ref={trailerRef}
-      className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
-      style={fullscreen ? trailerFullscreenStyle : {}}
-      onMouseEnter={() => {
-        setMouseEntered(true);
-      }}
-      onMouseLeave={() => {
-        setMouseEntered(false);
-      }}
-      onClick={() => {
-        const [choosenTrailersDB, language, category, trailer] = href
-          .replace("/trailers/trailer/", "")
-          .split("/");
-        changePath(
-          `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
-        );
-      }}
-    >
-      {poster && (
-        <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
-      )}
-      <img
-        alt=""
-        src={cover ? cover : staticImages.animated.loading}
-        className="cover"
-      />
-      {!loaded && (
+    error?.code || (
+      <div
+        ref={trailerRef}
+        className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
+        style={fullscreen ? trailerFullscreenStyle : {}}
+        onMouseEnter={() => {
+          setMouseEntered(true);
+        }}
+        onMouseLeave={() => {
+          setMouseEntered(false);
+        }}
+        onClick={() => {
+          const [choosenTrailersDB, language, category, trailer] = href
+            .replace("/trailers/trailer/", "")
+            .split("/");
+          changePath(
+            `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
+          );
+        }}
+      >
+        <Player
+          src={trailer?.manifest}
+          onPlayerError={console.error}
+          init={mouseEntered}
+        />
+        {poster && (
+          <PlaySvg
+            paused={loaded ? !mouseEntered : true}
+            disableEvents={true}
+          />
+        )}
         <img
           alt=""
-          src={staticImages.animated.loading1}
-          className="loading-video"
+          src={cover ? cover : staticImages.animated.loading}
+          className="cover"
         />
-      )}
-      {trailer?.manifest && (
-        <video
-          key={href}
-          ref={videoRef}
-          poster={poster}
-          onLoadedData={() => {
-            setLoaded(true);
-          }}
-          onLoadedMetadata={() => {
-            player.configure({
-              streaming: {
-                bufferBehind: videoRef.current.duration,
-              },
-            });
+        {!loaded && (
+          <img
+            alt=""
+            src={staticImages.animated.loading1}
+            className="loading-video"
+          />
+        )}
+        {/* {trailer?.manifest && video} */}
+        <FullscreenSVG
+          {...{ fullscreen }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setFullscreen(!fullscreen);
           }}
         />
-      )}
-      <FullscreenSVG
-        {...{ fullscreen }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setFullscreen(!fullscreen);
-        }}
-      />
-    </div>
+      </div>
+    )
   );
 }
 
@@ -181,19 +232,21 @@ function useFetchTrailer(
     }
   }, [trailers, fetching, fetchTrailer]);
 }
-function useLoadPlayer(src, videoRef, onLoaded = () => {}) {
+function useLoadPlayer(src, videoRef, onLoaded = () => {}, onError = () => {}) {
   const [player, setPlayer] = useState(undefined);
   useEffect(() => {
     if (!videoRef?.current || !src) {
       return;
     }
     (async () => {
-      const shakaPlayer = new shaka.Player(videoRef.current);
+      const shakaPlayer = new shaka.Player();
+      shakaPlayer.attach(videoRef.current);
       try {
         await shakaPlayer.load(src);
         onLoaded();
         setPlayer(shakaPlayer);
       } catch (error) {
+        onError(error);
         console.error(error);
       }
     })();

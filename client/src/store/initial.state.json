@@ -26,7 +26,8 @@
     },
     "trailers": { "pl": {}, "fr": {}, "en": {}, "nl": {} },
     "watched": { "movies": {}, "series": {} },
-    "images": {}
+    "images": {},
+    "players": {}
   },
   "router": {
     "pathname": "/",
