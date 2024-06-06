@@ -27,7 +27,7 @@ function Player({
 }) {
   const ref = useRef();
   const [player] = useState(players[src]?.player || new shaka.Player());
-  const [video] = useState(players[src]?.video || <video ref={ref} autoPlay />);
+  const [video] = useState(players[src]?.video || <video ref={ref} />);
 
   useEffect(() => {
     if (src && player && video && !players[src]) {
