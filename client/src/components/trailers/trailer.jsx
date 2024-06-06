@@ -141,7 +141,7 @@ function Trailer({
       <Player
         src={trailer?.manifest}
         onPlayerError={console.error}
-        init={poster && mouseEntered}
+        init={poster && videoLoadingRequested}
         onError={setError}
         getVideo={setVideo}
         poster={poster}
