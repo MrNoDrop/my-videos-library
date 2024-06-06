@@ -65,7 +65,7 @@ function Menu({ language, router, changePath, isOnLine, userName }) {
       <Entry
         title={routes[language].movies}
         image={{
-          src: <images.interactive.menu.Stats />,
+          src: <images.interactive.menu.Video />,
           alt: "movies",
         }}
         enabled={router.pathname.includes(path.movies)}
