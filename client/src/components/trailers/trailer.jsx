@@ -80,8 +80,8 @@ function Trailer({
   );
   const [video, setVideo] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState({ code: 1, message: "Shaka error 1" });
-  const [playerLoaded, setPlayerLoaded] = useState(false);
+  const [videoLoadingRequested, setVideoLoadingRequested] = useState(false);
+  const [error, setError] = useState(undefined);
   const [mouseEntered, setMouseEntered] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const trailerFullscreenStyle = useFitAvailableSpace(
@@ -89,6 +89,9 @@ function Trailer({
     fitAvailableSpaceBarOffset()
   );
   useEffect(() => {
+    if (mouseEntered && !videoLoadingRequested) {
+      setVideoLoadingRequested(true);
+    }
     if (!video || !loaded) {
       return;
     }
@@ -127,7 +130,7 @@ function Trailer({
         src={cover ? cover : staticImages.animated.loading}
         className="cover"
       />
-      {playerLoaded && !loaded && (
+      {videoLoadingRequested && !loaded && (
         <img
           alt=""
           src={staticImages.animated.loading1}
@@ -138,7 +141,6 @@ function Trailer({
         src={trailer?.manifest}
         onPlayerError={console.error}
         init={poster && mouseEntered}
-        onPlayerLoaded={() => setPlayerLoaded(true)}
         onError={setError}
         getVideo={setVideo}
         poster={poster}
@@ -186,25 +188,5 @@ function useFetchTrailer(
     }
   }, [trailers, fetching, fetchTrailer]);
 }
-function useLoadPlayer(src, videoRef, onLoaded = () => {}, onError = () => {}) {
-  const [player, setPlayer] = useState(undefined);
-  useEffect(() => {
-    if (!videoRef?.current || !src) {
-      return;
-    }
-    (async () => {
-      const shakaPlayer = new shaka.Player();
-      shakaPlayer.attach(videoRef.current);
-      try {
-        await shakaPlayer.load(src);
-        onLoaded();
-        setPlayer(shakaPlayer);
-      } catch (error) {
-        onError(error);
-        console.error(error);
-      }
-    })();
-  }, [src, videoRef]);
-  return player;
-}
+
 export default connect(mapStateToProps, mapDispatchToProps)(Trailer);
