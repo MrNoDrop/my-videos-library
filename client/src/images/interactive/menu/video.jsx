@@ -9,7 +9,7 @@ export default function HomeSVG({ enabled, className, svg, ...other }) {
   return (
     <div
       {...{
-        className: `home-svg${
+        className: `video-svg${
           typeof className === "string" ? ` ${className}` : ""
         }`,
         ...other,
