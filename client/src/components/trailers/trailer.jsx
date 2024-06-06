@@ -60,10 +60,11 @@ function Trailer({
   players,
   savePlayer,
 }) {
-  const { ref: trailerRef, render: fetchTrailer } = useRender(
-    containerRef,
-    containerScrollEventCounter
-  );
+  const { ref: trailerRef, render: fetchTrailer } = useRender(containerRef, [
+    containerScrollEventCounter,
+    windowInnerDimensions.width,
+    windowInnerDimensions.height,
+  ]);
   useFetchTrailer(href, trailers, language, setTrailerRoute, fetchTrailer);
   const trailer = trailers[language][href];
   const poster = useImageLoader(

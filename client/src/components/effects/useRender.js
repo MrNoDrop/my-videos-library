@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-export default function useRender(parentRef, trigger) {
+export default function useRender(parentRef, triggers) {
   const ref = useRef();
   const [render, setRender] = useState(false);
   const [firstRun, setFirstRun] = useState(true);
@@ -25,6 +25,6 @@ export default function useRender(parentRef, trigger) {
         setRender(true);
       }
     }
-  }, [ref, parentRef, render, setRender, firstRun, trigger]);
+  }, [ref, parentRef, render, setRender, firstRun, ...triggers]);
   return { ref, render };
 }
