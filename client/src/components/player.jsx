@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import savePlayer from "../store/actions/save/player";
+import deletePlayer from "../store/actions/delete/player";
 import shaka from "shaka-player";
 
 shaka.polyfill.installAll();
@@ -12,12 +13,14 @@ const mapStateToProps = ({ state: { players } }) => ({
 const mapDispatchToProps = (dispatch) => ({
   savePlayer: (players, player, video, src, initialized) =>
     dispatch(savePlayer(players, player, video, src, initialized)),
+  deletePlayer: (players, src) => dispatch(deletePlayer(players, src)),
 });
 
 function Player({
   players,
   src,
   savePlayer,
+  deletePlayer,
   onPlayerLoaded = () => {},
   onPlayerError = () => {},
   onLoadedMetadata = () => {},
@@ -46,6 +49,7 @@ function Player({
       player.attach(video.ref.current);
     }
   }, [video?.ref?.current]);
+  useEffect(() => () => deletePlayer(players, src), []);
   return React.cloneElement(video, {
     onLoadedMetadata: (e) => {
       onLoadedMetadata(e);

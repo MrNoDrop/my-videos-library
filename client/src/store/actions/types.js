@@ -28,6 +28,7 @@ export const SET_TRAILER_ROUTE = "SET_TRAILER_ROUTE";
 export const SET_WATCHED_MOVIE = "SET_WATCHED_MOVIE";
 export const SET_WATCHED_SERIE = "SET_WATCHED_SERIE";
 export const SAVE_PLAYER = "SAVE_PLAYER";
+export const DELETE_PLAYER = "DELETE_PLAYER";
 
 export default [
   TOGGLE_SUBTITLE,
@@ -59,4 +60,5 @@ export default [
   SET_WATCHED_MOVIE,
   SET_WATCHED_SERIE,
   SAVE_PLAYER,
+  DELETE_PLAYER,
 ];
