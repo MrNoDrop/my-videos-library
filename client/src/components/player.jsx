@@ -36,7 +36,6 @@ function Player({
   }, [players[src], player, video, src]);
   useEffect(() => {
     if (players[src] && !players[src].initialized && init) {
-      player.attach(video.ref.current);
       player.load(src).then(onPlayerLoaded).catch(onPlayerError);
       savePlayer(players, player, video, src, true);
     }
@@ -44,6 +43,7 @@ function Player({
   useEffect(() => {
     if (video?.ref?.current) {
       getVideo(video.ref.current);
+      player.attach(video.ref.current);
     }
   }, [video?.ref?.current]);
   return React.cloneElement(video, {
