@@ -78,7 +78,7 @@ function Trailer({
     addImage,
     trailer?.cover
   );
-  const videoRef = useRef();
+  const [video, setVideo] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState({ code: 1, message: "Shaka error 1" });
   const [playerLoaded, setPlayerLoaded] = useState(false);
@@ -89,16 +89,16 @@ function Trailer({
     fitAvailableSpaceBarOffset()
   );
   useEffect(() => {
-    if (!videoRef?.current || !loaded) {
+    if (!video || !loaded) {
       return;
     }
-    if (mouseEntered && videoRef.current.paused) {
-      videoRef.current.play();
+    if (mouseEntered && video.paused) {
+      video.play();
     }
-    if (!mouseEntered && !videoRef.current.paused) {
-      videoRef.current.pause();
+    if (!mouseEntered && !video.paused) {
+      video.pause();
     }
-  }, [mouseEntered, videoRef, loaded]);
+  }, [mouseEntered, video, loaded]);
   return (
     <div
       ref={trailerRef}
@@ -140,6 +140,7 @@ function Trailer({
         init={poster && mouseEntered}
         onPlayerLoaded={() => setPlayerLoaded(true)}
         onError={setError}
+        getVideo={setVideo}
         poster={poster}
         onLoadedData={() => {
           setLoaded(true);
