@@ -80,39 +80,8 @@ function Trailer({
   );
   const videoRef = useRef();
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(undefined);
-  const [player] = useState(players[href]?.player || new shaka.Player());
-  const [playerAttached, setPlayerAttached] = useState(false);
-  const [playerLoading, setPlayerLoading] = useState(
-    players[href]?.loading || false
-  );
+  const [error, setError] = useState({ code: 1, message: "Shaka error 1" });
   const [playerLoaded, setPlayerLoaded] = useState(false);
-  // useEffect(() => {
-  //   if (!playerAttached && player && videoRef?.current) {
-  //     player.attach(videoRef.current);
-  //     setPlayerAttached(true);
-  //   }
-  // }, [player, videoRef?.current, playerAttached]);
-  // useEffect(() => {
-  //   if (!playerLoading && player && playerAttached && trailer?.manifest) {
-  //     player
-  //       .load(trailer.manifest)
-  //       .then(() => alert())
-  //       .catch(console.error);
-  //     setPlayerLoading(true);
-  //   }
-  // }, [playerLoading, players[href]?.player, playerAttached, trailer?.manifest]);
-  // useEffect(() => {
-  //   if (!players[href]?.player && player) {
-  //     savePlayer(players, href, player, playerLoading);
-  //   }
-  // }, [players[href]?.player, player]);
-
-  // useEffect(() => {
-  //   if (playerLoading && player && players[href]?.loading !== playerLoading) {
-  //     savePlayer(players, href, player, playerLoading);
-  //   }
-  // }, [player, players[href]?.loading, playerLoading]);
   const [mouseEntered, setMouseEntered] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const trailerFullscreenStyle = useFitAvailableSpace(
@@ -130,77 +99,61 @@ function Trailer({
       videoRef.current.pause();
     }
   }, [mouseEntered, videoRef, loaded]);
-  const [video] = useState(
-    <video
-      key={href}
-      ref={videoRef}
-      poster={poster}
-      onLoadedData={() => {
-        setLoaded(true);
-      }}
-      onLoadedMetadata={() => {
-        player.configure({
-          streaming: {
-            bufferBehind: videoRef.current.duration,
-          },
-        });
-      }}
-    />
-  );
   return (
-    error?.code || (
-      <div
-        ref={trailerRef}
-        className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
-        style={fullscreen ? trailerFullscreenStyle : {}}
-        onMouseEnter={() => {
-          setMouseEntered(true);
-        }}
-        onMouseLeave={() => {
-          setMouseEntered(false);
-        }}
-        onClick={() => {
-          const [choosenTrailersDB, language, category, trailer] = href
-            .replace("/trailers/trailer/", "")
-            .split("/");
-          changePath(
-            `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
-          );
-        }}
-      >
-        <Player
-          src={trailer?.manifest}
-          onPlayerError={console.error}
-          init={mouseEntered}
-        />
-        {poster && (
-          <PlaySvg
-            paused={loaded ? !mouseEntered : true}
-            disableEvents={true}
-          />
-        )}
+    <div
+      ref={trailerRef}
+      className={`trailer${fullscreen ? " fullscreen-video" : ""}`}
+      style={fullscreen ? trailerFullscreenStyle : {}}
+      onMouseEnter={() => {
+        setMouseEntered(true);
+      }}
+      onMouseLeave={() => {
+        setMouseEntered(false);
+      }}
+      onClick={() => {
+        const [choosenTrailersDB, language, category, trailer] = href
+          .replace("/trailers/trailer/", "")
+          .split("/");
+        changePath(
+          `/${language}/${routes[language][choosenTrailersDB]}/${category}/${trailer}`
+        );
+      }}
+    >
+      {poster && (
+        <PlaySvg paused={loaded ? !mouseEntered : true} disableEvents={true} />
+      )}
+      <img
+        alt=""
+        src={cover ? cover : staticImages.animated.loading}
+        className="cover"
+      />
+      {playerLoaded && !loaded && (
         <img
           alt=""
-          src={cover ? cover : staticImages.animated.loading}
-          className="cover"
+          src={staticImages.animated.loading1}
+          className="loading-video"
         />
-        {!loaded && (
-          <img
-            alt=""
-            src={staticImages.animated.loading1}
-            className="loading-video"
-          />
-        )}
-        {/* {trailer?.manifest && video} */}
-        <FullscreenSVG
-          {...{ fullscreen }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setFullscreen(!fullscreen);
-          }}
-        />
-      </div>
-    )
+      )}
+      <Player
+        src={trailer?.manifest}
+        onPlayerError={console.error}
+        init={poster && mouseEntered}
+        onPlayerLoaded={() => setPlayerLoaded(true)}
+        onError={setError}
+        poster={poster}
+        onLoadedData={() => {
+          setLoaded(true);
+        }}
+      />
+      {/* {trailer?.manifest && video} */}
+      <FullscreenSVG
+        {...{ fullscreen }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setFullscreen(!fullscreen);
+        }}
+      />
+    </div>
   );
 }
 

@@ -21,6 +21,7 @@ function Player({
   onPlayerLoaded = () => {},
   onPlayerError = () => {},
   onLoadedMetadata = () => {},
+  getVideo = () => {},
   init,
   ...other
 }) {
@@ -40,6 +41,11 @@ function Player({
       savePlayer(players, player, video, src, true);
     }
   }, [players[src], init]);
+  useEffect(() => {
+    if (video?.ref?.current) {
+      getVideo(video.ref.current);
+    }
+  }, [video?.ref?.current]);
   return React.cloneElement(video, {
     onLoadedMetadata: (e) => {
       onLoadedMetadata(e);
