@@ -1,7 +1,7 @@
 import check from "../../check/get.mjs";
 import response from "../../../predefined/responses.mjs";
 
-export default function getMovieSubtitle(router, db) {
+export default function getMovieManifest(router, db) {
   router.get(
     "/:language/:category/:movie/manifest",
     check.preconfiguration,

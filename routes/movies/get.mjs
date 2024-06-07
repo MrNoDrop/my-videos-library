@@ -4,6 +4,7 @@ import { default as movieCover } from "./get/movie/cover.mjs";
 import { default as movies } from "./get/movies.mjs";
 import { default as movie } from "./get/movie.mjs";
 import { default as movieManifest } from "./get/movie/manifest.mjs";
+import { default as movieManifestMetadata } from "./get/movie/manifest/metadata.mjs";
 import { default as movieInfo } from "./get/movie/info.mjs";
 import { default as movieAudio } from "./get/movie/audio.mjs";
 import { default as movieVideo } from "./get/movie/video.mjs";
@@ -20,6 +21,7 @@ export default {
   movieCover,
   movie,
   movieManifest,
+  movieManifestMetadata,
   movieInfo,
   movieAudio,
   movieVideo,

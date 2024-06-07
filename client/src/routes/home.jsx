@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useFitAvailableSpace } from "../components/effects";
 import Trailers from "../components/trailers";
 import Bar, { fitAvailableSpaceBarOffset } from "../components/bar";
+import ContinueWatching from "../components/continue/watching";
 
 const mapStateToProps = ({
   state: {
@@ -33,6 +34,7 @@ function HomeRoute({ windowInnerDimensions }) {
       }}
     >
       <Bar />
+      <ContinueWatching />
       <Trailers
         parentRef={sectionRef}
         parentScrollEventCounter={scrollEventCounter}

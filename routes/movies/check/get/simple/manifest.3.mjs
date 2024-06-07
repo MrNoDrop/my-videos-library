@@ -15,7 +15,7 @@ export default async function checkLanguageCategoryMovieManifest(
       .json(
         response.error.missing.file(
           { index: 4, value: "manifest" },
-          ["movies", ...Object.values(req.params), "manifest"],
+          ["movies", language, category, movie, "manifest"],
           null,
           "Missing manifest file."
         )

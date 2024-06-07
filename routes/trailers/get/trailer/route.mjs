@@ -24,7 +24,6 @@ export default function getTrailerRoute(router, moviesDB, seriesDB) {
         allTrailers += 1 * trailers.length;
       });
       do {
-        console.log(definedTrailerRoutes.length);
         if (definedTrailerRoutes.length === allTrailers) {
           break;
         }

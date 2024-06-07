@@ -12,6 +12,7 @@ import { default as audios } from "./get/audios.3.mjs";
 import { default as audio } from "./get/audio.4.mjs";
 import { default as videos } from "./get/videos.2.mjs";
 import { default as video } from "./get/video.3.mjs";
+import { default as manifestMetadata } from "./get/manifest/metadata.3.mjs";
 
 export default {
   preconfiguration,
@@ -20,6 +21,7 @@ export default {
   category,
   movie,
   manifest,
+  manifestMetadata,
   info,
   thumbnail,
   subtitles,

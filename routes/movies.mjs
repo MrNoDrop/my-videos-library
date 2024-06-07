@@ -14,6 +14,7 @@ get.movieAudio(router, moviesDB);
 get.movieVideos(router, moviesDB);
 get.movieVideo(router, moviesDB);
 get.movieManifest(router, moviesDB);
+get.movieManifestMetadata(router, moviesDB);
 get.movieThumbnail(router, moviesDB);
 get.movieSubtitles(router, moviesDB);
 get.movieSubtitle(router, moviesDB);
