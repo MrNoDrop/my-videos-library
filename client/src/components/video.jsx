@@ -114,6 +114,7 @@ function Video({
     onLoaded(e);
     videoRef.current.play();
   });
+  const metadata = useFetchMetadata(src);
   useEffect(() => {
     if (videoRef?.current.duration) {
       switch (selectedContentDB) {
@@ -121,12 +122,14 @@ function Video({
           setWatchedMovie(watched, language, category, title, {
             duration: videoRef.current.duration,
             progress: videoTime,
+            credits: metadata.credits,
           });
           break;
         case "series":
           setWatchedSerie(watched, language, category, title, season, episode, {
             duration: videoRef.current.duration,
             progress: videoTime,
+            credits: metadata.credits,
           });
           break;
         default:
@@ -466,4 +469,25 @@ function useLoadPlayer(src, videoRef, onLoaded) {
     setPlayer(shakaPlayer);
   }, [src, videoRef]);
   return player;
+}
+
+function useFetchMetadata(src) {
+  const [isFetching, setIsFetching] = useState(false);
+  const [metadata, setMetadata] = useState(undefined);
+  useEffect(() => {
+    if (!isFetching && !metadata) {
+      (async () => {
+        setIsFetching(true);
+        try {
+          const { payload } = await (await fetch(`${src}/metadata`)).json();
+          const { metadata } = payload;
+          setMetadata(metadata);
+        } catch (e) {
+          console.error(e);
+        }
+        setIsFetching(false);
+      })();
+    }
+  }, [isFetching, metadata]);
+  return metadata;
 }
