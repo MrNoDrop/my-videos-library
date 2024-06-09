@@ -34,7 +34,7 @@ function HomeRoute({ windowInnerDimensions }) {
       }}
     >
       <Bar />
-      <ContinueWatching />
+      <ContinueWatching parentRef={sectionRef} />
       <Trailers
         parentRef={sectionRef}
         parentScrollEventCounter={scrollEventCounter}

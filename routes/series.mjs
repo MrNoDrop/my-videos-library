@@ -1,6 +1,6 @@
-import express from 'express';
-import seriesDB from '../db/series.mjs';
-import get from './series/get.mjs';
+import express from "express";
+import seriesDB from "../db/series.mjs";
+import get from "./series/get.mjs";
 
 const router = express.Router();
 get.languages(router, seriesDB);
@@ -16,6 +16,7 @@ get.episodeAudio(router, seriesDB);
 get.episodeVideos(router, seriesDB);
 get.episodeVideo(router, seriesDB);
 get.episodeManifest(router, seriesDB);
+get.episodeManifestMetadata(router, seriesDB);
 get.episodeThumbnail(router, seriesDB);
 get.episodeSubtitles(router, seriesDB);
 get.episodeSubtitle(router, seriesDB);
