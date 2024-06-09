@@ -18,6 +18,7 @@ import SubtitlesButton from "../svg/subtitles";
 import setSelectedSubtitles from "../store/actions/set/selected/subtitles";
 import setWatchedMovie from "../store/actions/set/watched/movie";
 import setWatchedSerie from "../store/actions/set/watched/serie";
+import Player from "./player";
 
 shaka.polyfill.installAll();
 
@@ -97,7 +98,6 @@ function Video({
     .split("/");
   const videoVolumeSliderRef = useRef();
   const videoTimeSliderRef = useRef();
-  const videoRef = useRef();
   const playerRef = useRef();
   const [loaded, setLoaded] = useState(false);
   const [buffered, setBuffered] = useState(0);
@@ -108,26 +108,27 @@ function Video({
   const [videoTime, setVideoTime] = useState(0);
   const [timeouttime, setTimeouttime] = useState(undefined);
   const [videoVolume, setVideoVolume] = useState(1);
+  const [video, setVideo] = useState(undefined);
   const image = useImageLoader(poster, images, addImage, true);
-  const player = useLoadPlayer(src, videoRef, (e) => {
-    setLoaded(true);
-    onLoaded(e);
-    videoRef.current.play();
-  });
+  // const player = useLoadPlayer(src, video, (e) => {
+  //   setLoaded(true);
+  //   onLoaded(e);
+  //   video.play();
+  // });
   const metadata = useFetchMetadata(src);
   useEffect(() => {
-    if (videoRef?.current.duration) {
+    if (video?.duration) {
       switch (selectedContentDB) {
         case "movies":
           setWatchedMovie(watched, language, category, title, {
-            duration: videoRef.current.duration,
+            duration: video.duration,
             progress: videoTime,
             credits: metadata.credits,
           });
           break;
         case "series":
           setWatchedSerie(watched, language, category, title, season, episode, {
-            duration: videoRef.current.duration,
+            duration: video.duration,
             progress: videoTime,
             credits: metadata.credits,
           });
@@ -136,7 +137,7 @@ function Video({
           throw new Error("missing case.");
       }
     }
-  }, [videoRef?.current, videoTime]);
+  }, [video, videoTime]);
   const {
     hidden: hovertextHidden,
     mousePostion,
@@ -149,15 +150,13 @@ function Video({
       if (typeof onClick === "function") {
         onClick(e);
       }
-      videoRef.current.paused
-        ? videoRef.current.play()
-        : hoverOnMouseMove(e) || videoRef.current.pause();
+      video.paused ? video.play() : hoverOnMouseMove(e) || video.pause();
     },
     onMouseEnter: (e) => {
       if (typeof onMouseEnter === "function") {
         onMouseEnter(e);
       }
-      if (videoRef.current && videoRef.current.paused && loaded) {
+      if (video.paused && loaded) {
         hoverOnMouseEnter(e);
       }
     },
@@ -175,7 +174,7 @@ function Video({
         hoverOnMouseLeave(e);
         return;
       }
-      if (videoRef.current && videoRef.current.paused) {
+      if (video.paused) {
         hoverOnMouseMove(e);
       }
       if (hideControlsTimeout) {
@@ -192,7 +191,7 @@ function Video({
   };
   useEffect(
     () => {
-      videoRef && videoRef.current && (videoRef.current.volume = videoVolume);
+      video && (video.volume = videoVolume);
     },
     // eslint-disable-next-line
     []
@@ -201,23 +200,21 @@ function Video({
     if (!timeouttime) {
       setTimeouttime(
         setTimeout(() => {
-          if (videoRef?.current) {
-            if (videoTime !== videoRef.current.currentTime) {
-              setVideoTime(videoRef.current.currentTime);
+          if (video) {
+            if (videoTime !== video.currentTime) {
+              setVideoTime(video.currentTime);
             }
           }
           setTimeouttime(clearTimeout(timeouttime));
         }, 10)
       );
     }
-  }, [videoRef, timeouttime, setTimeouttime, videoTime, setVideoTime]);
+  }, [video, timeouttime, setTimeouttime, videoTime, setVideoTime]);
   const [overlayStyle, setOverlayStyle] = useState({});
   const [muted, setMuted] = useState(false);
   useEffect(() => {
-    if (videoRef.current) {
-      const rect = ReactDOM.findDOMNode(
-        videoRef.current
-      ).getBoundingClientRect();
+    if (video) {
+      const rect = ReactDOM.findDOMNode(video).getBoundingClientRect();
       if (rect) {
         const { top, left, width, height } = rect;
         if (
@@ -228,17 +225,14 @@ function Video({
         }
       }
     }
-  }, [videoRef, overlayStyle, setOverlayStyle, windowInnerDimensions]);
+  }, [video, overlayStyle, setOverlayStyle, windowInnerDimensions]);
   useEffect(() => {
-    if (videoRef.current) {
+    if (video) {
       if (!bufferedTimeout) {
         setBufferedTimeout(
           setTimeout(() => {
-            if (
-              videoRef.current &&
-              videoRef.current.buffered.length !== buffered
-            ) {
-              setBuffered(videoRef.current.buffered.length);
+            if (video.buffered.length !== buffered) {
+              setBuffered(video.buffered.length);
             }
             setBufferedTimeout(clearTimeout(bufferedTimeout));
           }, 10)
@@ -246,24 +240,24 @@ function Video({
       }
     }
     return () => clearTimeout(bufferedTimeout);
-  }, [videoRef, buffered, setBuffered, bufferedTimeout, setBufferedTimeout]);
+  }, [video, buffered, setBuffered, bufferedTimeout, setBufferedTimeout]);
   document.body.onkeyup = function ({ key }) {
-    if (videoRef?.current && key === " ") {
-      videoRef.current.paused
-        ? videoRef.current.play()
-        : videoRef.current.pause();
+    if (video && key === " ") {
+      video.paused ? video.play() : video.pause();
     }
   };
   return (
     <div className="player" ref={playerRef}>
-      <video
+      <Player
         key="video"
         className="video"
-        autoplay
-        ref={videoRef}
+        autoPlay
+        init={true}
         poster={image}
+        getVideo={setVideo}
+        onLoadedData={() => setLoaded(true)}
         onLoadedMetadata={() => {
-          videoRef.current.currentTime = (() => {
+          video.currentTime = (() => {
             switch (selectedContentDB) {
               case "movies":
                 return (
@@ -285,22 +279,14 @@ function Video({
             }
             return 0;
           })();
-          player.configure({
-            streaming: {
-              bufferBehind: videoRef.current.duration,
-            },
-          });
         }}
-        {...{ ...other }}
+        {...{ src, ...other }}
       />
       <div
         className="overlay"
         style={{
           ...overlayStyle,
-          cursor:
-            videoRef.current && !videoRef.current.paused && hideControls
-              ? "none"
-              : "default",
+          cursor: video && !video.paused && hideControls ? "none" : "default",
           ...(() =>
             loaded && buffered ? {} : { backgroundImage: `url(${loading})` })(),
         }}
@@ -308,14 +294,10 @@ function Video({
         <PlaySvg
           className={`play-button absolute`}
           locked={true}
-          hidden={videoRef.current && !videoRef.current.paused}
-          paused={videoRef.current && videoRef.current.paused}
+          hidden={video && !video.paused}
+          paused={video?.paused}
           {...mouseEventListeners}
-          onClick={() =>
-            videoRef.current.paused
-              ? videoRef.current.play()
-              : videoRef.current.pause()
-          }
+          onClick={() => (video.paused ? video.play() : video.pause())}
         />
         <Subtitles
           {...{
@@ -324,17 +306,13 @@ function Video({
             ...mouseEventListeners,
             offset: {
               height:
-                videoRef.current && !videoRef.current.paused && hideControls
-                  ? vmin(4)
-                  : vmin(6),
+                video && !video.paused && hideControls ? vmin(4) : vmin(6),
             },
           }}
         />
         <div
           className={`controls${
-            videoRef.current && !videoRef.current.paused && hideControls
-              ? " hidden"
-              : ""
+            video && !video.paused && hideControls ? " hidden" : ""
           }`}
           ref={useRef()}
           onMouseEnter={() => {
@@ -358,12 +336,8 @@ function Video({
         >
           <PlaySvg
             className={`play-button`}
-            paused={videoRef.current && videoRef.current.paused}
-            onClick={() =>
-              videoRef.current.paused
-                ? videoRef.current.play()
-                : videoRef.current.pause()
-            }
+            paused={video?.paused}
+            onClick={() => (video.paused ? video.play() : video.pause())}
           />
           <Slider
             className="video-time-slider"
@@ -372,9 +346,9 @@ function Video({
             value={videoTime}
             setValue={(value) => {
               setVideoTime(value);
-              videoRef.current.currentTime = value;
+              video.currentTime = value;
             }}
-            max={(videoRef.current && videoRef.current.duration) || 1}
+            max={video?.duration || 1}
             step="0.01"
           />
           <VideoMenu
@@ -395,16 +369,16 @@ function Video({
           </VideoMenu>
           <MuteSvg
             className="mute-button"
-            muted={videoRef.current && videoRef.current.volume === 0}
+            muted={video?.volume === 0}
             onClick={() => {
               if (muted) {
-                videoRef.current.volume = muted;
+                video.volume = muted;
                 setVideoVolume(muted);
                 setMuted(false);
               } else {
                 setMuted(videoVolume);
                 setVideoVolume(0);
-                videoRef.current.volume = 0;
+                video.volume = 0;
               }
             }}
           />
@@ -421,7 +395,7 @@ function Video({
                 setMuted(true);
               }
               setVideoVolume(value);
-              videoRef.current.volume = value;
+              video.volume = value;
             }}
             step="0.001"
           />
@@ -439,9 +413,7 @@ function Video({
         </div>
         {hovertext && (
           <Hover
-            hidden={
-              hovertextHidden || (videoRef.current && !videoRef.current.paused)
-            }
+            hidden={hovertextHidden || (video && !video.paused)}
             {...{ mousePostion }}
           >
             {hovertext}
@@ -454,20 +426,20 @@ function Video({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Video);
 
-function useLoadPlayer(src, videoRef, onLoaded) {
+function useLoadPlayer(src, video, onLoaded) {
   const [player, setPlayer] = useState(undefined);
   useEffect(() => {
-    if (!videoRef || !videoRef.current) {
+    if (!video || !video) {
       return;
     }
-    const shakaPlayer = new shaka.Player(videoRef.current);
+    const shakaPlayer = new shaka.Player(video);
     shakaPlayer.addEventListener("error", console.error);
     shakaPlayer
       .load(src)
       .then(() => onLoaded())
       .catch(console.error);
     setPlayer(shakaPlayer);
-  }, [src, videoRef]);
+  }, [src, video]);
   return player;
 }
 
