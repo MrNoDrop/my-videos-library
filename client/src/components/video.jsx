@@ -19,6 +19,7 @@ import setSelectedSubtitles from "../store/actions/set/selected/subtitles";
 import setWatchedMovie from "../store/actions/set/watched/movie";
 import setWatchedSerie from "../store/actions/set/watched/serie";
 import Player from "./player";
+import NextVideoButton from "./video/button/next";
 
 shaka.polyfill.installAll();
 
@@ -29,7 +30,14 @@ const mapStateToProps = ({
     window: { inner },
     watched,
   },
-}) => ({ images, windowInnerDimensions: inner, selectedSubtitles, watched });
+  router: { routes },
+}) => ({
+  routes,
+  images,
+  windowInnerDimensions: inner,
+  selectedSubtitles,
+  watched,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   addImage: (images, image, imageUrl) =>
@@ -69,6 +77,7 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 });
 function Video({
+  routes,
   src,
   hovertext,
   images,
@@ -110,11 +119,6 @@ function Video({
   const [videoVolume, setVideoVolume] = useState(1);
   const [video, setVideo] = useState(undefined);
   const image = useImageLoader(poster, images, addImage, true);
-  // const player = useLoadPlayer(src, video, (e) => {
-  //   setLoaded(true);
-  //   onLoaded(e);
-  //   video.play();
-  // });
   const metadata = useFetchMetadata(src);
   useEffect(() => {
     if (video?.duration) {
@@ -411,6 +415,13 @@ function Video({
             }
           />
         </div>
+        <NextVideoButton
+          render={selectedContentDB === "series"}
+          hidden={hideControls}
+          src={`/${selectedContentDB}/${language}/${category}/${title}`}
+          href={`/${language}/${routes[language][selectedContentDB]}/${category}/${title}`}
+          {...{ season, episode }}
+        />
         {hovertext && (
           <Hover
             hidden={hovertextHidden || (video && !video.paused)}

@@ -98,4 +98,11 @@
       height: 2.5vmin;
     }
   }
+  .next-video-button {
+    position: absolute;
+    width: 5vmin;
+    height: 3vmin;
+    top: calc(50% - 1.5vmin);
+    right: calc(2vmin);
+  }
 }
