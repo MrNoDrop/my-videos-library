@@ -127,12 +127,14 @@ function useFetchSerieSeasons(
                         [episode]: {
                           thumbnail,
                           subtitles,
-                          info: Object.entries(info).map(([key, value]) => (
-                            <Fragment>
-                              {`${key}: ${value}`}
-                              <br />
-                            </Fragment>
-                          )),
+                          info: !info
+                            ? null
+                            : Object.entries(info).map(([key, value]) => (
+                                <Fragment>
+                                  {`${key}: ${value}`}
+                                  <br />
+                                </Fragment>
+                              )),
                           manifest,
                         },
                       },
@@ -152,12 +154,14 @@ function useFetchSerieSeasons(
                         [episode]: {
                           thumbnail,
                           subtitles,
-                          info: Object.entries(info).map(([key, value]) => (
-                            <Fragment>
-                              {`${key}: ${value}`}
-                              <br />
-                            </Fragment>
-                          )),
+                          info: !info
+                            ? null
+                            : Object.entries(info).map(([key, value]) => (
+                                <Fragment>
+                                  {`${key}: ${value}`}
+                                  <br />
+                                </Fragment>
+                              )),
                           manifest,
                         },
                       },
@@ -178,12 +182,14 @@ function useFetchSerieSeasons(
                         [episode]: {
                           thumbnail,
                           subtitles,
-                          info: Object.entries(info).map(([key, value]) => (
-                            <Fragment>
-                              {`${key}: ${value}`}
-                              <br />
-                            </Fragment>
-                          )),
+                          info: !info
+                            ? null
+                            : Object.entries(info).map(([key, value]) => (
+                                <Fragment>
+                                  {`${key}: ${value}`}
+                                  <br />
+                                </Fragment>
+                              )),
                           manifest,
                         },
                       },
@@ -205,12 +211,14 @@ function useFetchSerieSeasons(
                         [episode]: {
                           thumbnail,
                           subtitles,
-                          info: Object.entries(info).map(([key, value]) => (
-                            <Fragment>
-                              {`${key}: ${value}`}
-                              <br />
-                            </Fragment>
-                          )),
+                          info: !info
+                            ? null
+                            : Object.entries(info).map(([key, value]) => (
+                                <Fragment>
+                                  {`${key}: ${value}`}
+                                  <br />
+                                </Fragment>
+                              )),
                           manifest,
                         },
                       },
@@ -233,12 +241,14 @@ function useFetchSerieSeasons(
                         [episode]: {
                           thumbnail,
                           subtitles,
-                          info: Object.entries(info).map(([key, value]) => (
-                            <Fragment>
-                              {`${key}: ${value}`}
-                              <br />
-                            </Fragment>
-                          )),
+                          info: !info
+                            ? null
+                            : Object.entries(info).map(([key, value]) => (
+                                <Fragment>
+                                  {`${key}: ${value}`}
+                                  <br />
+                                </Fragment>
+                              )),
                           manifest,
                         },
                       },
