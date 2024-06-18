@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { push } from "redux-first-routing";
+import "./next.scss";
 
 const mapStateToProps = null;
 
@@ -58,7 +59,7 @@ function NextVideoButton({
         window.location.reload();
       }}
     >
-      Next
+      {">"}
     </button>
   ) : (
     <></>
