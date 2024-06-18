@@ -31,6 +31,7 @@ function Player({
   const ref = useRef();
   const [player] = useState(players[src]?.player || new shaka.Player());
   const [video] = useState(players[src]?.video || <video ref={ref} />);
+  const [playerAttached, setPlayerAttached] = useState(false);
 
   useEffect(() => {
     if (src && player && video && !players[src]) {
@@ -39,16 +40,22 @@ function Player({
   }, [players[src], player, video, src]);
   useEffect(() => {
     if (players[src] && !players[src].initialized && init) {
-      player.load(src).then(onPlayerLoaded).catch(onPlayerError);
-      savePlayer(players, player, video, src, true);
+      player
+        .load(src)
+        .then((e) => {
+          onPlayerLoaded(e);
+          savePlayer(players, player, video, src, true);
+        })
+        .catch(onPlayerError);
     }
   }, [players[src], init]);
   useEffect(() => {
-    if (video?.ref?.current) {
+    if (video?.ref?.current && !playerAttached) {
       getVideo(video.ref.current);
       player.attach(video.ref.current);
+      setPlayerAttached(true);
     }
-  }, [video?.ref?.current]);
+  }, [video?.ref?.current, playerAttached]);
   useEffect(() => () => deletePlayer(players, src), []);
   return React.cloneElement(video, {
     onLoadedMetadata: (e) => {
