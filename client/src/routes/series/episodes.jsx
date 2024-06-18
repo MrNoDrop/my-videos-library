@@ -62,7 +62,6 @@ function SeriesEpisodesRoute({
     .substring(1, pathname.length)
     .split("/")
     .splice(2, 3);
-  console.log(category, title, season);
   const ref = useRef();
   const [filter, setFilter] = useState("");
   useFetchSerieEpisodes(language, setSeries, series, pathname, changePath);
@@ -342,7 +341,7 @@ function useFetchSerieEpisodes(
             changePath(`/${path.splice(0, error.field.index).join("/")}`);
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       })();
     }

@@ -51,7 +51,6 @@ function SeriesCategoryRoute({
     setSeries
   );
   const [scrollEventCounter, setScrollEventCounter] = useState(0);
-  console.log(series, series.current.category);
   return (
     <section
       {...{
@@ -179,7 +178,7 @@ function useFetchCategorySeries(
             changePath(`/${path.join("/")}`);
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       })();
     }
