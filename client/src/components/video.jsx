@@ -20,6 +20,7 @@ import setWatchedMovie from "../store/actions/set/watched/movie";
 import setWatchedSerie from "../store/actions/set/watched/serie";
 import Player from "./player";
 import NextVideoButton from "./video/button/next";
+import PreviousVideoButton from "./video/button/previous";
 
 shaka.polyfill.installAll();
 
@@ -416,6 +417,13 @@ function Video({
           />
         </div>
         <NextVideoButton
+          render={selectedContentDB === "series"}
+          hidden={hideControls}
+          src={`/${selectedContentDB}/${language}/${category}/${title}`}
+          href={`/${language}/${routes[language][selectedContentDB]}/${category}/${title}`}
+          {...{ season, episode }}
+        />
+        <PreviousVideoButton
           render={selectedContentDB === "series"}
           hidden={hideControls}
           src={`/${selectedContentDB}/${language}/${category}/${title}`}
